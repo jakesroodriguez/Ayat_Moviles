@@ -1,0 +1,6 @@
+{
+  "name": "Ayat Móviles",
+  "description": "Tu tecnología en las mejores manos. Venta y reparación de móviles en Zumarraga y Punto Pack con asistente virtual.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
