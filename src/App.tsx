@@ -20,7 +20,9 @@ import {
   HelpCircle,
   Wrench,
   Check,
-  X
+  X,
+  Instagram,
+  Facebook
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import ThreeSmartphone from "./components/ThreeSmartphone";
@@ -761,11 +763,9 @@ export default function App() {
         </section>
 
         {/* Dedicated WhatsApp Interactive Section */}
-        <section id="whatsapp" className="py-16 px-6 bg-slate-50 border border-slate-200 rounded-3xl max-w-7xl mx-auto w-full relative overflow-hidden my-12">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
-
-          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <section id="whatsapp" className="max-w-7xl mx-auto w-full scroll-mt-20 my-12">
+          <CardGradient className="py-16 px-6 shadow-[0_30px_60px_rgba(15,23,42,0.06)]" contentClassName="relative w-full z-10">
+            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* Left Column: Context & Presets */}
             <div className="lg:col-span-7 space-y-6">
@@ -969,6 +969,7 @@ export default function App() {
             </div>
 
           </div>
+          </CardGradient>
         </section>
 
         {/* Reviews & Testimonials Section - High Contrast */}
@@ -1114,9 +1115,13 @@ export default function App() {
       </main>
 
       {/* Footer with high contrast, outstanding aesthetics and full interactivity */}
-      <footer className="bg-gradient-to-b from-[#0f172a] via-[#090d16] to-[#030712] text-slate-300 py-16 px-6 md:px-12 border-t border-slate-800 shrink-0 w-full mt-16 relative overflow-hidden">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-indigo-500/5 rounded-full filter blur-3xl pointer-events-none" />
-        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-purple-500/5 rounded-full filter blur-3xl pointer-events-none" />
+      <footer className="bg-gradient-to-b from-[#0b0f19] via-[#060810] to-[#020306] text-slate-300 py-16 px-6 md:px-12 border-t border-slate-900 shrink-0 w-full mt-16 relative overflow-hidden">
+        {/* Glowing border line */}
+        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent z-10" />
+
+        {/* Pulsating colorful background blobs inside the footer */}
+        <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-[100px] animate-pulse pointer-events-none" style={{ animationDuration: "12s" }} />
+        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[120px] animate-pulse pointer-events-none" style={{ animationDuration: "18s" }} />
 
         <div className="max-w-7xl mx-auto relative z-10">
           
@@ -1132,18 +1137,36 @@ export default function App() {
                   referrerPolicy="no-referrer"
                   onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                 />
-                <span className="text-xl font-black text-white tracking-tight font-display">AYAT MÓVILES</span>
+                <span className="text-xl font-black text-white tracking-tight font-display bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-indigo-200">AYAT MÓVILES</span>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
                 Especialistas líderes en venta, reparación exprés y soporte informático en Zumarraga. Máxima garantía, velocidad inigualable y confianza certificada para todos tus dispositivos.
               </p>
+              
+              {/* Social links */}
               <div className="flex items-center gap-3">
+                <a 
+                  href="https://www.instagram.com/jakesroodriguez" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 hover:border-indigo-400 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110"
+                >
+                  <Instagram className="w-4 h-4" />
+                </a>
+                <a 
+                  href="https://wa.me/34632447979" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-400 text-slate-400 hover:text-emerald-400 flex items-center justify-center transition-all duration-300 hover:scale-110"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                </a>
                 <button 
                   onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                  className="group flex items-center gap-2 text-xs font-bold text-indigo-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-4 py-2 rounded-full border border-white/5 hover:border-white/10"
+                  className="group flex items-center gap-2 text-[10px] font-bold text-indigo-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-3.5 py-2 rounded-full border border-white/5 hover:border-white/10"
                 >
                   Volver Arriba 
-                  <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform duration-300 text-indigo-400" />
+                  <ArrowUp className="w-3 h-3 group-hover:-translate-y-0.5 transition-transform duration-300 text-indigo-400" />
                 </button>
               </div>
             </div>
@@ -1174,7 +1197,7 @@ export default function App() {
                             setFooterRating(item.rate);
                             setFooterRatingSubmitted(true);
                           }}
-                          className="w-11 h-11 bg-slate-800/60 hover:bg-indigo-600 border border-slate-700/80 hover:border-indigo-400 text-lg rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:shadow-[0_0_15px_rgba(99,102,241,0.4)] cursor-pointer group"
+                          className="w-11 h-11 bg-slate-900/60 hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-600 border border-slate-800 hover:border-indigo-400 text-lg rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] cursor-pointer group"
                           title={item.desc}
                         >
                           <span className="group-hover:scale-125 transition-transform duration-300">{item.label}</span>
@@ -1226,7 +1249,7 @@ export default function App() {
                       placeholder="¿Reparáis tablets? ¿Precios...?" 
                       value={footerQuestion}
                       onChange={(e) => setFooterQuestion(e.target.value)}
-                      className="w-full bg-slate-800/80 border border-slate-700/80 focus:border-indigo-500 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none transition-all duration-300"
+                      className="w-full bg-slate-900/60 border border-slate-800 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none transition-all duration-300"
                     />
                   </div>
                   <button
@@ -1234,8 +1257,8 @@ export default function App() {
                     disabled={!footerQuestion.trim()}
                     className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
                       footerQuestion.trim() 
-                        ? "bg-emerald-600 hover:bg-emerald-500 text-white hover:scale-[1.02] shadow-lg shadow-emerald-950/50 cursor-pointer" 
-                        : "bg-slate-800 text-slate-500 cursor-not-allowed"
+                        ? "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white hover:scale-[1.02] shadow-lg shadow-emerald-950/40 cursor-pointer" 
+                        : "bg-slate-800/80 text-slate-500 cursor-not-allowed"
                     }`}
                   >
                     <MessageSquare className="w-3.5 h-3.5 shrink-0" />
@@ -1249,29 +1272,21 @@ export default function App() {
             <div>
               <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-6 font-mono">ENLACES RÁPIDOS</h4>
               <ul className="space-y-3.5 text-xs">
+                {[
+                  { label: "Venta de Teléfonos & Accesorios", href: "#servicios" },
+                  { label: "Presupuesto de Reparación", href: "#servicios" },
+                  { label: "Preguntas Frecuentes (FAQ)", href: "#faq" },
+                  { label: "Horarios & Localización", href: "#contacto" },
+                ].map((link, idx) => (
+                  <li key={idx}>
+                    <a href={link.href} className="text-slate-400 hover:text-white transition-all flex items-center gap-1.5 hover:translate-x-1 duration-300 group">
+                      <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full group-hover:bg-indigo-400 transition-colors" /> {link.label}
+                    </a>
+                  </li>
+                ))}
                 <li>
-                  <a href="#servicios" className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 hover:translate-x-1 duration-300">
-                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full" /> Venta de Teléfonos & Accesorios
-                  </a>
-                </li>
-                <li>
-                  <a href="#servicios" className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 hover:translate-x-1 duration-300">
-                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full" /> Presupuesto de Reparación
-                  </a>
-                </li>
-                <li>
-                  <a href="#faq" className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 hover:translate-x-1 duration-300">
-                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full" /> Preguntas Frecuentes (FAQ)
-                  </a>
-                </li>
-                <li>
-                  <a href="#contacto" className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 hover:translate-x-1 duration-300">
-                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full" /> Horarios & Localización
-                  </a>
-                </li>
-                <li>
-                  <a href="https://wa.me/34632447979" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-colors flex items-center gap-1.5 hover:translate-x-1 duration-300 font-bold text-indigo-400">
-                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full" /> Soporte Urgente por WhatsApp <ExternalLink className="w-3 h-3" />
+                  <a href="https://wa.me/34632447979" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-all flex items-center gap-1.5 hover:translate-x-1 duration-300 font-bold text-indigo-400 group">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full group-hover:bg-emerald-400 transition-colors" /> Soporte Urgente por WhatsApp <ExternalLink className="w-3 h-3 text-indigo-400" />
                   </a>
                 </li>
               </ul>
@@ -1279,35 +1294,33 @@ export default function App() {
 
           </div>
 
-          <div className="pt-8 border-t border-slate-800/80 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-6">
             <div className="text-xs text-slate-500 font-mono text-center md:text-left">
               © 2026 AYAT MÓVILES. Todos los derechos reservados. | Zumarraga, Gipuzkoa.
             </div>
+            
+            {/* Developer Button */}
             <div className="flex items-center gap-6">
-              <div dangerouslySetInnerHTML={{ __html: `<!-- Componente: Botón de Autor (Premium Glassmorphism) -->
-<a href="https://www.instagram.com/jakesroodriguez" 
-   target="_blank" 
-   rel="noopener noreferrer" 
-   class="inline-flex items-center gap-3 px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-500 group hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95 backdrop-blur-md">
-  
-  <!-- Burbuja del Icono -->
-  <div class="p-2 bg-white/10 rounded-full group-hover:bg-white/20 transition-colors flex items-center justify-center">
-    <!-- NOTA: Requiere cargar Material Symbols -->
-    <span class="material-symbols-outlined text-sm group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-300">
-      code
-    </span>
-  </div>
-  
-  <!-- Contenedor de Textos -->
-  <div class="flex flex-col items-start text-left font-sans">
-    <span class="text-[9px] uppercase tracking-[0.2em] opacity-60 font-medium mb-0.5">
-      Designed & Built by
-    </span>
-    <span class="text-sm font-bold tracking-wider">
-      @jakesroodriguez
-    </span>
-  </div>
-</a>` }} />
+              <a 
+                href="https://www.instagram.com/jakesroodriguez" 
+                target="_blank" 
+                rel="noopener noreferrer" 
+                className="inline-flex items-center gap-3 px-5 py-2 bg-white/5 border border-white/10 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-all duration-500 group hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95 backdrop-blur-md"
+              >
+                <div className="p-1.5 bg-white/10 rounded-full group-hover:bg-white/20 transition-colors flex items-center justify-center">
+                  <span className="material-symbols-outlined text-sm group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-300">
+                    code
+                  </span>
+                </div>
+                <div className="flex flex-col items-start text-left font-sans">
+                  <span className="text-[9px] uppercase tracking-[0.2em] opacity-60 font-medium mb-0.5">
+                    Designed & Built by
+                  </span>
+                  <span className="text-xs font-bold tracking-wider">
+                    @jakesroodriguez
+                  </span>
+                </div>
+              </a>
             </div>
           </div>
 

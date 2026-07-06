@@ -60,17 +60,17 @@
 }
 
 .animate-first {
-  animation: moveVertical 8s ease infinite;
+  animation: moveVertical 25s ease infinite;
 }
 .animate-second {
-  animation: moveInCircle 6s reverse infinite;
+  animation: moveInCircle 20s reverse infinite;
 }
 .animate-third {
-  animation: moveInCircle 10s linear infinite;
+  animation: moveInCircle 30s linear infinite;
 }
 .animate-fourth {
-  animation: moveHorizontal 12s ease infinite;
+  animation: moveHorizontal 28s ease infinite;
 }
 .animate-fifth {
-  animation: moveInCircle 5s ease infinite;
+  animation: moveInCircle 18s ease infinite;
 }
