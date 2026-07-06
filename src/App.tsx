@@ -27,10 +27,6 @@ import ThreeSmartphone from "./components/ThreeSmartphone";
 import BackgroundShader from "./components/BackgroundShader";
 import ChatBot from "./components/ChatBot";
 import FAQSection from "./components/FAQSection";
-import FloatingGear3D from "./components/FloatingGear3D";
-import FloatingShield3D from "./components/FloatingShield3D";
-import FloatingStar3D from "./components/FloatingStar3D";
-import FloatingCube3D from "./components/FloatingCube3D";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("inicio");
@@ -402,10 +398,7 @@ export default function App() {
 
         {/* Services Section (Bento Grid Style + Fully Rounded Corners + Zoom Transitions) */}
         <section id="servicios" className="py-16 md:py-24 px-4 max-w-7xl mx-auto w-full border-t border-slate-200/60 mt-4">
-          <div className="mb-16 max-w-3xl relative">
-            <div className="absolute -top-4 -right-4 sm:right-0 z-10 hidden sm:block">
-              <FloatingGear3D />
-            </div>
+          <div className="mb-16 max-w-3xl">
             <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-3 font-mono">PORTFOLIO DE SERVICIOS</span>
             <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 font-display">
               Soluciones Integrales de Máxima Calidad
@@ -518,9 +511,6 @@ export default function App() {
           <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-purple-50/20 rounded-full blur-3xl pointer-events-none" />
           
           <div className="max-w-3xl mb-10 relative z-10">
-            <div className="absolute -top-2 right-0 z-10 hidden sm:block">
-              <FloatingShield3D />
-            </div>
             <span className="text-[11px] font-mono font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-indigo-100/50">CALCULADORA DE PRESUPUESTOS</span>
             <h3 className="text-3xl font-extrabold font-display text-slate-900 mt-4">Simulador de Reparación en Vivo</h3>
             <p className="text-sm text-slate-500 mt-2 leading-relaxed">
@@ -774,9 +764,6 @@ export default function App() {
         <section id="whatsapp" className="py-16 px-6 bg-slate-50 border border-slate-200 rounded-3xl max-w-7xl mx-auto w-full relative overflow-hidden my-12">
           <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute top-6 right-6 z-10 hidden lg:block">
-            <FloatingCube3D />
-          </div>
 
           <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
@@ -992,19 +979,16 @@ export default function App() {
                 <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-2 font-mono">OPINIONES VERIFICADAS</span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 font-display">Lo que dicen nuestros clientes</h2>
               </div>
-              <div className="flex items-center gap-3 mt-4 md:mt-0">
-                <FloatingStar3D />
-                <div className="bg-slate-50 border border-slate-200 px-4 py-2.5 font-mono text-xs rounded-full shadow-sm flex items-center gap-3">
-                  <span className="font-bold text-slate-700">Google Reviews:</span>
-                  <div className="flex text-amber-500">
-                    <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                    <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                    <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                    <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                    <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                  </div>
-                  <span className="font-bold text-indigo-700">5.0 / 5</span>
+              <div className="flex items-center gap-3 mt-4 md:mt-0 bg-slate-50 border border-slate-200 px-4 py-2.5 font-mono text-xs rounded-full shadow-sm">
+                <span className="font-bold text-slate-700">Google Reviews:</span>
+                <div className="flex text-amber-500">
+                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                 </div>
+                <span className="font-bold text-indigo-700">5.0 / 5</span>
               </div>
             </div>
 
