@@ -27,6 +27,7 @@ import ThreeSmartphone from "./components/ThreeSmartphone";
 import BackgroundShader from "./components/BackgroundShader";
 import ChatBot from "./components/ChatBot";
 import FAQSection from "./components/FAQSection";
+import CardGradient from "./components/CardGradient";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("inicio");
@@ -300,7 +301,7 @@ export default function App() {
           <div className="w-full">
             
             {/* Unified Bento Card with side-by-side on sm: screens and compact sizing */}
-            <div className="w-full flex flex-col sm:flex-row items-center justify-between p-5 xs:p-6 sm:p-8 md:p-12 relative bg-white border border-slate-200 shadow-[0_20px_50px_rgba(15,23,42,0.08)] rounded-3xl overflow-hidden group">
+            <CardGradient className="w-full" contentClassName="flex flex-col sm:flex-row items-center justify-between p-5 xs:p-6 sm:p-8 md:p-12 group">
               <div className="absolute -top-10 -left-10 text-[100px] md:text-[140px] font-black text-slate-50/50 select-none z-0 font-display transition-transform duration-700 group-hover:scale-110 pointer-events-none">
                 01
               </div>
@@ -347,7 +348,7 @@ export default function App() {
                   <ThreeSmartphone />
                 </div>
               </div>
-            </div>
+            </CardGradient>
 
           </div>
 
@@ -413,8 +414,7 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             {/* Service 1: Tienda de Móviles (Featured Large Card spanning 2 cols) */}
-            <div className="bg-white border border-slate-200 p-8 flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500 md:col-span-2 group rounded-3xl relative overflow-hidden hover:-translate-y-1.5 shadow-[0_10px_30px_rgba(15,23,42,0.03)]">
-              <div className="absolute top-0 right-0 w-32 h-32 bg-indigo-50/60 rounded-bl-full pointer-events-none group-hover:scale-110 transition-transform duration-500" />
+            <CardGradient className="md:col-span-2 hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500" contentClassName="p-8 flex flex-col justify-between h-full">
               <div>
                 <div className="w-12 h-12 bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mb-6 rounded-2xl group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 group-hover:scale-110">
                   <Smartphone className="w-6 h-6" />
@@ -433,10 +433,10 @@ export default function App() {
                   Consultar Stock <ArrowRight className="w-4 h-4" />
                 </a>
               </div>
-            </div>
+            </CardGradient>
 
             {/* Service 2: Punto Pack */}
-            <div className="bg-white border border-slate-200 p-8 flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500 group rounded-3xl hover:-translate-y-1.5 shadow-[0_10px_30px_rgba(15,23,42,0.03)]">
+            <CardGradient className="hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500" contentClassName="p-8 flex flex-col justify-between h-full">
               <div>
                 <div className="w-12 h-12 bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center mb-6 rounded-2xl group-hover:bg-slate-900 group-hover:text-white transition-all duration-500 group-hover:scale-110">
                   <Truck className="w-6 h-6" />
@@ -452,10 +452,10 @@ export default function App() {
                   <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Activo
                 </span>
               </div>
-            </div>
+            </CardGradient>
 
             {/* Service 3: Compra en Tienda */}
-            <div className="bg-white border border-slate-200 p-8 flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500 group rounded-3xl hover:-translate-y-1.5 shadow-[0_10px_30px_rgba(15,23,42,0.03)]">
+            <CardGradient className="hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500" contentClassName="p-8 flex flex-col justify-between h-full">
               <div>
                 <div className="w-12 h-12 bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center mb-6 rounded-2xl group-hover:bg-slate-900 group-hover:text-white transition-all duration-500 group-hover:scale-110">
                   <ShoppingBag className="w-6 h-6" />
@@ -468,10 +468,10 @@ export default function App() {
               <div className="border-t border-slate-150 pt-6 text-[11px] font-mono text-slate-500 mt-6">
                 Ubicación Central: Zumarraga
               </div>
-            </div>
+            </CardGradient>
 
             {/* Service 4: A Domicilio */}
-            <div className="bg-white border border-slate-200 p-8 flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500 group rounded-3xl hover:-translate-y-1.5 shadow-[0_10px_30px_rgba(15,23,42,0.03)]">
+            <CardGradient className="hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500" contentClassName="p-8 flex flex-col justify-between h-full">
               <div>
                 <div className="w-12 h-12 bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center mb-6 rounded-2xl group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 group-hover:scale-110">
                   <Home className="w-6 h-6" />
@@ -484,10 +484,10 @@ export default function App() {
               <div className="border-t border-slate-150 pt-6 flex items-center justify-between mt-6">
                 <span className="text-xs font-bold text-indigo-700 font-mono bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">Consúltanos Disponibilidad</span>
               </div>
-            </div>
+            </CardGradient>
 
             {/* Service 5: Espacio Seguro */}
-            <div className="bg-white border border-slate-200 p-8 flex flex-col justify-between hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500 group rounded-3xl hover:-translate-y-1.5 shadow-[0_10px_30px_rgba(15,23,42,0.03)]">
+            <CardGradient className="hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500" contentClassName="p-8 flex flex-col justify-between h-full">
               <div>
                 <div className="w-12 h-12 bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mb-6 rounded-2xl group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 group-hover:scale-110">
                   <Shield className="w-6 h-6" />
@@ -500,15 +500,14 @@ export default function App() {
               <div className="border-t border-slate-150 pt-6 text-xs text-emerald-700 font-mono font-bold flex items-center gap-1.5 mt-6">
                 <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Certificación LOPD
               </div>
-            </div>
+            </CardGradient>
 
           </div>
         </section>
 
         {/* Interactive Budget Calculator Section - HIGH VALUE ADDITION - High Contrast */}
-        <section className="py-16 px-6 bg-white border border-slate-200 rounded-3xl shadow-[0_30px_60px_rgba(15,23,42,0.06)] max-w-7xl mx-auto w-full relative overflow-hidden">
-          <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-50/20 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-purple-50/20 rounded-full blur-3xl pointer-events-none" />
+        <section className="max-w-7xl mx-auto w-full scroll-mt-20">
+          <CardGradient className="py-16 px-6 shadow-[0_30px_60px_rgba(15,23,42,0.06)]" contentClassName="relative w-full z-10">
           
           <div className="max-w-3xl mb-10 relative z-10">
             <span className="text-[11px] font-mono font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-indigo-100/50">CALCULADORA DE PRESUPUESTOS</span>
@@ -758,6 +757,7 @@ export default function App() {
             </div>
 
           </div>
+          </CardGradient>
         </section>
 
         {/* Dedicated WhatsApp Interactive Section */}
@@ -972,8 +972,8 @@ export default function App() {
         </section>
 
         {/* Reviews & Testimonials Section - High Contrast */}
-        <section id="valoraciones" className="py-10 md:py-20 bg-white border border-slate-200 rounded-3xl shadow-[0_30px_60px_rgba(15,23,42,0.06)] max-w-7xl mx-auto w-full relative overflow-hidden">
-          <div className="px-5 sm:px-8 md:px-12 w-full">
+        <section id="valoraciones" className="max-w-7xl mx-auto w-full scroll-mt-20">
+          <CardGradient className="py-10 md:py-20 shadow-[0_30px_60px_rgba(15,23,42,0.06)]" contentClassName="px-5 sm:px-8 md:px-12 w-full">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-12">
               <div>
                 <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-2 font-mono">OPINIONES VERIFICADAS</span>
@@ -1027,15 +1027,15 @@ export default function App() {
                 </div>
               ))}
             </div>
-          </div>
+          </CardGradient>
         </section>
 
         {/* Interactive FAQ Section */}
         <FAQSection />
 
         {/* Info, Map & Contact Section with superb rounded layout - High Contrast */}
-        <section id="contacto" className="py-4 max-w-7xl mx-auto w-full">
-          <div className="bg-white border border-slate-200 flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-[0_30px_60px_rgba(15,23,42,0.06)]">
+        <section id="contacto" className="py-4 max-w-7xl mx-auto w-full scroll-mt-20">
+          <CardGradient className="shadow-[0_30px_60px_rgba(15,23,42,0.06)]" contentClassName="flex flex-col lg:flex-row overflow-hidden">
             
             {/* Map Column */}
             <div className="lg:w-1/2 min-h-[320px] lg:min-h-[450px] relative bg-slate-100/50 border-b lg:border-b-0 lg:border-r border-white/30 overflow-hidden group">
@@ -1108,7 +1108,7 @@ export default function App() {
               </div>
             </div>
 
-          </div>
+          </CardGradient>
         </section>
 
       </main>

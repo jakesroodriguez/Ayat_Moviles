@@ -1,6 +1,7 @@
 import { useState, ReactNode } from "react";
 import { HelpCircle, ChevronDown, MessageSquare, Shield, Clock, Wrench, Package } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
+import CardGradient from "./CardGradient";
 
 interface FAQItem {
   question: string;
@@ -44,11 +45,8 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="py-10 md:py-20 max-w-7xl mx-auto w-[95%]">
-      <div className="bg-white border border-slate-200 rounded-3xl p-5 sm:p-8 md:p-12 lg:p-16 shadow-[0_30px_60px_rgba(15,23,42,0.06)] relative overflow-hidden">
-        {/* Glow decoration */}
-        <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-50/20 rounded-full filter blur-3xl pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-slate-50 rounded-full filter blur-3xl pointer-events-none" />
+    <section id="faq" className="py-10 md:py-20 max-w-7xl mx-auto w-[95%] scroll-mt-20">
+      <CardGradient className="shadow-[0_30px_60px_rgba(15,23,42,0.06)]" contentClassName="p-5 sm:p-8 md:p-12 lg:p-16 relative w-full">
 
         <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-6 md:gap-12 items-start">
           {/* Left info column */}
@@ -140,7 +138,7 @@ export default function FAQSection() {
             })}
           </div>
         </div>
-      </div>
+      </CardGradient>
     </section>
   );
 }
