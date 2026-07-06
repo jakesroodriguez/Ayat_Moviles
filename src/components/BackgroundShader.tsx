@@ -15,16 +15,16 @@ export default function BackgroundShader() {
 
   // Color palette — highly saturated and contrasted tones
   const config = {
-    gradientStart: "rgb(190, 170, 245)",   // Deeper vibrant lavender background
-    gradientEnd: "rgb(140, 120, 225)",     // Richer purple background
-    first: "43, 30, 200",                  // Vibrant royal indigo
-    second: "192, 38, 211",                // Vibrant magenta-purple (fuchsia)
-    third: "29, 78, 216",                  // Bright blue
-    fourth: "124, 58, 237",                // Vibrant violet
-    fifth: "219, 39, 119",                 // Hot pink / rose (adds extreme contrast)
-    pointer: "139, 92, 246",               // Active pointer violet
+    gradientStart: "rgb(248, 246, 255)",   // Extremely light soft lavender
+    gradientEnd: "rgb(230, 220, 255)",     // Very light lavender
+    first: "120, 110, 255",                // Bright sky indigo
+    second: "220, 120, 255",               // Vibrant bright fuchsia/pink
+    third: "100, 180, 255",                // Bright cyan-blue
+    fourth: "160, 120, 255",               // Bright violet
+    fifth: "255, 140, 190",                // Vibrant bright rose pink
+    pointer: "170, 130, 255",              // Bright pointer violet
     size: "100%",
-    blending: "normal",                    // Normal blend mode for maximum color saturation
+    blending: "normal",                    // Normal blend mode for clean bright overlay
   };
 
   useEffect(() => {
