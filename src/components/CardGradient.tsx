@@ -88,7 +88,7 @@ export default function CardGradient({
       <svg className="absolute w-0 h-0 pointer-events-none">
         <defs>
           <filter id="cardBlurMe">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
+            <feGaussianBlur in="SourceGraphic" stdDeviation="18" result="blur" />
             <feColorMatrix
               in="blur"
               mode="matrix"
@@ -103,7 +103,7 @@ export default function CardGradient({
       {/* Animated gradient container */}
       <div
         className={`absolute inset-0 pointer-events-none select-none overflow-hidden z-0 transition-opacity duration-500 ${
-          isSafari ? "blur-2xl" : "[filter:url(#cardBlurMe)_blur(30px)]"
+          isSafari ? "blur-3xl" : "[filter:url(#cardBlurMe)_blur(45px)]"
         }`}
       >
         <div
@@ -131,7 +131,7 @@ export default function CardGradient({
       </div>
 
       {/* Frosted Glassmorphism Overlay to ensure content legibility */}
-      <div className="absolute inset-0 bg-white/60 backdrop-blur-[12px] z-10 transition-colors duration-300 group-hover:bg-white/55" />
+      <div className="absolute inset-0 bg-slate-100/70 backdrop-blur-3xl z-10 transition-colors duration-300 group-hover:bg-slate-100/65" />
 
       {/* Card Content */}
       <div className={`relative z-20 h-full w-full ${contentClassName}`}>
