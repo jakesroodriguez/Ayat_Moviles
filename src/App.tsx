@@ -100,7 +100,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#fcfbfe] via-[#faf9ff] to-[#f5f3ff] text-slate-900 font-sans flex flex-col relative overflow-x-hidden">
+    <div className="min-h-screen text-slate-900 font-sans flex flex-col relative overflow-x-hidden">
       {/* Premium Dynamic Background Shader */}
       <BackgroundShader />
 
