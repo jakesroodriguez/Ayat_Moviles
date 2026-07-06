@@ -15,8 +15,8 @@ export default function BackgroundShader() {
 
   // Color palette — highly saturated and contrasted tones
   const config = {
-    gradientStart: "rgb(248, 246, 255)",   // Extremely light soft lavender
-    gradientEnd: "rgb(230, 220, 255)",     // Very light lavender
+    gradientStart: "rgb(235, 225, 255)",   // Softer pastel lavender instead of stark white
+    gradientEnd: "rgb(215, 200, 250)",     // Softer purple/lavender background
     first: "120, 110, 255",                // Bright sky indigo
     second: "220, 120, 255",               // Vibrant bright fuchsia/pink
     third: "100, 180, 255",                // Bright cyan-blue
