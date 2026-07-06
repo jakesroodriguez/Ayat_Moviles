@@ -222,7 +222,7 @@ export default function ThreeSmartphone() {
       onTouchMove={handleTouchMove}
       onTouchEnd={handleTouchEnd}
       onTouchCancel={handleTouchEnd}
-      className="relative w-full max-w-[210px] xs:max-w-[240px] sm:max-w-[280px] md:max-w-[300px] h-[360px] xs:h-[410px] sm:h-[490px] md:h-[560px] mx-auto select-none cursor-pointer"
+      className="relative w-full max-w-[190px] xs:max-w-[220px] sm:max-w-[280px] md:max-w-[300px] h-[340px] xs:h-[390px] sm:h-[490px] md:h-[560px] mx-auto select-none cursor-pointer"
       style={{ perspective: "1200px" }}
       id="three-smartphone-interactive"
     >

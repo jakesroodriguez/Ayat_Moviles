@@ -20,19 +20,18 @@ import {
   HelpCircle,
   Wrench,
   Check,
-  X,
-  Instagram,
-  Facebook
+  X
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import ThreeSmartphone from "./components/ThreeSmartphone";
 import BackgroundShader from "./components/BackgroundShader";
 import ChatBot from "./components/ChatBot";
 import FAQSection from "./components/FAQSection";
-import CardGradient from "./components/CardGradient";
+import LegalManager from "./components/LegalManager";
 
 export default function App() {
   const [activeTab, setActiveTab] = useState("inicio");
+  const [legalModal, setLegalModal] = useState<"aviso" | "privacidad" | "cookies" | null>(null);
   const [selectedReparacion, setSelectedReparacion] = useState("pantalla");
   const [isNavExpanded, setIsNavExpanded] = useState(false);
 
@@ -40,6 +39,7 @@ export default function App() {
   const [calcBrand, setCalcBrand] = useState("apple");
   const [calcModel, setCalcModel] = useState("iphone13");
   const [calcIssue, setCalcIssue] = useState("pantalla");
+  const [calcUrgency, setCalcUrgency] = useState(1);
 
   // States for Interactive Footer Features
   const [footerRating, setFooterRating] = useState<number | null>(null);
@@ -102,7 +102,7 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen text-slate-900 font-sans flex flex-col relative overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#fcfbfe] via-[#faf9ff] to-[#f5f3ff] text-slate-900 font-sans flex flex-col relative overflow-x-hidden">
       {/* Premium Dynamic Background Shader */}
       <BackgroundShader />
 
@@ -122,10 +122,10 @@ export default function App() {
             if (!isNavExpanded) setIsNavExpanded(true);
           }}
           transition={{ type: "spring", stiffness: 320, damping: 26 }}
-          className={`bg-white/70 backdrop-blur-xl border border-white/60 shadow-lg hover:shadow-indigo-100/50 flex flex-col justify-center overflow-hidden transition-all duration-300 pointer-events-auto ${
+          className={`bg-white/40 backdrop-blur-md border border-slate-200/40 shadow-sm flex flex-col justify-center overflow-hidden transition-all duration-300 pointer-events-auto ${
             isNavExpanded 
-              ? "rounded-3xl p-5 lg:p-6 w-full" 
-              : "rounded-full py-2 px-4 h-[44px] cursor-pointer w-[210px] sm:w-[220px]"
+              ? "bg-white/90 backdrop-blur-xl border border-slate-200/60 rounded-3xl p-5 lg:p-6 w-full shadow-lg" 
+              : "rounded-full py-2 px-4 h-[44px] cursor-pointer w-[210px] sm:w-[220px] hover:bg-white/60"
           }`}
         >
           <AnimatePresence mode="wait">
@@ -148,8 +148,8 @@ export default function App() {
                   <span className="text-[11px] font-black tracking-widest font-display text-slate-900">AYAT MÓVILES</span>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
-                  <span className="text-[9px] font-bold text-emerald-600 font-mono tracking-wider">MENÚ</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-800" />
+                  <span className="text-[9px] font-bold text-slate-700 font-mono tracking-wider">MENÚ</span>
                 </div>
               </motion.div>
             ) : (
@@ -302,237 +302,325 @@ export default function App() {
           {/* Top Row: Hero Text side-by-side with 3D Phone simulator */}
           <div className="w-full">
             
-            {/* Unified Bento Card with side-by-side on sm: screens and compact sizing */}
-            <CardGradient className="w-full" contentClassName="flex flex-col sm:flex-row items-center justify-between p-5 xs:p-6 sm:p-8 md:p-12 group">
-              <div className="absolute -top-10 -left-10 text-[100px] md:text-[140px] font-black text-slate-50/50 select-none z-0 font-display transition-transform duration-700 group-hover:scale-110 pointer-events-none">
-                01
-              </div>
+            {/* Unified Bento Card with premium ambient lighting & subtle micro-grid texture */}
+            <div className="w-full flex flex-col sm:flex-row items-center justify-between p-6 pb-20 xs:p-8 xs:pb-24 sm:p-10 sm:pb-14 md:p-14 relative bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.03)] rounded-[32px] overflow-hidden group transition-all duration-500 hover:shadow-[0_30px_70px_rgba(99,102,241,0.06)] hover:border-slate-200">
               
+              {/* Subtle background grids & radial glows to add depth */}
+              <div className="absolute inset-0 pointer-events-none z-0">
+                {/* Micro-dot grid */}
+                <div className="absolute inset-0 opacity-[0.06]" style={{ backgroundImage: "radial-gradient(#5b3ee3 1.5px, transparent 1.5px)", backgroundSize: "24px 24px" }} />
+                {/* Soft violet radial light */}
+                <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full blur-[100px] group-hover:bg-indigo-500/15 transition-all duration-700" />
+                <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-500/10 rounded-full blur-[100px] group-hover:bg-purple-500/15 transition-all duration-700" />
+              </div>
+
               {/* Left Column (Text & CTAs): takes full width on xs, side-by-side from sm: */}
               <div className="w-full sm:w-[58%] lg:w-[60%] flex flex-col justify-center relative z-10">
-                <span className="inline-flex items-center gap-1.5 px-3.5 py-1.5 bg-indigo-50/90 text-indigo-700 text-xs sm:text-sm font-bold uppercase tracking-widest mb-4 sm:mb-6 rounded-full border border-indigo-100 self-start animate-pulse">
-                  <Sparkles className="w-3.5 h-3.5 fill-indigo-100" />
-                  Servicio Técnico Certificado v4.0
+                <span className="hidden sm:inline-flex items-center gap-2 px-4 py-1.5 bg-indigo-50/80 text-indigo-700 text-xs font-mono font-bold uppercase tracking-wider mb-5 sm:mb-7 rounded-full border border-indigo-100/60 self-start shadow-sm relative overflow-hidden group/badge">
+                  <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/40 to-transparent -translate-x-full animate-[shimmer_2.5s_infinite] pointer-events-none" />
+                  <Sparkles className="w-3.5 h-3.5 fill-indigo-200 text-indigo-600 animate-pulse" />
+                  Soporte de Vanguardia • Certificado 2026
                 </span>
                 
-                <h1 className="text-3xl xs:text-4xl sm:text-4xl md:text-5xl lg:text-6xl font-extrabold leading-[1.12] tracking-tight text-slate-900 mb-4 sm:mb-7 font-display">
+                <h1 className="text-4xl xs:text-5xl sm:text-5.5xl md:text-6.5xl lg:text-7.5xl xl:text-8xl font-extrabold leading-[1.08] tracking-tight text-slate-900 mb-6 sm:mb-10 font-display">
                   Tu tecnología con<br/>
                   <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Ayat Móviles.</span>
                 </h1>
                 
-                <p className="text-sm sm:text-base md:text-lg text-slate-500 max-w-lg mb-5 sm:mb-9 leading-relaxed font-sans">
+                <p className="hidden sm:block text-base sm:text-lg md:text-xl text-slate-500 max-w-lg mb-8 sm:mb-12 leading-relaxed font-sans font-medium">
                   Especialistas líderes en telefonía móvil, soporte informático exprés y servicios logísticos en Zumarraga. Reparación garantizada, venta certificada y atención premium personalizada.
                 </p>
                 
-                <div className="flex flex-wrap gap-3">
+                <div className="flex flex-wrap gap-3.5">
                   <a 
                     href="#servicios" 
                     onClick={() => setActiveTab("servicios")}
-                    className="px-5 py-3 sm:px-7 sm:py-3.5 bg-indigo-600 text-white font-bold hover:bg-indigo-700 transition-all duration-300 hover:scale-[1.03] active:scale-95 shadow-lg shadow-indigo-200/60 flex items-center gap-2 uppercase tracking-wider text-xs sm:text-sm md:text-base rounded-full cursor-pointer"
+                    className="px-6 py-3.5 sm:px-8 sm:py-4 bg-slate-950 text-white font-bold hover:bg-indigo-650 hover:shadow-[0_10px_25px_rgba(99,102,241,0.25)] transition-all duration-300 hidden sm:flex items-center gap-2.5 uppercase tracking-wider text-xs sm:text-sm rounded-full cursor-pointer hover:scale-[1.02] active:scale-95"
                   >
-                    Ver Servicios
-                    <ArrowRight className="w-4 h-4" />
+                    Explorar Servicios
+                    <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                   </a>
                   <a 
                     href="#contacto"
                     onClick={() => setActiveTab("contacto")}
-                    className="px-5 py-3 sm:px-7 sm:py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold transition-all duration-300 hover:scale-[1.03] active:scale-95 flex items-center gap-2 uppercase tracking-wider text-xs sm:text-sm md:text-base rounded-full cursor-pointer"
+                    className="px-4 py-2 sm:px-8 sm:py-4 bg-slate-50 hover:bg-slate-100 hover:text-indigo-750 border border-slate-250 text-slate-800 font-bold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 uppercase tracking-wider text-[10.5px] sm:text-sm rounded-full cursor-pointer hover:scale-[1.02] active:scale-95 shadow-sm"
                   >
-                    <Phone className="w-4 h-4 text-indigo-400" />
-                    Contacto
+                    <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-500" />
+                    Contacto Directo
                   </a>
                 </div>
               </div>
 
               {/* Right Column: Interactive 3D Device Mockup */}
-              <div className="w-full sm:w-[38%] lg:w-[36%] mt-5 sm:mt-0 flex flex-col justify-center items-center relative z-10 shrink-0">
-                <div className="w-full h-full transition-transform duration-500 group-hover:scale-[1.02]">
+              <div className="w-full sm:w-[38%] lg:w-[36%] mt-10 sm:mt-0 flex flex-col justify-center items-center relative z-10 shrink-0 pb-6 sm:pb-0">
+                <div className="w-full transition-transform duration-500 group-hover:scale-[1.03]">
                   <ThreeSmartphone />
                 </div>
               </div>
-            </CardGradient>
+            </div>
 
           </div>
 
           {/* Premium Trust Badges Horizontal Panel - Compact & Responsive */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4 mt-2 sm:mt-4">
-            <div className="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)] hover:shadow-lg hover:border-indigo-300 transition-all duration-300 flex items-center gap-2.5 sm:gap-3.5 group">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 border border-indigo-100 rounded-lg sm:rounded-xl text-indigo-600 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
-                <Clock className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-xs sm:text-sm md:text-base text-slate-900 font-display">Reparación Exprés</h4>
-                <p className="text-[10px] sm:text-xs md:text-sm text-slate-500 font-sans mt-0.5">La mayoría listas en 1h</p>
-              </div>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)] hover:shadow-lg hover:border-indigo-300 transition-all duration-300 flex items-center gap-2.5 sm:gap-3.5 group">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 border border-indigo-100 rounded-lg sm:rounded-xl text-indigo-600 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
-                <Shield className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-xs sm:text-sm md:text-base text-slate-900 font-display">Garantía Real 6m</h4>
-                <p className="text-[10px] sm:text-xs md:text-sm text-slate-500 font-sans mt-0.5">En piezas y mano de obra</p>
-              </div>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)] hover:shadow-lg hover:border-indigo-300 transition-all duration-300 flex items-center gap-2.5 sm:gap-3.5 group">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 border border-indigo-100 rounded-lg sm:rounded-xl text-indigo-600 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
-                <Truck className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-xs sm:text-sm md:text-base text-slate-900 font-display">Punto Pack Oficial</h4>
-                <p className="text-[10px] sm:text-xs md:text-sm text-slate-500 font-sans mt-0.5">Envíos con Mondial Relay</p>
-              </div>
-            </div>
-
-            <div className="bg-white border border-slate-200 rounded-2xl p-3.5 sm:p-5 shadow-[0_10px_30px_rgba(15,23,42,0.04)] hover:shadow-lg hover:border-indigo-300 transition-all duration-300 flex items-center gap-2.5 sm:gap-3.5 group">
-              <div className="w-8 h-8 sm:w-10 sm:h-10 bg-indigo-50 border border-indigo-100 rounded-lg sm:rounded-xl text-indigo-600 flex items-center justify-center shrink-0 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300">
-                <CheckCircle2 className="w-4 h-4 sm:w-5 sm:h-5" />
-              </div>
-              <div>
-                <h4 className="font-bold text-xs sm:text-sm md:text-base text-slate-900 font-display">Protección LOPD</h4>
-                <p className="text-[10px] sm:text-xs md:text-sm text-slate-500 font-sans mt-0.5">Datos 100% confidenciales</p>
-              </div>
-            </div>
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-3.5 sm:gap-4 mt-3 sm:mt-6">
+            {[
+              { icon: Clock, title: "Reparación Exprés", desc: "La mayoría listas en 1h", glow: "group-hover:text-amber-500" },
+              { icon: Shield, title: "Garantía Real 6m", desc: "En piezas y mano de obra", glow: "group-hover:text-emerald-500" },
+              { icon: Truck, title: "Punto Pack Oficial", desc: "Envíos con Mondial Relay", glow: "group-hover:text-indigo-500" },
+              { icon: CheckCircle2, title: "Protección LOPD", desc: "Datos 100% confidenciales", glow: "group-hover:text-purple-500" },
+            ].map((badge, idx) => {
+              const IconComponent = badge.icon;
+              return (
+                <div 
+                  key={idx} 
+                  className="bg-white/70 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 flex items-center gap-4 group hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(15,23,42,0.04)] hover:bg-white hover:border-slate-300/80 cursor-default"
+                >
+                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 group-hover:bg-white group-hover:border-slate-200 transition-all duration-300 shrink-0">
+                    <IconComponent className={`w-5 h-5 sm:w-6 sm:h-6 text-slate-650 transition-colors ${badge.glow} shrink-0`} />
+                  </div>
+                  <div>
+                    <h4 className="font-bold text-xs sm:text-sm text-slate-900 font-display tracking-tight group-hover:text-slate-950 transition-colors">{badge.title}</h4>
+                    <p className="text-[10px] sm:text-xs text-slate-500 font-sans font-medium mt-0.5 leading-snug">{badge.desc}</p>
+                  </div>
+                </div>
+              );
+            })}
           </div>
 
         </section>
 
-        {/* Services Section (Bento Grid Style + Fully Rounded Corners + Zoom Transitions) */}
-        <section id="servicios" className="py-16 md:py-24 px-4 max-w-7xl mx-auto w-full border-t border-slate-200/60 mt-4">
-          <div className="mb-16 max-w-3xl">
+        {/* Services Section (Elite Bento Grid Layout) */}
+        <section id="servicios" className="py-20 md:py-28 px-4 max-w-7xl mx-auto w-full border-t border-slate-200/60 mt-6 relative">
+          
+          {/* Section Header */}
+          <div className="mb-14 md:mb-20 max-w-3xl">
             <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-3 font-mono">PORTFOLIO DE SERVICIOS</span>
-            <h2 className="text-3xl md:text-4xl font-extrabold tracking-tight text-slate-900 font-display">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 font-display">
               Soluciones Integrales de Máxima Calidad
             </h2>
-            <div className="h-1.5 w-24 bg-gradient-to-r from-indigo-600 to-purple-600 mt-4 rounded-full"></div>
-            <p className="text-slate-500 mt-6 font-sans">
-              Cubrimos todas tus necesidades en telefonía móvil y paquetería express. Equipamiento de vanguardia, repuestos premium de grado AAA y trazabilidad garantizada.
+            <p className="text-slate-500 mt-4 font-sans text-sm sm:text-base leading-relaxed font-medium">
+              Cubrimos todas tus necesidades en telefonía móvil, soporte informático y paquetería express. Equipamiento de laboratorio de última generación, repuestos Grado AAA y un equipo técnico altamente cualificado.
             </p>
           </div>
 
-          {/* Bento Layout Grid with High Contrast */}
+          {/* Bento Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
-            {/* Service 1: Tienda de Móviles (Featured Large Card spanning 2 cols) */}
-            <CardGradient className="md:col-span-2 hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500" contentClassName="p-8 flex flex-col justify-between h-full">
-              <div>
-                <div className="w-12 h-12 bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mb-6 rounded-2xl group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 group-hover:scale-110">
-                  <Smartphone className="w-6 h-6" />
+            {/* Card 1: Tienda de Móviles & Accesorios (Large, col-span-2) */}
+            <div className="md:col-span-2 lg:col-span-2 bg-gradient-to-br from-indigo-50/20 via-white to-purple-50/10 border border-slate-200/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(99,102,241,0.05)] hover:border-indigo-200">
+              <div className="space-y-6">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="p-3 bg-indigo-50 border border-indigo-100/50 rounded-2xl text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shrink-0">
+                    <Smartphone className="w-6 h-6" />
+                  </div>
+                  <span className="text-[10px] text-indigo-700 font-mono tracking-wider uppercase border border-indigo-200/50 bg-indigo-50/60 px-3 py-1 rounded-full font-bold">
+                    Venta & Reparación Exprés
+                  </span>
                 </div>
-                <h3 className="text-2xl font-bold text-slate-900 mb-3 font-display">Tienda de Móviles & Accesorios</h3>
-                <p className="text-slate-500 mb-6 font-sans max-w-xl">
-                  Disponemos de smartphones premium nuevos y reacondicionados totalmente verificados. Amplio surtido de accesorios duraderos como fundas de alta resistencia, protectores templados, cargadores rápidos y soporte multi-marca.
-                </p>
+                
+                <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
+                  <div className="sm:col-span-7 space-y-3">
+                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900 font-display tracking-tight">
+                      Tienda de Móviles & Accesorios
+                    </h3>
+                    <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium">
+                      Disponemos de smartphones premium nuevos y reacondicionados totalmente verificados bajo estrictos estándares. Ofrecemos el surtido más completo de fundas de alta resistencia, protectores templados con instalación gratuita y cargadores certificados de carga ultra rápida.
+                    </p>
+                  </div>
+                  
+                  {/* Visual Checklist for depth */}
+                  <div className="sm:col-span-5 bg-white/60 border border-slate-200/40 p-4 rounded-2xl space-y-2.5 font-mono text-[11px] text-slate-650 shadow-inner">
+                    <div className="flex items-center gap-2">
+                      <Check className="w-3.5 h-3.5 text-indigo-600 stroke-[3]" />
+                      <span>Pantallas Grado AAA Certificadas</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-3.5 h-3.5 text-indigo-600 stroke-[3]" />
+                      <span>Baterías de Alta Densidad</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-3.5 h-3.5 text-indigo-600 stroke-[3]" />
+                      <span>Accesorios Multi-Marca</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Check className="w-3.5 h-3.5 text-indigo-600 stroke-[3]" />
+                      <span>Garantía por Escrito de 6m</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-              <div className="flex flex-col sm:flex-row gap-4 items-start sm:items-center justify-between border-t border-slate-150 pt-6 mt-6">
-                <span className="text-xs text-indigo-700 font-mono font-bold tracking-wider uppercase bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">Venta & Reparaciones Exprés</span>
+
+              <div className="border-t border-slate-100 pt-5 mt-6 flex items-center justify-between">
+                <span className="text-[11px] font-mono text-slate-400">Soporte Apple, Samsung, Xiaomi y más</span>
                 <a 
                   href="#contacto"
-                  className="text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 hover:text-indigo-600 transition-colors group-hover:translate-x-1 duration-300"
+                  onClick={() => setActiveTab("contacto")}
+                  className="text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:text-indigo-600 transition-colors duration-300"
                 >
-                  Consultar Stock <ArrowRight className="w-4 h-4" />
+                  Consultar Stock <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
                 </a>
               </div>
-            </CardGradient>
+            </div>
 
-            {/* Service 2: Punto Pack */}
-            <CardGradient className="hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500" contentClassName="p-8 flex flex-col justify-between h-full">
-              <div>
-                <div className="w-12 h-12 bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center mb-6 rounded-2xl group-hover:bg-slate-900 group-hover:text-white transition-all duration-500 group-hover:scale-110">
-                  <Truck className="w-6 h-6" />
+            {/* Card 2: Punto Pack Oficial Mondial Relay (Col-span 1) */}
+            <div className="md:col-span-1 bg-gradient-to-br from-emerald-50/20 via-white to-emerald-50/5 border border-slate-200/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(16,185,129,0.05)] hover:border-emerald-200">
+              <div className="space-y-5">
+                <div className="flex items-center justify-between flex-wrap gap-2">
+                  <div className="p-3 bg-emerald-50 border border-emerald-100/50 rounded-2xl text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shrink-0">
+                    <Truck className="w-6 h-6" />
+                  </div>
+                  <span className="text-emerald-700 font-mono text-[10px] font-bold flex items-center gap-1.5 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/50">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Activo
+                  </span>
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3 font-display">Punto Pack Oficial</h3>
-                <p className="text-slate-500 mb-6 font-sans text-sm">
-                  Punto de recogida y entrega oficial autorizado de Mondial Relay. Envía tus paquetes de forma ágil y recógelos de manera 100% segura en nuestro amplio horario comercial.
-                </p>
-              </div>
-              <div className="border-t border-slate-150 pt-6 flex items-center justify-between mt-6">
-                <span className="text-xs text-slate-500 font-mono font-bold">Mondial Relay</span>
-                <span className="text-emerald-700 font-mono text-xs font-bold flex items-center gap-1.5 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-150">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" /> Activo
-                </span>
-              </div>
-            </CardGradient>
 
-            {/* Service 3: Compra en Tienda */}
-            <CardGradient className="hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500" contentClassName="p-8 flex flex-col justify-between h-full">
-              <div>
-                <div className="w-12 h-12 bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center mb-6 rounded-2xl group-hover:bg-slate-900 group-hover:text-white transition-all duration-500 group-hover:scale-110">
+                <div className="space-y-2">
+                  <h3 className="text-xl font-bold text-slate-900 font-display tracking-tight">
+                    Punto Pack Oficial
+                  </h3>
+                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium">
+                    Socio logístico oficial de Mondial Relay en Zumarraga. Realiza tus envíos nacionales e internacionales de forma ágil y recoge tus compras online de manera 100% segura en nuestro amplio horario comercial.
+                  </p>
+                </div>
+
+                {/* Simulated Shipment Path Visual */}
+                <div className="bg-slate-50/80 border border-slate-200/40 p-3 rounded-xl flex items-center justify-between relative overflow-hidden">
+                  <div className="absolute top-1/2 left-8 right-8 h-[1px] bg-dashed border-t border-dashed border-emerald-300 -translate-y-1/2 z-0" />
+                  <div className="z-10 bg-white border border-slate-200 p-1.5 rounded-lg text-xs font-mono font-bold text-slate-500">Origen</div>
+                  <Truck className="w-4 h-4 text-emerald-600 z-10 bg-emerald-100/80 rounded-full p-0.5 animate-[bounce_1.5s_infinite]" />
+                  <div className="z-10 bg-emerald-600 text-white p-1.5 rounded-lg text-[10px] font-mono font-bold">Ayat Móviles</div>
+                </div>
+              </div>
+
+              <div className="border-t border-slate-100 pt-5 mt-6 text-xs text-slate-400 font-mono">
+                Horario: L-S (10:00 - 14:00, 16:30 - 20:30)
+              </div>
+            </div>
+
+            {/* Card 3: Compra Presencial (Col-span 1) */}
+            <div className="bg-white border border-slate-200/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(15,23,42,0.03)] hover:border-slate-350">
+              <div className="space-y-4">
+                <div className="p-3 bg-slate-50 border border-slate-150 rounded-2xl text-slate-700 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300 w-fit">
                   <ShoppingBag className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3 font-display">Compra Presencial</h3>
-                <p className="text-slate-500 mb-6 font-sans text-sm">
-                  Prueba dispositivos insitu antes de comprar. Recibe atención y asesoramiento experto adaptado a tu presupuesto y necesidades tecnológicas reales.
-                </p>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-slate-900 font-display tracking-tight">
+                      Compra Presencial
+                    </h3>
+                    <span className="text-[9px] text-slate-500 font-mono uppercase bg-slate-100 px-2 py-0.5 rounded-full">En Tienda</span>
+                  </div>
+                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium">
+                    Ven y experimenta los terminales insitu antes de decidir. Nuestro asesoramiento experto está diseñado para adaptarse honestamente a tus necesidades y presupuesto reales, sin sorpresas.
+                  </p>
+                </div>
               </div>
-              <div className="border-t border-slate-150 pt-6 text-[11px] font-mono text-slate-500 mt-6">
-                Ubicación Central: Zumarraga
-              </div>
-            </CardGradient>
 
-            {/* Service 4: A Domicilio */}
-            <CardGradient className="hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500" contentClassName="p-8 flex flex-col justify-between h-full">
-              <div>
-                <div className="w-12 h-12 bg-slate-100 border border-slate-200 text-slate-700 flex items-center justify-center mb-6 rounded-2xl group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 group-hover:scale-110">
+              <div className="border-t border-slate-100 pt-5 mt-6">
+                <a 
+                  href="#contacto"
+                  onClick={() => setActiveTab("contacto")}
+                  className="text-slate-950 font-bold text-xs uppercase tracking-wider flex items-center gap-1.5 hover:text-indigo-600 transition-colors duration-300"
+                >
+                  Visítanos en Zumarraga <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
+                </a>
+              </div>
+            </div>
+
+            {/* Card 4: Soporte a Domicilio (Col-span 1) */}
+            <div className="bg-white border border-slate-200/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(15,23,42,0.03)] hover:border-slate-350">
+              <div className="space-y-4">
+                <div className="p-3 bg-slate-50 border border-slate-150 rounded-2xl text-slate-700 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300 w-fit">
                   <Home className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3 font-display">Soporte a Domicilio</h3>
-                <p className="text-slate-500 mb-6 font-sans text-sm">
-                  Ofrecemos servicio especial de asistencia técnica y entrega de terminales a domicilio en el entorno para personas con movilidad reducida o necesidades específicas.
-                </p>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-slate-900 font-display tracking-tight">
+                      Soporte a Domicilio
+                    </h3>
+                    <span className="text-[9px] text-slate-500 font-mono uppercase bg-slate-100 px-2 py-0.5 rounded-full">Zona Local</span>
+                  </div>
+                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium">
+                    Ofrecemos asistencia técnica especial y entrega/recogida de terminales directamente a domicilio en el entorno para personas con movilidad reducida o con necesidades específicas de agenda.
+                  </p>
+                </div>
               </div>
-              <div className="border-t border-slate-150 pt-6 flex items-center justify-between mt-6">
-                <span className="text-xs font-bold text-indigo-700 font-mono bg-indigo-50 px-3 py-1 rounded-full border border-indigo-100">Consúltanos Disponibilidad</span>
-              </div>
-            </CardGradient>
 
-            {/* Service 5: Espacio Seguro */}
-            <CardGradient className="hover:-translate-y-1.5 hover:shadow-[0_20px_50px_rgba(15,23,42,0.08)] transition-all duration-500" contentClassName="p-8 flex flex-col justify-between h-full">
-              <div>
-                <div className="w-12 h-12 bg-indigo-50 border border-indigo-100 text-indigo-600 flex items-center justify-center mb-6 rounded-2xl group-hover:bg-indigo-600 group-hover:text-white transition-all duration-500 group-hover:scale-110">
+              <div className="border-t border-slate-100 pt-5 mt-6 flex items-center justify-between text-xs">
+                <span className="text-slate-400 font-mono">Zumarraga y Urretxu</span>
+                <a 
+                  href="#contacto"
+                  onClick={() => setActiveTab("contacto")}
+                  className="text-indigo-600 font-bold uppercase tracking-wider hover:text-indigo-750 transition-colors"
+                >
+                  Pedir Cita
+                </a>
+              </div>
+            </div>
+
+            {/* Card 5: Privacidad & Datos Seguros (Col-span 1) */}
+            <div className="bg-white border border-slate-200/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(15,23,42,0.03)] hover:border-slate-350">
+              <div className="space-y-4">
+                <div className="p-3 bg-slate-50 border border-slate-150 rounded-2xl text-slate-700 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300 w-fit">
                   <Shield className="w-6 h-6" />
                 </div>
-                <h3 className="text-xl font-bold text-slate-900 mb-3 font-display">Privacidad & Datos Seguros</h3>
-                <p className="text-slate-500 mb-6 font-sans text-sm">
-                  Riguroso protocolo de confidencialidad de datos. Toda la información de tu teléfono está protegida por estrictos estándares profesionales durante las reparaciones.
-                </p>
+                
+                <div className="space-y-2">
+                  <div className="flex items-center gap-2">
+                    <h3 className="text-lg font-bold text-slate-900 font-display tracking-tight">
+                      Privacidad Asegurada
+                    </h3>
+                    <span className="text-[9px] text-emerald-700 font-mono uppercase bg-emerald-50 px-2 py-0.5 rounded-full font-bold">Certificado LOPD</span>
+                  </div>
+                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium">
+                    Tu intimidad y seguridad son innegociables. Aplicamos estrictos protocolos de confidencialidad de datos personales durante todo el proceso de diagnóstico y reparación de tu dispositivo.
+                  </p>
+                </div>
               </div>
-              <div className="border-t border-slate-150 pt-6 text-xs text-emerald-700 font-mono font-bold flex items-center gap-1.5 mt-6">
-                <CheckCircle2 className="w-4 h-4 text-emerald-600" /> Certificación LOPD
-              </div>
-            </CardGradient>
 
+              <div className="border-t border-slate-100 pt-5 mt-6 flex items-center justify-between text-xs">
+                <span className="text-emerald-600 font-bold font-mono">Datos 100% Protegidos</span>
+                <a 
+                  href="#faq"
+                  onClick={() => setActiveTab("faq")}
+                  className="text-slate-950 font-bold uppercase tracking-wider hover:text-indigo-600 transition-colors"
+                >
+                  Saber Más
+                </a>
+              </div>
+            </div>
           </div>
         </section>
 
-        {/* Interactive Budget Calculator Section - HIGH VALUE ADDITION - High Contrast */}
-        <section className="max-w-7xl mx-auto w-full scroll-mt-20">
-          <CardGradient className="py-16 px-6 shadow-[0_30px_60px_rgba(15,23,42,0.06)]" contentClassName="relative w-full z-10">
+        {/* Interactive Budget Calculator Section - Minimalist & Editorial Style */}
+        <section className="py-20 px-6 sm:px-10 bg-gradient-to-b from-slate-50 to-white border border-slate-200/60 rounded-[32px] max-w-7xl mx-auto w-full relative shadow-[0_20px_50px_rgba(15,23,42,0.02)]">
           
-          <div className="max-w-3xl mb-10 relative z-10">
-            <span className="text-[11px] font-mono font-bold text-indigo-600 uppercase tracking-widest bg-indigo-50/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-indigo-100/50">CALCULADORA DE PRESUPUESTOS</span>
-            <h3 className="text-3xl font-extrabold font-display text-slate-900 mt-4">Simulador de Reparación en Vivo</h3>
-            <p className="text-sm text-slate-500 mt-2 leading-relaxed">
-              Selecciona tu marca, modelo y el tipo de reparación para obtener un presupuesto estimado al instante con garantía incluida y repuestos certificados.
+          <div className="max-w-3xl mb-12 relative z-10">
+            <span className="text-[10px] font-mono font-bold text-indigo-700 uppercase tracking-wider bg-indigo-50 border border-indigo-100/60 px-3 py-1.5 rounded-full shadow-sm">
+              CALCULADORA DE PRESUPUESTOS
+            </span>
+            <h3 className="text-3xl sm:text-4xl font-extrabold font-display text-slate-900 mt-5 tracking-tight">Simulador de Reparación en Vivo</h3>
+            <p className="text-sm sm:text-base text-slate-500 mt-2.5 leading-relaxed font-medium">
+              Selecciona tu marca, elige tu modelo e indica el tipo de daño para obtener una estimación de presupuesto transparente al instante con mano de obra y piezas AAA incluidas.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 relative z-10">
             
             {/* Left Panel: Selectors (7 cols) */}
-            <div className="lg:col-span-7 space-y-6">
+            <div className="lg:col-span-7 space-y-7">
               
               {/* 1. Brand selection */}
-              <div>
-                <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-3">1. Selecciona la Marca</label>
-                <div className="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+              <div className="space-y-3">
+                <label className="block text-xs font-mono font-bold text-slate-550 uppercase tracking-widest">1. Selecciona la Marca</label>
+                <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {[
-                    { id: "apple", label: "Apple iPhone", logo: "https://lh3.googleusercontent.com/d/1omHKXUnbNUSjE7DQWfmYQYIu5Xdqk9Qo" },
-                    { id: "samsung", label: "Samsung", logo: "https://lh3.googleusercontent.com/d/1omHKXUnbNUSjE7DQWfmYQYIu5Xdqk9Qo" },
-                    { id: "xiaomi", label: "Xiaomi / Redmi", logo: "https://lh3.googleusercontent.com/d/1omHKXUnbNUSjE7DQWfmYQYIu5Xdqk9Qo" },
-                    { id: "otros", label: "Otras Marcas", logo: "https://lh3.googleusercontent.com/d/1omHKXUnbNUSjE7DQWfmYQYIu5Xdqk9Qo" }
+                    { id: "apple", label: "Apple iPhone" },
+                    { id: "samsung", label: "Samsung" },
+                    { id: "xiaomi", label: "Xiaomi / Redmi" },
+                    { id: "otros", label: "Otras Marcas" }
                   ].map((brand) => (
                     <button
                       key={brand.id}
@@ -544,26 +632,26 @@ export default function App() {
                         else if (brand.id === "xiaomi") setCalcModel("redminote12");
                         else setCalcModel("generico");
                       }}
-                      className={`py-3 px-4 rounded-2xl border text-center font-display text-xs font-bold uppercase tracking-wider transition-all duration-300 flex flex-col items-center justify-center gap-2 cursor-pointer ${
+                      className={`py-3.5 px-4 rounded-2xl border text-center font-display text-xs font-bold uppercase tracking-wider transition-all duration-300 flex flex-col items-center justify-center gap-2 cursor-pointer ${
                         calcBrand === brand.id
-                          ? "bg-indigo-600 text-white border-indigo-600 shadow-md shadow-indigo-100"
-                          : "bg-gradient-to-tr from-white/45 to-white/20 backdrop-blur-xl text-slate-700 border-white/70 hover:from-white/55 hover:to-white/30"
+                          ? "bg-slate-950 text-white border-slate-950 shadow-md scale-[1.02]"
+                          : "bg-white text-slate-650 border-slate-200/80 hover:bg-slate-50 hover:border-slate-300"
                       }`}
                     >
-                      <span>{brand.label}</span>
+                      <span className="tracking-wide">{brand.label}</span>
                     </button>
                   ))}
                 </div>
               </div>
 
               {/* 2. Model selection */}
-              <div>
-                <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-3">2. Elige el Modelo</label>
+              <div className="space-y-3">
+                <label className="block text-xs font-mono font-bold text-slate-550 uppercase tracking-widest">2. Elige el Modelo</label>
                 <div className="relative">
                   <select
                     value={calcModel}
                     onChange={(e) => setCalcModel(e.target.value)}
-                    className="w-full bg-gradient-to-tr from-white/45 to-white/20 backdrop-blur-xl border border-white/70 rounded-2xl p-4 text-sm font-semibold text-slate-800 outline-none focus:border-indigo-500 shadow-inner appearance-none cursor-pointer"
+                    className="w-full bg-white border border-slate-200/85 rounded-2xl p-4 text-sm font-semibold text-slate-800 outline-none focus:border-indigo-550 focus:ring-1 focus:ring-indigo-200/40 appearance-none cursor-pointer shadow-sm transition-all"
                   >
                     {calcBrand === "apple" && (
                       <>
@@ -604,8 +692,8 @@ export default function App() {
               </div>
 
               {/* 3. Issue selection */}
-              <div>
-                <label className="block text-xs font-bold text-slate-600 uppercase tracking-wider mb-3">3. Tipo de Daño / Incidencia</label>
+              <div className="space-y-3">
+                <label className="block text-xs font-mono font-bold text-slate-550 uppercase tracking-widest">3. Tipo de Daño / Incidencia</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     { id: "pantalla", label: "Pantalla Rota / Sin Imagen", icon: Smartphone, desc: "Panel táctil completo, brillo calibrado" },
@@ -619,23 +707,23 @@ export default function App() {
                       <button
                         key={issue.id}
                         onClick={() => setCalcIssue(issue.id)}
-                        className={`p-4 rounded-2xl border text-left transition-all duration-300 flex items-start gap-3.5 cursor-pointer group ${
+                        className={`p-4 rounded-2xl border text-left transition-all duration-300 flex items-start gap-4 cursor-pointer group ${
                           calcIssue === issue.id
-                            ? "bg-indigo-600 text-white border-indigo-600 shadow-lg shadow-indigo-100"
-                            : "bg-gradient-to-tr from-white/45 to-white/20 backdrop-blur-xl text-slate-700 border-white/70 hover:from-white/55 hover:to-white/30 hover:border-indigo-200"
+                            ? "bg-slate-950 text-white border-slate-950 shadow-md scale-[1.01]"
+                            : "bg-white text-slate-700 border-slate-200/80 hover:bg-slate-50 hover:border-slate-300"
                         }`}
                       >
-                        <div className={`p-2 rounded-xl shrink-0 transition-colors ${
+                        <div className={`p-2.5 rounded-xl shrink-0 transition-colors ${
                           calcIssue === issue.id
-                            ? "bg-white/20 text-white"
-                            : "bg-indigo-50 text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white"
+                            ? "bg-white/10 text-white"
+                            : "bg-indigo-50 text-indigo-600 group-hover:bg-indigo-100"
                         }`}>
                           <IssueIcon className="w-5 h-5" />
                         </div>
                         <div>
-                          <h4 className="font-bold text-xs font-display uppercase tracking-wider leading-none mb-1">{issue.label}</h4>
-                          <p className={`text-[10px] leading-relaxed ${
-                            calcIssue === issue.id ? "text-indigo-100/90" : "text-slate-400"
+                          <h4 className="font-bold text-xs font-display uppercase tracking-wider leading-none mb-1.5">{issue.label}</h4>
+                          <p className={`text-[11px] leading-snug font-sans font-medium ${
+                            calcIssue === issue.id ? "text-slate-300" : "text-slate-450"
                           }`}>{issue.desc}</p>
                         </div>
                       </button>
@@ -644,21 +732,53 @@ export default function App() {
                 </div>
               </div>
 
+              {/* 4. Service Urgency Slider */}
+              <div className="pt-3 space-y-3">
+                <div className="flex justify-between items-center">
+                  <label className="block text-xs font-mono font-bold text-slate-550 uppercase tracking-widest">4. Urgencia del servicio</label>
+                  <span className="text-xs font-bold text-indigo-700 font-mono bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full shadow-sm">
+                    {calcUrgency === 1 ? "Estándar (Sin Recargo)" : calcUrgency === 2 ? "Exprés (+10€)" : "Súper Urgente (+20€)"}
+                  </span>
+                </div>
+                <div className="relative mt-4 flex items-center px-1">
+                  <input
+                    type="range"
+                    min="1"
+                    max="3"
+                    step="1"
+                    value={calcUrgency}
+                    onChange={(e) => setCalcUrgency(Number(e.target.value))}
+                    className="w-full h-1.5 bg-slate-200 rounded-lg appearance-none cursor-pointer accent-slate-950"
+                  />
+                </div>
+                <div className="flex justify-between text-[10px] text-slate-400 font-mono uppercase tracking-wider mt-2.5 px-1 font-bold">
+                  <span>Estándar (24h)</span>
+                  <span>Exprés (2h)</span>
+                  <span>Urgente (30m)</span>
+                </div>
+              </div>
+
             </div>
 
             {/* Right Panel: Receipt Display (5 cols) */}
             <div className="lg:col-span-5 flex flex-col">
-              <div className="bg-gradient-to-br from-slate-900 to-indigo-950 text-white p-8 rounded-3xl shadow-xl border border-slate-800 flex-1 flex flex-col justify-between relative overflow-hidden group">
-                <div className="absolute top-0 right-0 w-48 h-48 bg-indigo-600/10 rounded-full blur-2xl" />
+              <div className="bg-white border border-slate-200/90 p-6 sm:p-8 rounded-[24px] flex-1 flex flex-col justify-between relative overflow-hidden shadow-[0_15px_40px_rgba(15,23,42,0.03)] group/receipt">
                 
+                {/* Visual stamp on background */}
+                <div className="absolute top-24 right-4 rotate-12 opacity-[0.03] select-none pointer-events-none transition-transform duration-700 group-hover/receipt:rotate-6">
+                  <div className="border-4 border-dashed border-indigo-700 p-2 font-mono text-2xl font-black rounded-lg text-indigo-700">
+                    AYAT OK
+                  </div>
+                </div>
+
                 <div>
                   <div className="flex justify-between items-start mb-6">
                     <div>
-                      <span className="text-[10px] font-mono font-bold text-indigo-400 uppercase tracking-widest block mb-1">PRESUPUESTO ESTIMADO</span>
-                      <h4 className="font-bold text-lg font-display">
+                      <span className="text-[10px] font-mono font-bold text-indigo-600 uppercase tracking-widest block mb-1">PRESUPUESTO ESTIMADO</span>
+                      <h4 className="font-extrabold text-lg sm:text-xl font-display text-slate-900 tracking-tight">
                         {calcBrand === "apple" ? "Apple iPhone" : calcBrand === "samsung" ? "Samsung Galaxy" : calcBrand === "xiaomi" ? "Xiaomi / Redmi" : "Dispositivo"}
                       </h4>
-                      <p className="text-xs text-slate-400 mt-1 font-mono uppercase tracking-wide">
+                      <p className="text-[10px] text-slate-450 mt-1.5 font-mono uppercase tracking-wider font-bold">
                         {calcBrand === "apple" && calcModel === "iphone14pro" && "Series 14 Pro"}
                         {calcBrand === "apple" && calcModel === "iphone13" && "Series 13"}
                         {calcBrand === "apple" && calcModel === "iphone12" && "Series 12"}
@@ -676,16 +796,16 @@ export default function App() {
                         {calcBrand === "otros" && "Modelo General"}
                       </p>
                     </div>
-                    <div className="bg-white/10 px-3 py-1.5 rounded-full text-[10px] font-mono tracking-wider text-indigo-300">
-                      Cerrado
+                    <div className="bg-slate-50 border border-slate-200 text-slate-600 px-3 py-1 rounded-full text-[10px] font-mono tracking-wider font-bold uppercase">
+                      Estimación
                     </div>
                   </div>
 
                   {/* Pricing Display */}
-                  <div className="py-6 border-y border-white/10 my-6 flex flex-col justify-center items-center">
-                    <span className="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-1">Total Estimado</span>
+                  <div className="py-6 border-y border-dashed border-slate-200 my-6 flex flex-col justify-center items-center">
+                    <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1.5 font-bold">Total Estimado</span>
                     <div className="flex items-baseline">
-                      <span className="text-5xl font-black text-transparent bg-clip-text bg-gradient-to-r from-white to-slate-200">
+                      <span className="text-5xl sm:text-6xl font-black text-slate-900 tracking-tighter">
                         {(() => {
                           const basePrices: Record<string, Record<string, number>> = {
                             pantalla: { apple: 89, samsung: 79, xiaomi: 59, otros: 49 },
@@ -695,36 +815,43 @@ export default function App() {
                             humedad: { apple: 45, samsung: 40, xiaomi: 35, otros: 35 }
                           };
                           const prices = basePrices[calcIssue] || { apple: 45, samsung: 40, xiaomi: 35, otros: 35 };
-                          const brandPrice = prices[calcBrand] || 35;
-                          return brandPrice;
+                          let total = prices[calcBrand] || 35;
+                          // Add extra cost for urgency
+                          if (calcUrgency === 2) total += 10;
+                          else if (calcUrgency === 3) total += 20;
+                          return total;
                         })()}
                       </span>
-                      <span className="text-2xl font-bold ml-1 text-indigo-400">€</span>
+                      <span className="text-2xl font-bold ml-1 text-slate-800">€</span>
                     </div>
-                    <p className="text-[10px] text-slate-400 mt-2 text-center">Mano de obra, repuesto Grado AAA e IVA incluidos.</p>
+                    <p className="text-[10px] text-slate-400 mt-3 text-center leading-normal font-sans font-medium">Mano de obra, repuesto Grado AAA y tasas locales incluidas.</p>
                   </div>
 
-                  <div className="space-y-4">
-                    <div className="flex justify-between text-xs">
+                  <div className="space-y-4 font-sans text-xs">
+                    <div className="flex justify-between items-center">
                       <span className="text-slate-400">Tiempo estimado:</span>
-                      <span className="font-bold text-slate-200">
-                        {calcIssue === "pantalla" && "1 - 2 horas (Exprés)"}
-                        {calcIssue === "bateria" && "30 - 45 minutos"}
-                        {calcIssue === "carga" && "1 hora"}
-                        {calcIssue === "camara" && "1 - 2 horas"}
-                        {calcIssue === "humedad" && "24 horas (Test de secado)"}
+                      <span className="font-bold text-slate-700">
+                        {calcUrgency === 3 && "30 - 45 minutos (Súper Urgente)"}
+                        {calcUrgency === 2 && "1 - 2 horas (Exprés)"}
+                        {calcUrgency === 1 && (
+                          calcIssue === "pantalla" ? "1 - 2 horas" :
+                          calcIssue === "bateria" ? "30 - 45 minutos" :
+                          calcIssue === "carga" ? "1 hora" :
+                          calcIssue === "camara" ? "1 - 2 horas" :
+                          "24 horas (Test de secado)"
+                        )}
                       </span>
                     </div>
-                    <div className="flex justify-between text-xs">
+                    <div className="flex justify-between items-center">
                       <span className="text-slate-400">Garantía real:</span>
-                      <span className="font-bold text-slate-200">
+                      <span className="font-bold text-slate-700">
                         {calcIssue === "humedad" ? "Garantía de limpieza" : "6 meses de Garantía"}
                       </span>
                     </div>
-                    <div className="flex justify-between text-xs">
+                    <div className="flex justify-between items-center">
                       <span className="text-slate-400">Tus datos personales:</span>
-                      <span className="font-bold text-emerald-400 flex items-center gap-1">
-                        <CheckCircle2 className="w-3.5 h-3.5" /> 100% Protegidos
+                      <span className="font-bold text-emerald-600 flex items-center gap-1.5 bg-emerald-50 border border-emerald-100/50 px-2 py-0.5 rounded-full text-[10px] uppercase tracking-wide">
+                        <CheckCircle2 className="w-3 h-3 fill-emerald-150 text-emerald-600" /> Protegidos
                       </span>
                     </div>
                   </div>
@@ -735,22 +862,23 @@ export default function App() {
                     href={(() => {
                       const brandName = calcBrand === "apple" ? "Apple iPhone" : calcBrand === "samsung" ? "Samsung" : calcBrand === "xiaomi" ? "Xiaomi" : "Dispositivo";
                       const issueName = calcIssue === "pantalla" ? "reparación de pantalla rota" : calcIssue === "bateria" ? "cambio de batería" : calcIssue === "carga" ? "puerto de carga" : calcIssue === "camara" ? "cámara o cristal trasero" : "limpieza por humedad";
-                      const textMsg = `Hola AYAT Móviles, me gustaría reservar cita para un presupuesto de ${issueName} en un ${brandName}.`;
+                      const urgencyName = calcUrgency === 3 ? "Súper Urgente" : calcUrgency === 2 ? "Exprés" : "Normal";
+                      const textMsg = `Hola AYAT Móviles, me gustaría reservar cita para un presupuesto de ${issueName} (${urgencyName}) en un ${brandName}.`;
                       return `https://wa.me/34632447979?text=${encodeURIComponent(textMsg)}`;
                     })()}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-full py-4 bg-emerald-500 hover:bg-emerald-600 text-white font-bold text-xs uppercase tracking-widest text-center rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-lg shadow-emerald-950/20"
+                    className="w-full py-4 bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs uppercase tracking-widest text-center rounded-2xl transition-all duration-300 flex items-center justify-center gap-2 shadow-[0_10px_20px_rgba(16,185,129,0.15)] hover:shadow-[0_15px_30px_rgba(16,185,129,0.25)] hover:scale-[1.01] cursor-pointer"
                   >
-                    <Phone className="w-4 h-4 fill-white" />
+                    <Phone className="w-4 h-4 fill-white text-emerald-600" />
                     Reservar Cita WhatsApp
                   </a>
 
                   <button
                     onClick={triggerChat}
-                    className="w-full py-3.5 bg-white hover:bg-slate-50 text-slate-900 font-bold text-xs uppercase tracking-widest rounded-2xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2.5 cursor-pointer shadow-md"
+                    className="w-full py-3.5 bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs uppercase tracking-widest rounded-2xl transition-all duration-300 flex items-center justify-center gap-2.5 cursor-pointer border border-slate-800 hover:scale-[1.01]"
                   >
-                    <MessageSquare className="w-4 h-4 text-indigo-600" />
+                    <MessageSquare className="w-4 h-4 text-indigo-400" />
                     Preguntar por Chatbot AI
                   </button>
                 </div>
@@ -759,13 +887,14 @@ export default function App() {
             </div>
 
           </div>
-          </CardGradient>
         </section>
 
         {/* Dedicated WhatsApp Interactive Section */}
-        <section id="whatsapp" className="max-w-7xl mx-auto w-full scroll-mt-20 my-12">
-          <CardGradient className="py-16 px-6 shadow-[0_30px_60px_rgba(15,23,42,0.06)]" contentClassName="relative w-full z-10">
-            <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+        <section id="whatsapp" className="py-16 px-6 bg-slate-50 border border-slate-200 rounded-3xl max-w-7xl mx-auto w-full relative overflow-hidden my-12">
+          <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
+
+          <div className="relative z-10 grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
             {/* Left Column: Context & Presets */}
             <div className="lg:col-span-7 space-y-6">
@@ -863,83 +992,75 @@ export default function App() {
               </div>
             </div>
 
-            {/* Right Column: Simulated WhatsApp Chat Device Mockup */}
+            {/* Right Column: Simulated Chat Device Mockup (Solid Matte, Minimalist) */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="w-full max-w-[340px] bg-slate-950 p-3 rounded-[48px] shadow-2xl border border-slate-800 relative group overflow-hidden">
-                {/* Gloss effect */}
-                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 pointer-events-none rounded-[48px]" />
+              <div className="w-full max-w-[340px] bg-white p-3 rounded-[40px] shadow-sm border border-slate-200 relative group overflow-hidden">
                 
-                {/* Notch */}
-                <div className="absolute top-4 left-1/2 -translate-x-1/2 w-28 h-4 bg-slate-950 rounded-full z-20 flex items-center justify-between px-4">
-                  <div className="w-2 h-2 rounded-full bg-slate-900" />
-                  <div className="w-10 h-1 bg-slate-900 rounded" />
-                </div>
-
-                {/* WhatsApp Screen Container */}
-                <div className="w-full bg-[#efeae2] rounded-[38px] overflow-hidden border border-slate-900 flex flex-col h-[410px] sm:h-[520px] relative font-sans">
+                {/* Chat Screen Container */}
+                <div className="w-full bg-slate-50 rounded-[32px] overflow-hidden border border-slate-200/85 flex flex-col h-[410px] sm:h-[500px] relative font-sans">
                   
-                  {/* WhatsApp Header */}
-                  <div className="bg-[#075e54] text-white pt-7 pb-3 px-4 flex items-center justify-between z-10 shrink-0">
-                    <div className="flex items-center gap-2">
-                      <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center font-bold font-display text-white relative border border-white/10 shrink-0 overflow-hidden">
+                  {/* Chat Header (Clean Slate-950) */}
+                  <div className="bg-slate-950 text-white pt-6 pb-4 px-4 flex items-center justify-between z-10 shrink-0">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-8 h-8 rounded-full bg-slate-800 flex items-center justify-center font-bold font-display text-white relative shrink-0 overflow-hidden">
                         <img 
                           src="https://lh3.googleusercontent.com/d/1omHKXUnbNUSjE7DQWfmYQYIu5Xdqk9Qo" 
-                          alt="Ayat Móviles Avatar" 
+                          alt="Ayat Móviles" 
                           className="w-full h-full object-contain"
                           referrerPolicy="no-referrer"
                         />
-                        <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-400 border border-emerald-600" />
+                        <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500" />
                       </div>
                       <div>
-                        <h4 className="font-bold text-xs tracking-tight">AYAT MÓVILES</h4>
-                        <span className="text-[10px] text-emerald-100/90 font-mono block">en línea • Zumarraga</span>
+                        <h4 className="font-bold text-xs tracking-tight uppercase">AYAT MÓVILES</h4>
+                        <span className="text-[10px] text-slate-400 block font-mono">Soporte Zumarraga</span>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2.5 opacity-90">
-                      <Phone className="w-3.5 h-3.5 fill-white text-white" />
-                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                    <div className="flex items-center gap-2">
+                      <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                      <span className="text-[9px] font-mono text-slate-400 uppercase tracking-widest">Activo</span>
                     </div>
                   </div>
 
-                  {/* WhatsApp Chat Wall background & messages */}
-                  <div className="flex-1 overflow-y-auto p-4 space-y-3.5 flex flex-col bg-[#efeae2]">
+                  {/* Chat Wall (Solid White, No Textures) */}
+                  <div className="flex-1 overflow-y-auto p-4 space-y-3 flex flex-col bg-slate-50">
                     
                     {/* Timestamp bubble */}
-                    <div className="mx-auto bg-[#d1f4cc]/40 border border-slate-300/10 px-2.5 py-0.5 rounded text-[9px] font-mono text-slate-500 uppercase tracking-wider">
+                    <div className="mx-auto bg-slate-200/60 px-2.5 py-0.5 rounded text-[9px] font-mono text-slate-500 uppercase tracking-wider">
                       Hoy
                     </div>
 
                     {/* Support message 1 */}
-                    <div className="bg-white rounded-2xl rounded-tl-none p-3 max-w-[85%] text-[12px] text-slate-800 shadow-sm relative self-start">
+                    <div className="bg-white border border-slate-200/50 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-[12px] text-slate-800 shadow-sm relative self-start">
                       <p className="leading-normal">
                         ¡Hola! Bienvenido a <strong>AYAT MÓVILES</strong> en Zumarraga. ¿En qué podemos ayudarte hoy?
                       </p>
-                      <span className="text-[9px] text-slate-400 font-mono text-right block mt-1.5">10:00</span>
+                      <span className="text-[9px] text-slate-400 font-mono text-right block mt-1">10:00</span>
                     </div>
 
                     {/* Support message 2 */}
-                    <div className="bg-white rounded-2xl rounded-tl-none p-3 max-w-[85%] text-[12px] text-slate-800 shadow-sm relative self-start">
+                    <div className="bg-white border border-slate-200/50 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-[12px] text-slate-800 shadow-sm relative self-start">
                       <p className="leading-normal">
                         Si lo deseas, puedes editar la plantilla rápida a continuación para enviarnos tu consulta directa.
                       </p>
-                      <span className="text-[9px] text-slate-400 font-mono text-right block mt-1.5">10:01</span>
+                      <span className="text-[9px] text-slate-400 font-mono text-right block mt-1">10:01</span>
                     </div>
 
-                    {/* User interactive typing preview bubble */}
-                    <div className="bg-[#dcf8c6] rounded-2xl rounded-tr-none p-3 max-w-[85%] text-[12px] text-slate-800 shadow-sm relative self-end border border-emerald-100 mt-2">
-                      <p className="leading-normal italic text-slate-700">
+                    {/* User interactive typing preview bubble (Clean black border bubble) */}
+                    <div className="bg-slate-900 text-white rounded-2xl rounded-tr-none p-3 max-w-[85%] text-[12px] shadow-sm relative self-end mt-2">
+                      <p className="leading-normal italic text-slate-200">
                         "{whatsAppText}"
                       </p>
                       <div className="flex items-center justify-end gap-1 mt-1.5">
-                        <span className="text-[9px] text-slate-500 font-mono">Ahora</span>
-                        <CheckCircle2 className="w-3 h-3 text-sky-500 fill-sky-100" />
+                        <span className="text-[9px] text-slate-400 font-mono">Ahora</span>
+                        <CheckCircle2 className="w-3 h-3 text-emerald-400 fill-emerald-900" />
                       </div>
                     </div>
 
                   </div>
 
                   {/* Interactive Text Area & Action Button */}
-                  <div className="p-3 bg-[#f0f0f0] border-t border-slate-200 flex flex-col gap-2 shrink-0">
+                  <div className="p-3 bg-white border-t border-slate-200 flex flex-col gap-2 shrink-0">
                     <div className="relative">
                       <textarea
                         value={whatsAppText}
@@ -949,7 +1070,7 @@ export default function App() {
                         }}
                         placeholder="Escribe tu mensaje aquí..."
                         rows={2}
-                        className="w-full bg-white border border-slate-200 focus:border-emerald-500 focus:outline-none rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-400 resize-none font-sans shadow-inner"
+                        className="w-full bg-slate-50 border border-slate-200 focus:border-slate-400 focus:outline-none rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-450 resize-none font-sans"
                       />
                     </div>
                     
@@ -957,10 +1078,10 @@ export default function App() {
                       href={`https://wa.me/34632447979?text=${encodeURIComponent(whatsAppText)}`}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="w-full py-2.5 bg-[#25d366] hover:bg-[#20ba5a] text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 hover:scale-[1.02] active:scale-95 flex items-center justify-center gap-2 shadow-md shadow-emerald-950/20"
+                      className="w-full py-2.5 bg-slate-950 hover:bg-slate-900 text-white font-bold text-xs uppercase tracking-wider rounded-xl transition-all duration-300 flex items-center justify-center gap-2"
                     >
-                      <MessageSquare className="w-4 h-4 fill-white" />
-                      Enviar Mensaje Directo
+                      <MessageSquare className="w-4 h-4 text-emerald-400" />
+                      Enviar por WhatsApp
                     </a>
                   </div>
 
@@ -969,27 +1090,26 @@ export default function App() {
             </div>
 
           </div>
-          </CardGradient>
         </section>
 
-        {/* Reviews & Testimonials Section - High Contrast */}
-        <section id="valoraciones" className="max-w-7xl mx-auto w-full scroll-mt-20">
-          <CardGradient className="py-10 md:py-20 shadow-[0_30px_60px_rgba(15,23,42,0.06)]" contentClassName="px-5 sm:px-8 md:px-12 w-full">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-12">
+        {/* Reviews & Testimonials Section - Minimalist & Editorial */}
+        <section id="valoraciones" className="py-10 md:py-20 bg-white border border-slate-200/60 rounded-3xl max-w-7xl mx-auto w-full relative">
+          <div className="px-5 sm:px-8 md:px-12 w-full">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12">
               <div>
-                <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-2 font-mono">OPINIONES VERIFICADAS</span>
+                <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2 font-mono">OPINIONES VERIFICADAS</span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 font-display">Lo que dicen nuestros clientes</h2>
               </div>
-              <div className="flex items-center gap-3 mt-4 md:mt-0 bg-slate-50 border border-slate-200 px-4 py-2.5 font-mono text-xs rounded-full shadow-sm">
-                <span className="font-bold text-slate-700">Google Reviews:</span>
+              <div className="flex items-center gap-2 mt-2 md:mt-0 text-xs font-mono text-slate-500">
+                <span>Google Reviews:</span>
                 <div className="flex text-amber-500">
-                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
-                  <Star className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
+                  <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
+                  <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
+                  <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
+                  <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
+                  <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
                 </div>
-                <span className="font-bold text-indigo-700">5.0 / 5</span>
+                <span className="font-bold text-slate-900">5.0 / 5</span>
               </div>
             </div>
 
@@ -998,45 +1118,41 @@ export default function App() {
               {reviews.map((rev, index) => (
                 <div 
                   key={index} 
-                  className="bg-slate-50 border border-slate-200 p-5 sm:p-8 flex flex-col justify-between relative hover:shadow-lg hover:bg-white hover:border-slate-300 transition-all duration-350 rounded-3xl hover:-translate-y-1 shadow-sm"
+                  className="bg-slate-50/50 border border-slate-200/60 p-6 flex flex-col justify-between rounded-2xl transition-all duration-300"
                 >
-                  <div className="absolute top-4 right-6 text-slate-200/60 font-serif text-5xl leading-none select-none">
-                    ”
-                  </div>
-                  
                   <div>
                     <div className="flex items-center gap-1 text-amber-500 mb-3.5">
                       {Array.from({ length: rev.rating }).map((_, i) => (
-                        <Star key={i} className="w-4 h-4 fill-amber-500 text-amber-500" />
+                        <Star key={i} className="w-3.5 h-3.5 fill-amber-500 text-amber-500" />
                       ))}
                     </div>
                     
-                    <p className="text-slate-600 text-xs sm:text-sm italic mb-5 leading-relaxed">
+                    <p className="text-slate-600 text-xs sm:text-sm italic mb-5 leading-relaxed font-sans">
                       "{rev.content}"
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-3 border-t border-slate-200/50 pt-3.5 mt-auto">
-                    <div className="w-9 h-9 sm:w-10 sm:h-10 bg-indigo-600 text-white flex items-center justify-center font-bold text-sm rounded-xl">
+                  <div className="flex items-center gap-3 border-t border-slate-200/40 pt-4 mt-auto">
+                    <div className="w-8 h-8 bg-slate-900 text-white flex items-center justify-center font-bold text-xs rounded-full">
                       {rev.avatar}
                     </div>
                     <div>
-                      <h4 className="text-xs sm:text-sm font-bold text-slate-900">{rev.author}</h4>
-                      <span className="text-[9px] sm:text-[10px] text-slate-400 font-mono block">{rev.date}</span>
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900">{rev.author}</h4>
+                      <span className="text-[9px] text-slate-400 font-mono block">{rev.date}</span>
                     </div>
                   </div>
                 </div>
               ))}
             </div>
-          </CardGradient>
+          </div>
         </section>
 
         {/* Interactive FAQ Section */}
         <FAQSection />
 
         {/* Info, Map & Contact Section with superb rounded layout - High Contrast */}
-        <section id="contacto" className="py-4 max-w-7xl mx-auto w-full scroll-mt-20">
-          <CardGradient className="shadow-[0_30px_60px_rgba(15,23,42,0.06)]" contentClassName="flex flex-col lg:flex-row overflow-hidden">
+        <section id="contacto" className="py-4 max-w-7xl mx-auto w-full">
+          <div className="bg-white border border-slate-200 flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-[0_30px_60px_rgba(15,23,42,0.06)]">
             
             {/* Map Column */}
             <div className="lg:w-1/2 min-h-[320px] lg:min-h-[450px] relative bg-slate-100/50 border-b lg:border-b-0 lg:border-r border-white/30 overflow-hidden group">
@@ -1109,71 +1225,58 @@ export default function App() {
               </div>
             </div>
 
-          </CardGradient>
+          </div>
         </section>
 
       </main>
 
-      {/* Footer with high contrast, outstanding aesthetics and full interactivity */}
-      <footer className="bg-gradient-to-b from-[#0b0f19] via-[#060810] to-[#020306] text-slate-300 py-16 px-6 md:px-12 border-t border-slate-900 shrink-0 w-full mt-16 relative overflow-hidden">
-        {/* Glowing border line */}
-        <div className="absolute top-0 left-0 w-full h-[1px] bg-gradient-to-r from-transparent via-indigo-500/30 to-transparent z-10" />
-
-        {/* Pulsating colorful background blobs inside the footer */}
-        <div className="absolute -top-40 -left-40 w-96 h-96 bg-indigo-500/10 rounded-full filter blur-[100px] animate-pulse pointer-events-none" style={{ animationDuration: "12s" }} />
-        <div className="absolute -bottom-40 -right-40 w-96 h-96 bg-purple-500/10 rounded-full filter blur-[120px] animate-pulse pointer-events-none" style={{ animationDuration: "18s" }} />
+      {/* Footer with premium visual aesthetic, advanced glassmorphic inputs and elegant detailing */}
+      <footer className="bg-slate-950 text-slate-300 py-20 px-6 md:px-12 border-t border-slate-900 shrink-0 w-full mt-20 relative overflow-hidden">
+        {/* Neon top divider line */}
+        <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
+        
+        {/* Soft atmospheric gradient glows */}
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-indigo-600/5 rounded-full filter blur-[120px] pointer-events-none" />
+        <div className="absolute bottom-0 right-1/4 w-[400px] h-[400px] bg-purple-600/5 rounded-full filter blur-[100px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto relative z-10">
           
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
             
             {/* Column 1: Brand presentation */}
             <div className="space-y-6">
-              <div className="flex items-center gap-3">
-                <img 
-                  src="https://lh3.googleusercontent.com/d/1omHKXUnbNUSjE7DQWfmYQYIu5Xdqk9Qo" 
-                  alt="AYAT MÓVILES" 
-                  className="w-14 h-14 object-contain transition-transform duration-500 hover:rotate-6 cursor-pointer" 
-                  referrerPolicy="no-referrer"
-                  onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                />
-                <span className="text-xl font-black text-white tracking-tight font-display bg-clip-text text-transparent bg-gradient-to-r from-white via-slate-100 to-indigo-200">AYAT MÓVILES</span>
+              <div className="flex items-center gap-3 group">
+                <div className="p-1 bg-white/5 rounded-2xl border border-white/10 group-hover:border-indigo-500/30 transition-all duration-300">
+                  <img 
+                    src="https://lh3.googleusercontent.com/d/1omHKXUnbNUSjE7DQWfmYQYIu5Xdqk9Qo" 
+                    alt="AYAT MÓVILES" 
+                    className="w-12 h-12 object-contain transition-transform duration-500 group-hover:scale-105 cursor-pointer" 
+                    referrerPolicy="no-referrer"
+                    onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+                  />
+                </div>
+                <div>
+                  <span className="text-lg font-black text-white tracking-wider font-display block">AYAT MÓVILES</span>
+                  <span className="text-[10px] text-indigo-400 font-mono font-semibold tracking-widest uppercase">Premium Tech</span>
+                </div>
               </div>
               <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
                 Especialistas líderes en venta, reparación exprés y soporte informático en Zumarraga. Máxima garantía, velocidad inigualable y confianza certificada para todos tus dispositivos.
               </p>
-              
-              {/* Social links */}
-              <div className="flex items-center gap-3">
-                <a 
-                  href="https://www.instagram.com/jakesroodriguez" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 hover:border-indigo-400 text-slate-400 hover:text-white flex items-center justify-center transition-all duration-300 hover:scale-110"
-                >
-                  <Instagram className="w-4 h-4" />
-                </a>
-                <a 
-                  href="https://wa.me/34632447979" 
-                  target="_blank" 
-                  rel="noopener noreferrer"
-                  className="w-9 h-9 rounded-xl bg-white/5 border border-white/10 hover:border-emerald-400 text-slate-400 hover:text-emerald-400 flex items-center justify-center transition-all duration-300 hover:scale-110"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                </a>
+              <div>
                 <button 
                   onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-                  className="group flex items-center gap-2 text-[10px] font-bold text-indigo-400 hover:text-white transition-colors bg-white/5 hover:bg-white/10 px-3.5 py-2 rounded-full border border-white/5 hover:border-white/10"
+                  className="group flex items-center gap-2 text-[11px] font-bold text-slate-300 hover:text-white transition-all duration-300 bg-white/5 hover:bg-white/10 px-4.5 py-2 rounded-full border border-white/5 hover:border-indigo-500/30 cursor-pointer shadow-sm"
                 >
-                  Volver Arriba 
-                  <ArrowUp className="w-3 h-3 group-hover:-translate-y-0.5 transition-transform duration-300 text-indigo-400" />
+                  Volver arriba
+                  <ArrowUp className="w-3.5 h-3.5 group-hover:-translate-y-0.5 transition-transform duration-300 text-indigo-400" />
                 </button>
               </div>
             </div>
 
             {/* Column 2: INTERACTIVE - Rate Experience */}
-            <div>
-              <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-6 font-mono">¿QUÉ TE PARECE NUESTRA WEB?</h4>
+            <div className="p-6 bg-slate-900/40 border border-slate-900 rounded-2xl backdrop-blur-sm shadow-xl">
+              <h4 className="text-[11px] font-black text-indigo-400 uppercase tracking-widest mb-4 font-mono">¿QUÉ OPINAS DE LA WEB?</h4>
               
               <AnimatePresence mode="wait">
                 {!footerRatingSubmitted ? (
@@ -1183,7 +1286,7 @@ export default function App() {
                     exit={{ opacity: 0 }}
                     className="space-y-4"
                   >
-                    <p className="text-xs text-slate-400">Valora tu experiencia navegando por Ayat Móviles:</p>
+                    <p className="text-xs text-slate-400 leading-relaxed">Valora tu experiencia navegando por Ayat Móviles:</p>
                     <div className="flex gap-2">
                       {[
                         { rate: 1, label: "😢", desc: "Mala" },
@@ -1197,7 +1300,7 @@ export default function App() {
                             setFooterRating(item.rate);
                             setFooterRatingSubmitted(true);
                           }}
-                          className="w-11 h-11 bg-slate-900/60 hover:bg-gradient-to-br hover:from-indigo-600 hover:to-purple-600 border border-slate-800 hover:border-indigo-400 text-lg rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:shadow-[0_0_20px_rgba(99,102,241,0.5)] cursor-pointer group"
+                          className="w-10.5 h-10.5 bg-slate-950 hover:bg-indigo-650 border border-slate-800 hover:border-indigo-400 text-lg rounded-xl flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 hover:shadow-[0_0_15px_rgba(99,102,241,0.3)] cursor-pointer group"
                           title={item.desc}
                         >
                           <span className="group-hover:scale-125 transition-transform duration-300">{item.label}</span>
@@ -1209,11 +1312,11 @@ export default function App() {
                   <motion.div 
                     initial={{ scale: 0.9, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="bg-indigo-950/40 border border-indigo-500/20 p-4 rounded-2xl space-y-2 text-left"
+                    className="bg-indigo-950/20 border border-indigo-500/20 p-4 rounded-xl space-y-2 text-left"
                   >
                     <div className="flex items-center gap-2 text-indigo-400">
                       <Sparkles className="w-4 h-4 text-indigo-400 fill-indigo-400 animate-spin" />
-                      <span className="font-bold text-xs">¡Muchísimas Gracias!</span>
+                      <span className="font-bold text-xs">¡Muchas Gracias!</span>
                     </div>
                     <p className="text-[11px] text-slate-300 leading-relaxed">
                       Tu valoración ({footerRating === 4 ? "Excelente 😍" : footerRating === 3 ? "Buena 😊" : footerRating === 2 ? "Normal 😐" : "Mejorable 😢"}) nos ayuda a perfeccionar Ayat Móviles continuamente.
@@ -1230,10 +1333,10 @@ export default function App() {
             </div>
 
             {/* Column 3: INTERACTIVE - Quick WhatsApp Consultation */}
-            <div>
-              <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-6 font-mono">PREGUNTA RÁPIDA</h4>
-              <div className="space-y-4">
-                <p className="text-xs text-slate-400">Escribe tu duda y te redirigiremos a WhatsApp al instante:</p>
+            <div className="p-6 bg-slate-900/40 border border-slate-900 rounded-2xl backdrop-blur-sm shadow-xl">
+              <h4 className="text-[11px] font-black text-indigo-400 uppercase tracking-widest mb-4 font-mono">PREGUNTA RÁPIDA</h4>
+              <div className="space-y-3">
+                <p className="text-xs text-slate-400 leading-relaxed">Escribe tu duda y te redirigiremos a WhatsApp:</p>
                 <form 
                   onSubmit={(e) => {
                     e.preventDefault();
@@ -1241,15 +1344,15 @@ export default function App() {
                     const encoded = encodeURIComponent(`¡Hola Ayat Móviles! He visto vuestra web y tengo una consulta rápida: ${footerQuestion.trim()}`);
                     window.open(`https://wa.me/34632447979?text=${encoded}`, "_blank");
                   }}
-                  className="space-y-2"
+                  className="space-y-2.5"
                 >
-                  <div className="relative flex items-center">
+                  <div className="relative">
                     <input 
                       type="text" 
                       placeholder="¿Reparáis tablets? ¿Precios...?" 
                       value={footerQuestion}
                       onChange={(e) => setFooterQuestion(e.target.value)}
-                      className="w-full bg-slate-900/60 border border-slate-800 focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 rounded-xl px-3 py-2 text-xs text-white placeholder-slate-500 focus:outline-none transition-all duration-300"
+                      className="w-full bg-slate-950 border border-slate-800 focus:border-indigo-500 rounded-xl px-3.5 py-2 text-xs text-white placeholder-slate-600 focus:outline-none focus:ring-1 focus:ring-indigo-500/25 transition-all duration-300"
                     />
                   </div>
                   <button
@@ -1257,11 +1360,11 @@ export default function App() {
                     disabled={!footerQuestion.trim()}
                     className={`w-full py-2.5 px-4 rounded-xl text-xs font-bold transition-all duration-300 flex items-center justify-center gap-2 ${
                       footerQuestion.trim() 
-                        ? "bg-gradient-to-r from-emerald-500 to-teal-600 hover:from-emerald-400 hover:to-teal-500 text-white hover:scale-[1.02] shadow-lg shadow-emerald-950/40 cursor-pointer" 
-                        : "bg-slate-800/80 text-slate-500 cursor-not-allowed"
+                        ? "bg-emerald-600 hover:bg-emerald-500 text-white hover:scale-[1.01] shadow-md shadow-emerald-950/45 cursor-pointer" 
+                        : "bg-slate-900 text-slate-600 border border-slate-800/50 cursor-not-allowed"
                     }`}
                   >
-                    <MessageSquare className="w-3.5 h-3.5 shrink-0" />
+                    <MessageSquare className="w-3.5 h-3.5 shrink-0 text-emerald-300" />
                     Enviar por WhatsApp
                   </button>
                 </form>
@@ -1270,23 +1373,31 @@ export default function App() {
 
             {/* Column 4: Links & Support info */}
             <div>
-              <h4 className="text-xs font-bold text-indigo-400 uppercase tracking-widest mb-6 font-mono">ENLACES RÁPIDOS</h4>
+              <h4 className="text-[11px] font-black text-indigo-400 uppercase tracking-widest mb-6 font-mono">ENLACES RÁPIDOS</h4>
               <ul className="space-y-3.5 text-xs">
-                {[
-                  { label: "Venta de Teléfonos & Accesorios", href: "#servicios" },
-                  { label: "Presupuesto de Reparación", href: "#servicios" },
-                  { label: "Preguntas Frecuentes (FAQ)", href: "#faq" },
-                  { label: "Horarios & Localización", href: "#contacto" },
-                ].map((link, idx) => (
-                  <li key={idx}>
-                    <a href={link.href} className="text-slate-400 hover:text-white transition-all flex items-center gap-1.5 hover:translate-x-1 duration-300 group">
-                      <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full group-hover:bg-indigo-400 transition-colors" /> {link.label}
-                    </a>
-                  </li>
-                ))}
                 <li>
-                  <a href="https://wa.me/34632447979" target="_blank" rel="noopener noreferrer" className="text-slate-400 hover:text-white transition-all flex items-center gap-1.5 hover:translate-x-1 duration-300 font-bold text-indigo-400 group">
-                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full group-hover:bg-emerald-400 transition-colors" /> Soporte Urgente por WhatsApp <ExternalLink className="w-3 h-3 text-indigo-400" />
+                  <a href="#servicios" className="text-slate-400 hover:text-white transition-all flex items-center gap-2 hover:translate-x-1 duration-300">
+                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full shrink-0" /> Venta de Teléfonos & Accesorios
+                  </a>
+                </li>
+                <li>
+                  <a href="#servicios" className="text-slate-400 hover:text-white transition-all flex items-center gap-2 hover:translate-x-1 duration-300">
+                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full shrink-0" /> Presupuesto de Reparación
+                  </a>
+                </li>
+                <li>
+                  <a href="#faq" className="text-slate-400 hover:text-white transition-all flex items-center gap-2 hover:translate-x-1 duration-300">
+                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full shrink-0" /> Preguntas Frecuentes (FAQ)
+                  </a>
+                </li>
+                <li>
+                  <a href="#contacto" className="text-slate-400 hover:text-white transition-all flex items-center gap-2 hover:translate-x-1 duration-300">
+                    <span className="w-1.5 h-1.5 bg-indigo-500 rounded-full shrink-0" /> Horarios & Localización
+                  </a>
+                </li>
+                <li>
+                  <a href="https://wa.me/34632447979" target="_blank" rel="noopener noreferrer" className="text-indigo-400 hover:text-indigo-300 transition-all flex items-center gap-2 hover:translate-x-1 duration-300 font-bold">
+                    <span className="w-1.5 h-1.5 bg-emerald-500 rounded-full shrink-0 animate-ping" /> Soporte Urgente WhatsApp <ExternalLink className="w-3 h-3" />
                   </a>
                 </li>
               </ul>
@@ -1295,32 +1406,43 @@ export default function App() {
           </div>
 
           <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-6">
-            <div className="text-xs text-slate-500 font-mono text-center md:text-left">
-              © 2026 AYAT MÓVILES. Todos los derechos reservados. | Zumarraga, Gipuzkoa.
+            <div className="flex flex-col gap-2.5 text-center md:text-left">
+              <div className="text-xs text-slate-500 font-mono">
+                © 2026 AYAT MÓVILES. Todos los derechos reservados. | Zumarraga, Gipuzkoa.
+              </div>
+              <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-3.5 gap-y-1.5 text-[11px] text-slate-400 font-sans">
+                <button onClick={() => setLegalModal("aviso")} className="hover:text-indigo-400 transition-colors cursor-pointer bg-transparent border-none p-0">Aviso Legal</button>
+                <span className="text-slate-800 font-mono">•</span>
+                <button onClick={() => setLegalModal("privacidad")} className="hover:text-indigo-400 transition-colors cursor-pointer bg-transparent border-none p-0">Política de Privacidad</button>
+                <span className="text-slate-800 font-mono">•</span>
+                <button onClick={() => setLegalModal("cookies")} className="hover:text-indigo-400 transition-colors cursor-pointer bg-transparent border-none p-0">Política de Cookies</button>
+              </div>
             </div>
-            
-            {/* Developer Button */}
             <div className="flex items-center gap-6">
-              <a 
-                href="https://www.instagram.com/jakesroodriguez" 
-                target="_blank" 
-                rel="noopener noreferrer" 
-                className="inline-flex items-center gap-3 px-5 py-2 bg-white/5 border border-white/10 rounded-full text-slate-400 hover:text-white hover:bg-white/10 transition-all duration-500 group hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95 backdrop-blur-md"
-              >
-                <div className="p-1.5 bg-white/10 rounded-full group-hover:bg-white/20 transition-colors flex items-center justify-center">
-                  <span className="material-symbols-outlined text-sm group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-300">
-                    code
-                  </span>
-                </div>
-                <div className="flex flex-col items-start text-left font-sans">
-                  <span className="text-[9px] uppercase tracking-[0.2em] opacity-60 font-medium mb-0.5">
-                    Designed & Built by
-                  </span>
-                  <span className="text-xs font-bold tracking-wider">
-                    @jakesroodriguez
-                  </span>
-                </div>
-              </a>
+              <div dangerouslySetInnerHTML={{ __html: `<!-- Componente: Botón de Autor (Premium Glassmorphism) -->
+<a href="https://www.instagram.com/jakesroodriguez" 
+   target="_blank" 
+   rel="noopener noreferrer" 
+   class="inline-flex items-center gap-3 px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-500 group hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95 backdrop-blur-md">
+  
+  <!-- Burbuja del Icono -->
+  <div class="p-2 bg-white/10 rounded-full group-hover:bg-white/20 transition-colors flex items-center justify-center">
+    <!-- NOTA: Requiere cargar Material Symbols -->
+    <span class="material-symbols-outlined text-sm group-hover:rotate-[15deg] group-hover:scale-110 transition-all duration-300">
+      code
+    </span>
+  </div>
+  
+  <!-- Contenedor de Textos -->
+  <div class="flex flex-col items-start text-left font-sans">
+    <span class="text-[9px] uppercase tracking-[0.2em] opacity-60 font-medium mb-0.5">
+      Designed & Built by
+    </span>
+    <span class="text-sm font-bold tracking-wider">
+      @jakesroodriguez
+    </span>
+  </div>
+</a>` }} />
             </div>
           </div>
 
@@ -1336,7 +1458,7 @@ export default function App() {
         onClick={() => {
           setActiveTab("contacto");
         }}
-        className="fixed bottom-6 left-6 z-50 bg-slate-900/95 hover:bg-indigo-600 text-white px-5 py-3.5 rounded-full shadow-[0_20px_50px_rgba(15,23,42,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] border border-slate-800 hover:border-indigo-400 transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer backdrop-blur-md"
+        className="fixed bottom-6 left-6 z-40 bg-slate-900/95 hover:bg-indigo-600 text-white px-5 py-3.5 rounded-full shadow-[0_20px_50px_rgba(15,23,42,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] border border-slate-800 hover:border-indigo-400 transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer backdrop-blur-md"
         whileHover={{ y: -4 }}
         initial={{ opacity: 0, scale: 0.9 }}
         animate={{ opacity: 1, scale: 1 }}
@@ -1349,6 +1471,13 @@ export default function App() {
           Contacto
         </span>
       </motion.a>
+
+      {/* Dynamic Cookies consent banner & modal views (Apartados A, B, C, D) */}
+      <LegalManager 
+        activeModal={legalModal} 
+        onCloseModal={() => setLegalModal(null)} 
+        onOpenModal={(type) => setLegalModal(type)} 
+      />
     </div>
   );
 }

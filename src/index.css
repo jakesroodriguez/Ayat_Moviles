@@ -39,38 +39,3 @@
 ::-webkit-scrollbar-thumb:hover {
   background: #94a3b8;
 }
-
-/* Animated gradient blob keyframes */
-@keyframes moveInCircle {
-  0% { transform: rotate(0deg) translate(0px, 0px) scale(1); }
-  50% { transform: rotate(180deg) translate(160px, -120px) scale(1.2); }
-  100% { transform: rotate(360deg) translate(0px, 0px) scale(1); }
-}
-
-@keyframes moveVertical {
-  0% { transform: translateY(-70%) translateX(-25%) scale(1); }
-  50% { transform: translateY(70%) translateX(35%) scale(1.25); }
-  100% { transform: translateY(-70%) translateX(-25%) scale(1); }
-}
-
-@keyframes moveHorizontal {
-  0% { transform: translateX(-70%) translateY(-25%) scale(0.9); }
-  50% { transform: translateX(70%) translateY(35%) scale(1.3); }
-  100% { transform: translateX(-70%) translateY(-25%) scale(0.9); }
-}
-
-.animate-first {
-  animation: moveVertical 25s ease infinite;
-}
-.animate-second {
-  animation: moveInCircle 20s reverse infinite;
-}
-.animate-third {
-  animation: moveInCircle 30s linear infinite;
-}
-.animate-fourth {
-  animation: moveHorizontal 28s ease infinite;
-}
-.animate-fifth {
-  animation: moveInCircle 18s ease infinite;
-}

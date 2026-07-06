@@ -1,132 +1,134 @@
-import React, { useEffect, useRef, useState } from "react";
+import { useEffect, useRef } from "react";
 
-/**
- * Animated gradient background with organic flowing blobs.
- * Colors: lavender/indigo/purple/rose palette with extreme contrast and saturation.
- * Interactive: pointer blob follows the mouse cursor.
- */
 export default function BackgroundShader() {
-  const interactiveRef = useRef<HTMLDivElement>(null);
-  const animFrameRef = useRef<number>(0);
-  const curRef = useRef({ x: 0, y: 0 });
-  const tgRef = useRef({ x: 0, y: 0 });
-
-  const [isSafari, setIsSafari] = useState(false);
-
-  // Color palette — highly saturated and contrasted tones
-  const config = {
-    gradientStart: "rgb(235, 225, 255)",   // Softer pastel lavender instead of stark white
-    gradientEnd: "rgb(215, 200, 250)",     // Softer purple/lavender background
-    first: "120, 110, 255",                // Bright sky indigo
-    second: "220, 120, 255",               // Vibrant bright fuchsia/pink
-    third: "100, 180, 255",                // Bright cyan-blue
-    fourth: "160, 120, 255",               // Bright violet
-    fifth: "255, 140, 190",                // Vibrant bright rose pink
-    pointer: "170, 130, 255",              // Bright pointer violet
-    size: "100%",
-    blending: "normal",                    // Normal blend mode for clean bright overlay
-  };
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
 
   useEffect(() => {
-    setIsSafari(/^((?!chrome|android).)*safari/i.test(navigator.userAgent));
-  }, []);
+    const canvas = canvasRef.current;
+    if (!canvas) return;
 
-  // Set CSS custom properties on body
-  useEffect(() => {
-    const s = document.body.style;
-    s.setProperty("--gradient-background-start", config.gradientStart);
-    s.setProperty("--gradient-background-end", config.gradientEnd);
-    s.setProperty("--first-color", config.first);
-    s.setProperty("--second-color", config.second);
-    s.setProperty("--third-color", config.third);
-    s.setProperty("--fourth-color", config.fourth);
-    s.setProperty("--fifth-color", config.fifth);
-    s.setProperty("--pointer-color", config.pointer);
-    s.setProperty("--size", config.size);
-    s.setProperty("--blending-value", config.blending);
-  }, []);
+    const gl = canvas.getContext("webgl");
+    if (!gl) return;
 
-  // Smooth pointer-following animation loop
-  useEffect(() => {
-    function animate() {
-      if (interactiveRef.current) {
-        curRef.current.x += (tgRef.current.x - curRef.current.x) / 20;
-        curRef.current.y += (tgRef.current.y - curRef.current.y) / 20;
-        interactiveRef.current.style.transform = `translate(${Math.round(curRef.current.x)}px, ${Math.round(curRef.current.y)}px)`;
+    const vertexShaderSource = `
+      attribute vec2 a_position;
+      varying vec2 v_texCoord;
+      void main() {
+        gl_Position = vec4(a_position, 0.0, 1.0);
+        v_texCoord = a_position * 0.5 + 0.5;
       }
-      animFrameRef.current = requestAnimationFrame(animate);
-    }
-    animFrameRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(animFrameRef.current);
-  }, []);
+    `;
 
-  const handleMouseMove = (event: React.MouseEvent<HTMLDivElement>) => {
-    if (interactiveRef.current) {
-      const rect = interactiveRef.current.getBoundingClientRect();
-      tgRef.current.x = event.clientX - rect.left;
-      tgRef.current.y = event.clientY - rect.top;
+    const fragmentShaderSource = `
+      precision highp float;
+      varying vec2 v_texCoord;
+      uniform float u_time;
+      uniform vec2 u_resolution;
+
+      void main() {
+        vec2 uv = v_texCoord;
+        float noise = sin(uv.x * 3.0 + u_time * 0.5) * 0.5 + 0.5;
+        noise += sin(uv.y * 4.0 - u_time * 0.3) * 0.5 + 0.5;
+        vec3 color1 = vec3(0.388, 0.278, 0.82); 
+        vec3 color2 = vec3(0.973, 0.976, 1.0);  
+        vec3 color3 = vec3(0.85, 0.8, 1.0);     
+        vec3 finalColor = mix(color1, color2, noise * 0.3);
+        finalColor = mix(finalColor, color3, sin(u_time * 0.2) * 0.2 + 0.2);
+        float dist = distance(uv, vec2(0.5));
+        finalColor *= 1.0 - dist * 0.2;
+        gl_FragColor = vec4(finalColor, 0.05);
+      }
+    `;
+
+    function createShader(
+      glInstance: WebGLRenderingContext,
+      type: number,
+      source: string
+    ) {
+      const shader = glInstance.createShader(type);
+      if (!shader) return null;
+      glInstance.shaderSource(shader, source);
+      glInstance.compileShader(shader);
+      if (!glInstance.getShaderParameter(shader, glInstance.COMPILE_STATUS)) {
+        console.error("Shader compile error:", glInstance.getShaderInfoLog(shader));
+        glInstance.deleteShader(shader);
+        return null;
+      }
+      return shader;
     }
-  };
+
+    const vertexShader = createShader(gl, gl.VERTEX_SHADER, vertexShaderSource);
+    const fragmentShader = createShader(gl, gl.FRAGMENT_SHADER, fragmentShaderSource);
+    if (!vertexShader || !fragmentShader) return;
+
+    const program = gl.createProgram();
+    if (!program) return;
+
+    gl.attachShader(program, vertexShader);
+    gl.attachShader(program, fragmentShader);
+    gl.linkProgram(program);
+
+    if (!gl.getProgramParameter(program, gl.LINK_STATUS)) {
+      console.error("Program link error:", gl.getProgramInfoLog(program));
+      return;
+    }
+
+    const positionBuffer = gl.createBuffer();
+    gl.bindBuffer(gl.ARRAY_BUFFER, positionBuffer);
+    const positions = [
+      -1.0, -1.0, 
+       1.0, -1.0, 
+      -1.0,  1.0, 
+      -1.0,  1.0, 
+       1.0, -1.0, 
+       1.0,  1.0,
+    ];
+    gl.bufferData(gl.ARRAY_BUFFER, new Float32Array(positions), gl.STATIC_DRAW);
+
+    const positionLocation = gl.getAttribLocation(program, "a_position");
+    gl.enableVertexAttribArray(positionLocation);
+    gl.vertexAttribPointer(positionLocation, 2, gl.FLOAT, false, 0, 0);
+
+    const timeLocation = gl.getUniformLocation(program, "u_time");
+    const resolutionLocation = gl.getUniformLocation(program, "u_resolution");
+
+    let animationFrameId: number;
+
+    function resizeCanvas() {
+      if (!canvas || !gl) return;
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+      gl.viewport(0, 0, canvas.width, canvas.height);
+    }
+
+    window.addEventListener("resize", resizeCanvas);
+    resizeCanvas();
+
+    function render(time: number) {
+      if (!gl || !program) return;
+      const timeSeconds = time * 0.001;
+      gl.useProgram(program);
+      gl.uniform1f(timeLocation, timeSeconds);
+      if (canvas) {
+        gl.uniform2f(resolutionLocation, canvas.width, canvas.height);
+      }
+      gl.drawArrays(gl.TRIANGLES, 0, 6);
+      animationFrameId = requestAnimationFrame(render);
+    }
+
+    animationFrameId = requestAnimationFrame(render);
+
+    return () => {
+      window.removeEventListener("resize", resizeCanvas);
+      cancelAnimationFrame(animationFrameId);
+    };
+  }, []);
 
   return (
-    <div
-      className="fixed inset-0 z-[-1] overflow-hidden pointer-events-none bg-[linear-gradient(40deg,var(--gradient-background-start),var(--gradient-background-end))]"
-      onMouseMove={handleMouseMove}
-      style={{ pointerEvents: "auto" }}
-    >
-      {/* SVG filter for gooey blob merging */}
-      <svg className="hidden">
-        <defs>
-          <filter id="blurMe">
-            <feGaussianBlur in="SourceGraphic" stdDeviation="12" result="blur" />
-            <feColorMatrix
-              in="blur"
-              mode="matrix"
-              values="1 0 0 0 0  0 1 0 0 0  0 0 1 0 0  0 0 0 18 -8"
-              result="goo"
-            />
-            <feBlend in="SourceGraphic" in2="goo" />
-          </filter>
-        </defs>
-      </svg>
-
-      {/* Animated gradient blobs */}
-      <div
-        className={`gradients-container h-full w-full ${
-          isSafari ? "blur-3xl" : "[filter:url(#blurMe)_blur(25px)]"
-        }`}
-      >
-        {/* Blob 1 — Royal Indigo */}
-        <div
-          className={`absolute [background:radial-gradient(circle_at_center,_rgba(var(--first-color),_0.95)_0,_rgba(var(--first-color),_0)_50%)_no-repeat] [mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)] [transform-origin:center_center] animate-first opacity-100`}
-        />
-
-        {/* Blob 2 — Fuchsia Magenta */}
-        <div
-          className={`absolute [background:radial-gradient(circle_at_center,_rgba(var(--second-color),_0.95)_0,_rgba(var(--second-color),_0)_50%)_no-repeat] [mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)] [transform-origin:calc(50%-400px)] animate-second opacity-100`}
-        />
-
-        {/* Blob 3 — Bright Blue */}
-        <div
-          className={`absolute [background:radial-gradient(circle_at_center,_rgba(var(--third-color),_0.95)_0,_rgba(var(--third-color),_0)_50%)_no-repeat] [mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)] [transform-origin:calc(50%+400px)] animate-third opacity-100`}
-        />
-
-        {/* Blob 4 — Violet */}
-        <div
-          className={`absolute [background:radial-gradient(circle_at_center,_rgba(var(--fourth-color),_0.95)_0,_rgba(var(--fourth-color),_0)_50%)_no-repeat] [mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)] [transform-origin:calc(50%-200px)] animate-fourth opacity-80`}
-        />
-
-        {/* Blob 5 — Rose Pink */}
-        <div
-          className={`absolute [background:radial-gradient(circle_at_center,_rgba(var(--fifth-color),_0.95)_0,_rgba(var(--fifth-color),_0)_50%)_no-repeat] [mix-blend-mode:var(--blending-value)] w-[var(--size)] h-[var(--size)] top-[calc(50%-var(--size)/2)] left-[calc(50%-var(--size)/2)] [transform-origin:calc(50%-800px)_calc(50%+800px)] animate-fifth opacity-100`}
-        />
-
-        {/* Interactive pointer blob — follows cursor */}
-        <div
-          ref={interactiveRef}
-          className={`absolute [background:radial-gradient(circle_at_center,_rgba(var(--pointer-color),_0.95)_0,_rgba(var(--pointer-color),_0)_50%)_no-repeat] [mix-blend-mode:var(--blending-value)] w-full h-full -top-1/2 -left-1/2 opacity-80`}
-        />
-      </div>
-    </div>
+    <canvas
+      ref={canvasRef}
+      id="bg-canvas"
+      className="fixed inset-0 w-screen h-screen z-[-1] opacity-20 pointer-events-none"
+    />
   );
 }
