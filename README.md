@@ -67,20 +67,3 @@ La web de Ayat Móviles está construida en una arquitectura Single Page Applica
 * **Backend:** Express Server (Node.js en TypeScript con `tsx`).
 * **IA/LLM:** SDK oficial de Google Gen AI (`@google/genai`).
 
-## 🚀 Cómo Ejecutar en Local
-
-1. Instalar dependencias:
-   ```bash
-   npm install
-   ```
-2. Duplicar `.env.example` como `.env.local` e introducir tu clave de API de Gemini:
-   ```env
-   GEMINI_API_KEY=tu_clave_gemini_aqui
-   ```
-3. Levantar el entorno de desarrollo:
-   ```bash
-   npm run dev
-   ```
-   Abre [http://localhost:3000](http://localhost:3000) en tu navegador.
-
-
