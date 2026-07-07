@@ -38,8 +38,8 @@ export default function FAQSection() {
   };
 
   return (
-    <section id="faq" className="py-20 max-w-7xl mx-auto w-full px-4 scroll-mt-24">
-      <div className="bg-gradient-to-b from-slate-50 to-white border border-slate-200/60 rounded-[32px] p-6 sm:p-10 md:p-14 shadow-[0_20px_50px_rgba(15,23,42,0.02)] relative overflow-hidden">
+    <section id="faq" className="py-10 max-w-7xl mx-auto w-full px-4 scroll-mt-24">
+      <div className="bg-gradient-to-b from-slate-50 to-white border border-slate-200/60 rounded-[32px] p-5 sm:p-8 md:p-10 shadow-[0_20px_50px_rgba(15,23,42,0.02)] relative overflow-hidden">
         {/* Ambient Glows */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/5 rounded-full filter blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/5 rounded-full filter blur-3xl pointer-events-none" />

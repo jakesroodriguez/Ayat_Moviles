@@ -28,8 +28,12 @@ import BackgroundShader from "./components/BackgroundShader";
 import ChatBot from "./components/ChatBot";
 import FAQSection from "./components/FAQSection";
 import LegalManager from "./components/LegalManager";
+import InteractiveMap from "./components/InteractiveMap";
+import VisitorCounter from "./components/VisitorCounter";
+import CinemaSplashLoader from "./components/CinemaSplashLoader";
 
 export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
   const [activeTab, setActiveTab] = useState("inicio");
   const [legalModal, setLegalModal] = useState<"aviso" | "privacidad" | "cookies" | null>(null);
   const [selectedReparacion, setSelectedReparacion] = useState("pantalla");
@@ -100,6 +104,10 @@ export default function App() {
       btn.click();
     }
   };
+
+  if (showSplash) {
+    return <CinemaSplashLoader onComplete={() => setShowSplash(false)} />;
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#fcfbfe] via-[#faf9ff] to-[#f5f3ff] text-slate-900 font-sans flex flex-col relative overflow-x-hidden">
@@ -294,16 +302,16 @@ export default function App() {
       </div>
 
       {/* Main Grid Wrapper */}
-      <main className="flex-1 flex flex-col z-10 w-[95%] max-w-7xl mx-auto gap-8 my-8">
+      <main className="flex-1 flex flex-col z-10 w-[95%] max-w-7xl mx-auto gap-4 mt-20 sm:mt-6 mb-4 sm:mb-6 sm:gap-6">
         
         {/* Hero Section (Geometric Split with Premium Curved Panels) */}
-        <section id="inicio" className="w-full flex flex-col gap-4 sm:gap-6 scroll-mt-20">
+        <section id="inicio" className="w-full flex flex-col gap-3 sm:gap-4 scroll-mt-20">
           
           {/* Top Row: Hero Text side-by-side with 3D Phone simulator */}
           <div className="w-full">
             
             {/* Unified Bento Card with premium ambient lighting & subtle micro-grid texture */}
-            <div className="w-full flex flex-col sm:flex-row items-center justify-between p-6 pb-20 xs:p-8 xs:pb-24 sm:p-10 sm:pb-14 md:p-14 relative bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.03)] rounded-[32px] overflow-hidden group transition-all duration-500 hover:shadow-[0_30px_70px_rgba(99,102,241,0.06)] hover:border-slate-200">
+            <div className="w-full flex flex-col sm:flex-row items-center justify-between p-5 xs:p-6 sm:p-10 md:p-12 relative bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.03)] rounded-[32px] overflow-hidden group transition-all duration-500 hover:shadow-[0_30px_70px_rgba(99,102,241,0.06)] hover:border-slate-200">
               
               {/* Subtle background grids & radial glows to add depth */}
               <div className="absolute inset-0 pointer-events-none z-0">
@@ -352,7 +360,7 @@ export default function App() {
               </div>
 
               {/* Right Column: Interactive 3D Device Mockup */}
-              <div className="w-full sm:w-[38%] lg:w-[36%] mt-10 sm:mt-0 flex flex-col justify-center items-center relative z-10 shrink-0 pb-6 sm:pb-0">
+              <div className="w-full sm:w-[42%] lg:w-[40%] mt-6 sm:mt-0 flex flex-col justify-center items-center relative z-10 shrink-0 pb-4 sm:pb-0">
                 <div className="w-full transition-transform duration-500 group-hover:scale-[1.03]">
                   <ThreeSmartphone />
                 </div>
@@ -390,10 +398,17 @@ export default function App() {
         </section>
 
         {/* Services Section (Elite Bento Grid Layout) */}
-        <section id="servicios" className="py-20 md:py-28 px-4 max-w-7xl mx-auto w-full border-t border-slate-200/60 mt-6 relative">
+        <motion.section 
+          id="servicios" 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-120px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="py-12 md:py-16 px-4 max-w-7xl mx-auto w-full border-t border-slate-200/60 mt-3 relative"
+        >
           
           {/* Section Header */}
-          <div className="mb-14 md:mb-20 max-w-3xl">
+          <div className="mb-8 md:mb-10 max-w-3xl">
             <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-3 font-mono">PORTFOLIO DE SERVICIOS</span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 font-display">
               Soluciones Integrales de Máxima Calidad
@@ -592,12 +607,19 @@ export default function App() {
               </div>
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Interactive Budget Calculator Section - Minimalist & Editorial Style */}
-        <section className="py-20 px-6 sm:px-10 bg-gradient-to-b from-slate-50 to-white border border-slate-200/60 rounded-[32px] max-w-7xl mx-auto w-full relative shadow-[0_20px_50px_rgba(15,23,42,0.02)]">
+        <motion.section 
+          id="calculadora"
+          initial={{ opacity: 0, y: 45 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="py-12 px-6 sm:px-10 bg-gradient-to-b from-slate-50 to-white border border-slate-200/60 rounded-[32px] max-w-7xl mx-auto w-full relative shadow-[0_20px_50px_rgba(15,23,42,0.02)]"
+        >
           
-          <div className="max-w-3xl mb-12 relative z-10">
+          <div className="max-w-3xl mb-8 relative z-10">
             <span className="text-[10px] font-mono font-bold text-indigo-700 uppercase tracking-wider bg-indigo-50 border border-indigo-100/60 px-3 py-1.5 rounded-full shadow-sm">
               CALCULADORA DE PRESUPUESTOS
             </span>
@@ -887,10 +909,17 @@ export default function App() {
             </div>
 
           </div>
-        </section>
+        </motion.section>
 
         {/* Dedicated WhatsApp Interactive Section */}
-        <section id="whatsapp" className="py-16 px-6 bg-slate-50 border border-slate-200 rounded-3xl max-w-7xl mx-auto w-full relative overflow-hidden my-12">
+        <motion.section 
+          id="whatsapp" 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="py-10 px-6 bg-slate-50 border border-slate-200 rounded-3xl max-w-7xl mx-auto w-full relative overflow-hidden my-6"
+        >
           <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
 
@@ -1090,12 +1119,19 @@ export default function App() {
             </div>
 
           </div>
-        </section>
+        </motion.section>
 
         {/* Reviews & Testimonials Section - Minimalist & Editorial */}
-        <section id="valoraciones" className="py-10 md:py-20 bg-white border border-slate-200/60 rounded-3xl max-w-7xl mx-auto w-full relative">
+        <motion.section 
+          id="valoraciones" 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="py-8 md:py-12 bg-white border border-slate-200/60 rounded-3xl max-w-7xl mx-auto w-full relative"
+        >
           <div className="px-5 sm:px-8 md:px-12 w-full">
-            <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12">
+            <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8">
               <div>
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2 font-mono">OPINIONES VERIFICADAS</span>
                 <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 font-display">Lo que dicen nuestros clientes</h2>
@@ -1145,26 +1181,25 @@ export default function App() {
               ))}
             </div>
           </div>
-        </section>
+        </motion.section>
 
         {/* Interactive FAQ Section */}
         <FAQSection />
 
         {/* Info, Map & Contact Section with superb rounded layout - High Contrast */}
-        <section id="contacto" className="py-4 max-w-7xl mx-auto w-full">
+        <motion.section 
+          id="contacto" 
+          initial={{ opacity: 0, y: 40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true, margin: "-100px" }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          className="py-4 max-w-7xl mx-auto w-full"
+        >
           <div className="bg-white border border-slate-200 flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-[0_30px_60px_rgba(15,23,42,0.06)]">
             
-            {/* Map Column */}
-            <div className="lg:w-1/2 min-h-[320px] lg:min-h-[450px] relative bg-slate-100/50 border-b lg:border-b-0 lg:border-r border-white/30 overflow-hidden group">
-              <img 
-                src="https://lh3.googleusercontent.com/aida-public/AB6AXuBzyih1_M19iwqGTdICvFpCi9zdCouIAQlD2Bjg5CJsPN5_3gbfCy_0CvpaSL8Zgk0Wv-sasMEgUCsNOys0-59IW6YMo2IRXzYF6oWozWDWc_VafcdoHZM_7SHawQkBrF1HQi9eBqpuLHeXKDnNUUy64ljXZ1rkpgkg8R0HK-1nV1Sx4sFJbORCzLJk5temitQRlW-B9qlNjuXVSYD9seilVhIVWGIKPQS9uNg6iyW8_-zRT8u28UA3jHIeHsTOn6deQwUpMD4qixs" 
-                alt="Mapa Ubicación AYAT MÓVILES en Zumarraga" 
-                className="w-full h-full object-cover grayscale contrast-[1.1] transition-transform duration-700 group-hover:scale-105"
-              />
-              <div className="absolute bottom-4 left-4 bg-slate-900/90 backdrop-blur-sm text-white px-4 py-2 text-xs font-mono flex items-center gap-2 rounded-full border border-white/10">
-                <MapPin className="w-3.5 h-3.5 text-indigo-400 animate-bounce" />
-                Elizkale Kalea, 9, BAJO, Zumarraga
-              </div>
+            {/* Interactive Map Column */}
+            <div className="lg:w-1/2 min-h-[420px] lg:min-h-[500px] relative overflow-hidden flex flex-col">
+              <InteractiveMap />
             </div>
 
             {/* Details & Horarios Column */}
@@ -1226,12 +1261,12 @@ export default function App() {
             </div>
 
           </div>
-        </section>
+        </motion.section>
 
       </main>
 
       {/* Footer with premium visual aesthetic, advanced glassmorphic inputs and elegant detailing */}
-      <footer className="bg-slate-950 text-slate-300 py-20 px-6 md:px-12 border-t border-slate-900 shrink-0 w-full mt-20 relative overflow-hidden">
+      <footer className="bg-slate-950 text-slate-300 py-12 px-6 md:px-12 border-t border-slate-900 shrink-0 w-full mt-10 relative overflow-hidden">
         {/* Neon top divider line */}
         <div className="absolute top-0 inset-x-0 h-[1px] bg-gradient-to-r from-transparent via-indigo-500/50 to-transparent" />
         
@@ -1263,6 +1298,10 @@ export default function App() {
               <p className="text-xs text-slate-400 leading-relaxed max-w-sm">
                 Especialistas líderes en venta, reparación exprés y soporte informático en Zumarraga. Máxima garantía, velocidad inigualable y confianza certificada para todos tus dispositivos.
               </p>
+              
+              {/* Telemetry Visitor Counter */}
+              <VisitorCounter />
+
               <div>
                 <button 
                   onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
