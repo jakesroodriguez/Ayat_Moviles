@@ -73,7 +73,10 @@ export default function ChatBot() {
     setError(null);
 
     try {
-      const chatHistoryForAPI = [...messages, userMessage].map(m => ({
+      // Filter out the welcome message so that the conversation starts with a 'user' turn as required by the Gemini API
+      const filteredMessages = [...messages, userMessage].filter(m => m.id !== "welcome");
+
+      const chatHistoryForAPI = filteredMessages.map(m => ({
         role: m.role,
         content: m.content
       }));

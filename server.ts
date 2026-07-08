@@ -12,15 +12,25 @@ async function startServer() {
 
   app.use(express.json());
 
-  // Server-side Gemini initialization
-  const ai = new GoogleGenAI({
-    apiKey: process.env.GEMINI_API_KEY || "",
-    httpOptions: {
-      headers: {
-        'User-Agent': 'aistudio-build',
+  // Server-side Gemini initialization (lazily initialized on first request to handle key injection and errors gracefully)
+  let aiInstance: GoogleGenAI | null = null;
+  function getGenAI() {
+    if (!aiInstance) {
+      const apiKey = process.env.GEMINI_API_KEY;
+      if (!apiKey) {
+        throw new Error("GEMINI_API_KEY is not configured on the server. Please check your Secrets.");
       }
+      aiInstance = new GoogleGenAI({
+        apiKey: apiKey,
+        httpOptions: {
+          headers: {
+            'User-Agent': 'aistudio-build',
+          }
+        }
+      });
     }
-  });
+    return aiInstance;
+  }
 
   // Server-side Visitor Counter (In-Memory persistent)
   let globalVisits = 24158; // Realistic premium base
@@ -75,10 +85,15 @@ async function startServer() {
       }
 
       // Convert messages to Gemini format: role must be 'user' or 'model' (or we map role 'assistant' to 'model')
-      const formattedContents = messages.map((m: any) => ({
+      let formattedContents = messages.map((m: any) => ({
         role: m.role === "assistant" ? "model" : "user",
         parts: [{ text: m.content }]
       }));
+
+      // Ensure that the first turn of a multi-turn conversation is always from 'user'
+      if (formattedContents.length > 0 && formattedContents[0].role === "model") {
+        formattedContents = formattedContents.slice(1);
+      }
 
       const systemInstruction = `Eres el asistente virtual inteligente oficial de "AYAT MÓVILES", una tienda de tecnología y reparación de teléfonos móviles de primer nivel ubicada en Zumarraga, Gipuzkoa.
 Tus respuestas deben ser siempre profesionales, amables, claras y orientadas a ayudar al cliente. Responde siempre en español.
@@ -99,8 +114,9 @@ Información clave sobre AYAT MÓVILES que debes conocer y usar cuando te pregun
 
 Intenta guiar a los clientes para que visiten la tienda, llamen por teléfono o manden un WhatsApp si necesitan un presupuesto de reparación específico. Sé empático, cercano y muy servicial.`;
 
+      const ai = getGenAI();
       const response = await ai.models.generateContent({
-        model: "gemini-3.5-flash",
+        model: "gemini-2.5-flash",
         contents: formattedContents,
         config: {
           systemInstruction: systemInstruction,

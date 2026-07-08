@@ -276,6 +276,8 @@ export default function ThreeSmartphone() {
               src="https://lh3.googleusercontent.com/d/1-S2VPhkJxbV03CylkAMXL1NLpns78ILE" 
               alt="Ayat Móviles Flyer" 
               className="absolute inset-0 w-full h-full object-cover z-0 select-none pointer-events-none rounded-[30px] sm:rounded-[43px]"
+              loading="lazy"
+              decoding="async"
               referrerPolicy="no-referrer"
             />
           </video>

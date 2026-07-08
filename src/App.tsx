@@ -20,7 +20,11 @@ import {
   HelpCircle,
   Wrench,
   Check,
-  X
+  X,
+  Moon,
+  Sun,
+  Bell,
+  Globe
 } from "lucide-react";
 import { motion, AnimatePresence } from "motion/react";
 import ThreeSmartphone from "./components/ThreeSmartphone";
@@ -48,6 +52,39 @@ export default function App() {
   const [footerRating, setFooterRating] = useState<number | null>(null);
   const [footerRatingSubmitted, setFooterRatingSubmitted] = useState(false);
   const [footerQuestion, setFooterQuestion] = useState("");
+
+  // States for new features
+  const [language, setLanguage] = useState<"ESP" | "EUS">("ESP");
+  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+
+  // Toggle Dark Mode
+  useEffect(() => {
+    if (isDarkMode) {
+      document.documentElement.classList.add("dark");
+    } else {
+      document.documentElement.classList.remove("dark");
+    }
+  }, [isDarkMode]);
+
+  // Request Notifications
+  const requestNotifications = async () => {
+    if (!("Notification" in window)) {
+      alert("Este navegador no soporta notificaciones.");
+      return;
+    }
+    try {
+      const permission = await Notification.requestPermission();
+      if (permission === "granted") {
+        setNotificationsEnabled(true);
+        new Notification("¡AYAT Móviles!", {
+          body: "Las notificaciones han sido activadas exitosamente."
+        });
+      }
+    } catch (e) {
+      console.error(e);
+    }
+  };
 
   // States for Interactive WhatsApp Section
   const [whatsAppText, setWhatsAppText] = useState("Hola AYAT Móviles, me gustaría consultar sobre un servicio de reparación.");
@@ -108,10 +145,31 @@ export default function App() {
     return <CinemaSplashLoader onComplete={() => setShowSplash(false)} />;
   }
 
+  // Language dictionary
+  const t = (text: string) => {
+    if (language === "ESP") return text;
+    const eu: Record<string, string> = {
+      "Servicios": "Zerbitzuak",
+      "Reseñas": "Iritziak",
+      "Dudas": "Zalantzak",
+      "Contacto": "Kontaktua",
+      "Especialistas en Reparación Móvil": "Mugikorren Konponketan Adituak",
+      "Servicio técnico rápido, venta de dispositivos y accesorios con garantía en Zumarraga.": "Zerbitzu tekniko azkarra, gailuen salmenta eta osagarriak bermearekin Zumarragan.",
+      "Reparación Exprés": "Konponketa Azkarra",
+      "Accesorios & Componentes": "Osagarriak eta Osagaiak",
+      "Solicitar Presupuesto": "Aurrekontua Eskatu",
+      "Nuestros Servicios": "Gure Zerbitzuak",
+      "Ubicación y Contacto": "Kokapena eta Kontaktua",
+      "Dudas Frecuentes": "Ohiko Galderak",
+      "Lo que dicen de nosotros": "Guri buruz esaten dutena",
+    };
+    return eu[text] || text;
+  };
+
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#f5f5f7] via-[#f0f0f3] to-[#e8e8eb] text-slate-900 font-sans flex flex-col relative overflow-x-hidden">
+    <div className="min-h-screen font-sans flex flex-col relative overflow-x-hidden transition-colors duration-500 bg-gradient-to-b from-[#f5f5f7] via-[#f0f0f3] to-[#e8e8eb] text-slate-900 dark:text-white dark:bg-none dark:bg-slate-950 dark:text-slate-100">
       {/* Premium Dynamic Background Shader */}
-      <BackgroundShader />
+      <BackgroundShader isDarkMode={isDarkMode} />
 
       {/* Floating Navigation Dynamic Island Backdrop */}
       {isNavExpanded && (
@@ -129,10 +187,10 @@ export default function App() {
             if (!isNavExpanded) setIsNavExpanded(true);
           }}
           transition={{ type: "spring", stiffness: 320, damping: 26 }}
-          className={`bg-white/40 backdrop-blur-md border border-slate-200/40 shadow-sm flex flex-col justify-center overflow-hidden transition-all duration-300 pointer-events-auto ${
+          className={`transition-all duration-300 pointer-events-auto flex flex-col justify-center overflow-hidden ${
             isNavExpanded 
-              ? "bg-white/90 backdrop-blur-xl border border-slate-200/60 rounded-3xl p-5 lg:p-6 w-full shadow-lg" 
-              : "rounded-full py-2 px-4 h-[44px] cursor-pointer w-[210px] sm:w-[220px] hover:bg-white/60"
+              ? "bg-white/90 dark:bg-slate-900/90 backdrop-blur-xl border border-slate-200 dark:border-slate-700/60 rounded-3xl p-5 lg:p-6 w-full shadow-lg"
+              : "bg-white/40 dark:bg-slate-800/40 backdrop-blur-md border border-slate-200 dark:border-slate-700/40 shadow-sm rounded-full py-2 px-4 h-[44px] cursor-pointer w-[210px] sm:w-[220px] hover:bg-white/60 dark:hover:bg-slate-800/60"
           }`}
         >
           <AnimatePresence mode="wait">
@@ -152,11 +210,11 @@ export default function App() {
                     className="w-10 h-10 object-contain" 
                     referrerPolicy="no-referrer"
                   />
-                  <span className="text-[11px] font-black tracking-widest font-display text-slate-900">AYAT MÓVILES</span>
+                  <span className="text-[11px] font-black tracking-widest font-display text-slate-900 dark:text-white">AYAT MÓVILES</span>
                 </div>
                 <div className="flex items-center gap-1.5 shrink-0">
-                  <span className="w-1.5 h-1.5 rounded-full bg-slate-800" />
-                  <span className="text-[9px] font-bold text-slate-700 font-mono tracking-wider">MENÚ</span>
+                  <span className="w-1.5 h-1.5 rounded-full bg-slate-800 dark:bg-slate-300" />
+                  <span className="text-[9px] font-bold font-mono tracking-wider text-slate-700 dark:text-slate-200 dark:text-slate-300">{language === "ESP" ? "MENÚ" : "MENUA"}</span>
                 </div>
               </motion.div>
             ) : (
@@ -176,7 +234,7 @@ export default function App() {
                       className="w-16 h-16 object-contain transition-transform duration-500 hover:scale-110" 
                       referrerPolicy="no-referrer"
                     />
-                    <span className="text-xl font-black tracking-tight text-slate-900 font-display">AYAT MÓVILES</span>
+                    <span className="text-xl font-black tracking-tight font-display text-slate-900 dark:text-white">AYAT MÓVILES</span>
                   </div>
                   {/* Mobile close button */}
                   <button
@@ -184,14 +242,14 @@ export default function App() {
                       e.stopPropagation();
                       setIsNavExpanded(false);
                     }}
-                    className="p-1.5 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full transition-colors lg:hidden cursor-pointer"
+                    className="p-1.5 rounded-full transition-colors lg:hidden cursor-pointer bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300"
                   >
                     <X className="w-4 h-4" />
                   </button>
                 </div>
 
                 {/* Navigation Menu Links */}
-                <nav className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-4 text-sm font-medium text-slate-500 w-full lg:w-auto">
+                <nav className="flex flex-col lg:flex-row items-stretch lg:items-center gap-2 lg:gap-4 text-sm font-medium text-slate-500 dark:text-slate-400 w-full lg:w-auto">
                   <a 
                     href="#inicio" 
                     onClick={(e) => {
@@ -200,11 +258,11 @@ export default function App() {
                     }}
                     className={`transition-all duration-300 py-2 px-4 rounded-full text-left lg:text-center ${
                       activeTab === "inicio" 
-                        ? "bg-indigo-50 text-indigo-700 font-bold shadow-inner" 
-                        : "hover:text-indigo-600 hover:bg-slate-50"
+                        ? "bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 font-bold shadow-inner"
+                        : "hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-800"
                     }`}
                   >
-                    Inicio
+                    {language === "ESP" ? "Inicio" : "Hasiera"}
                   </a>
                   <a 
                     href="#servicios" 
@@ -214,11 +272,11 @@ export default function App() {
                     }}
                     className={`transition-all duration-300 py-2 px-4 rounded-full text-left lg:text-center ${
                       activeTab === "servicios" 
-                        ? "bg-indigo-50 text-indigo-700 font-bold shadow-inner" 
-                        : "hover:text-indigo-600 hover:bg-slate-50"
+                        ? "bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 font-bold shadow-inner"
+                        : "hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-800"
                     }`}
                   >
-                    Servicios
+                    {t("Servicios")}
                   </a>
                   <a 
                     href="#valoraciones" 
@@ -228,11 +286,11 @@ export default function App() {
                     }}
                     className={`transition-all duration-300 py-2 px-4 rounded-full text-left lg:text-center ${
                       activeTab === "valoraciones" 
-                        ? "bg-indigo-50 text-indigo-700 font-bold shadow-inner" 
-                        : "hover:text-indigo-600 hover:bg-slate-50"
+                        ? "bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 font-bold shadow-inner"
+                        : "hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-800"
                     }`}
                   >
-                    Reseñas
+                    {t("Reseñas")}
                   </a>
                   <a 
                     href="#faq" 
@@ -242,11 +300,11 @@ export default function App() {
                     }}
                     className={`transition-all duration-300 py-2 px-4 rounded-full text-left lg:text-center ${
                       activeTab === "faq" 
-                        ? "bg-indigo-50 text-indigo-700 font-bold shadow-inner" 
-                        : "hover:text-indigo-600 hover:bg-slate-50"
+                        ? "bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 font-bold shadow-inner"
+                        : "hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-800"
                     }`}
                   >
-                    Dudas
+                    {t("Dudas")}
                   </a>
                   <a 
                     href="#contacto" 
@@ -256,16 +314,42 @@ export default function App() {
                     }}
                     className={`transition-all duration-300 py-2 px-4 rounded-full text-left lg:text-center ${
                       activeTab === "contacto" 
-                        ? "bg-indigo-50 text-indigo-700 font-bold shadow-inner" 
-                        : "hover:text-indigo-600 hover:bg-slate-50"
+                        ? "bg-indigo-50 dark:bg-indigo-900/50 text-indigo-700 dark:text-indigo-300 font-bold shadow-inner"
+                        : "hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-slate-50 dark:bg-slate-800 dark:hover:bg-slate-800"
                     }`}
                   >
-                    Contacto
+                    {t("Contacto")}
                   </a>
                 </nav>
 
                 {/* Action Buttons */}
-                <div className="flex items-center gap-3 w-full lg:w-auto justify-end border-t lg:border-t-0 pt-3 lg:pt-0 border-slate-100">
+                <div className="flex flex-wrap items-center gap-2 lg:gap-3 w-full lg:w-auto justify-start lg:justify-end border-t lg:border-t-0 pt-3 lg:pt-0 border-slate-100 dark:border-slate-700">
+                  {/* Controls */}
+                  <div className="flex items-center gap-1.5 bg-slate-50 dark:bg-slate-800 border border-slate-100 dark:border-slate-700 rounded-full p-1 mr-auto lg:mr-0">
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setLanguage(language === "ESP" ? "EUS" : "ESP"); }}
+                      className="flex items-center gap-1 text-xs font-bold text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 px-2 py-1.5 rounded-full hover:bg-white dark:bg-slate-900 dark:hover:bg-slate-700 transition-colors"
+                      title="Cambiar idioma"
+                    >
+                      <Globe className="w-3.5 h-3.5" />
+                      {language}
+                    </button>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); setIsDarkMode(!isDarkMode); }}
+                      className="p-1.5 text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-white dark:bg-slate-900 dark:hover:bg-slate-700 rounded-full transition-colors"
+                      title={isDarkMode ? "Modo Claro" : "Modo Oscuro"}
+                    >
+                      {isDarkMode ? <Sun className="w-4 h-4" /> : <Moon className="w-4 h-4" />}
+                    </button>
+                    <button 
+                      onClick={(e) => { e.stopPropagation(); requestNotifications(); }}
+                      className={`p-1.5 rounded-full transition-colors ${notificationsEnabled ? "text-emerald-500 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/50" : "text-slate-600 dark:text-slate-300 hover:text-indigo-600 dark:hover:text-indigo-400 hover:bg-white dark:bg-slate-900 dark:hover:bg-slate-700"}`}
+                      title={notificationsEnabled ? "Notificaciones Activadas" : "Activar Notificaciones"}
+                    >
+                      <Bell className="w-4 h-4" />
+                    </button>
+                  </div>
+                  
                   <a 
                     href="https://wa.me/34632447979" 
                     target="_blank" 
@@ -281,7 +365,7 @@ export default function App() {
                       e.stopPropagation();
                       setIsNavExpanded(false);
                     }}
-                    className="hidden lg:flex p-2 hover:bg-slate-100 rounded-full text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                    className="hidden lg:flex p-2 hover:bg-slate-100 dark:bg-slate-800 rounded-full text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
                     title="Comprimir"
                   >
                     <X className="w-4 h-4" />
@@ -295,9 +379,9 @@ export default function App() {
 
       {/* Decorative Elegant Soft Ambient Blobs (Apple Style) - Replaced harsh purple grids with neutral silver-grays */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-slate-300/40 blur-[130px] animate-pulse" style={{ animationDuration: "14s" }} />
-        <div className="absolute bottom-[10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-slate-400/30 blur-[160px] animate-pulse" style={{ animationDuration: "18s" }} />
-        <div className="absolute top-[35%] left-[25%] w-[45vw] h-[45vw] rounded-full bg-zinc-300/40 blur-[140px] animate-pulse" style={{ animationDuration: "22s" }} />
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-slate-300/40 dark:bg-slate-800/40 blur-[130px] animate-pulse" style={{ animationDuration: "14s" }} />
+        <div className="absolute bottom-[10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-slate-400/30 dark:bg-slate-700/30 blur-[160px] animate-pulse" style={{ animationDuration: "18s" }} />
+        <div className="absolute top-[35%] left-[25%] w-[45vw] h-[45vw] rounded-full bg-zinc-300/40 dark:bg-slate-800/40 blur-[140px] animate-pulse" style={{ animationDuration: "22s" }} />
       </div>
 
       {/* Main Grid Wrapper */}
@@ -310,7 +394,7 @@ export default function App() {
           <div className="w-full">
             
             {/* Unified Bento Card with premium ambient lighting & subtle micro-grid texture */}
-            <div className="w-full flex flex-col sm:flex-row items-center justify-between p-5 xs:p-6 sm:p-10 md:p-12 relative bg-white border border-slate-200/90 shadow-[0_20px_50px_rgba(15,23,42,0.03)] rounded-[32px] overflow-hidden group transition-all duration-500 hover:shadow-[0_30px_70px_rgba(99,102,241,0.06)] hover:border-slate-200">
+            <div className="w-full flex flex-col sm:flex-row items-center justify-between p-5 xs:p-6 sm:p-10 md:p-12 relative bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 dark:border-slate-800 shadow-[0_20px_50px_rgba(15,23,42,0.03)] dark:shadow-[0_20px_50px_rgba(0,0,0,0.3)] rounded-[32px] overflow-hidden group transition-all duration-500 hover:shadow-[0_30px_70px_rgba(99,102,241,0.06)] dark:hover:shadow-[0_30px_70px_rgba(99,102,241,0.1)] hover:border-slate-200 dark:border-slate-700 dark:hover:border-slate-700">
               
               {/* Subtle background grids & radial glows to add depth */}
               <div className="absolute inset-0 pointer-events-none z-0">
@@ -329,12 +413,12 @@ export default function App() {
                   Soporte de Vanguardia • Certificado 2026
                 </span>
                 
-                <h1 className="text-4xl xs:text-5xl sm:text-5.5xl md:text-6.5xl lg:text-7.5xl xl:text-8xl font-extrabold leading-[1.08] tracking-tight text-slate-900 mb-6 sm:mb-10 font-display">
+                <h1 className="text-4xl xs:text-5xl sm:text-5.5xl md:text-6.5xl lg:text-7.5xl xl:text-8xl font-extrabold leading-[1.08] tracking-tight text-slate-900 dark:text-white mb-6 sm:mb-10 font-display">
                   Tu tecnología con<br/>
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">Ayat Móviles.</span>
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 dark:from-indigo-400 dark:to-purple-400">Ayat Móviles.</span>
                 </h1>
                 
-                <p className="hidden sm:block text-base sm:text-lg md:text-xl text-slate-500 max-w-lg mb-8 sm:mb-12 leading-relaxed font-sans font-medium">
+                <p className="hidden sm:block text-base sm:text-lg md:text-xl text-slate-500 dark:text-slate-400 max-w-lg mb-8 sm:mb-12 leading-relaxed font-sans font-medium">
                   Especialistas líderes en telefonía móvil, soporte informático exprés y servicios logísticos en Zumarraga. Reparación garantizada, venta certificada y atención premium personalizada.
                 </p>
                 
@@ -350,7 +434,7 @@ export default function App() {
                   <a 
                     href="#contacto"
                     onClick={() => setActiveTab("contacto")}
-                    className="px-4 py-2 sm:px-8 sm:py-4 bg-slate-50 hover:bg-slate-100 hover:text-indigo-750 border border-slate-250 text-slate-800 font-bold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 uppercase tracking-wider text-[10.5px] sm:text-sm rounded-full cursor-pointer hover:scale-[1.02] active:scale-95 shadow-sm"
+                    className="px-4 py-2 sm:px-8 sm:py-4 bg-slate-50 dark:bg-slate-800 hover:bg-slate-100 dark:bg-slate-800 dark:hover:bg-slate-700 hover:text-indigo-750 dark:hover:text-indigo-300 border border-slate-250 dark:border-slate-700 text-slate-800 dark:text-slate-100 dark:text-slate-200 font-bold transition-all duration-300 flex items-center gap-1.5 sm:gap-2 uppercase tracking-wider text-[10.5px] sm:text-sm rounded-full cursor-pointer hover:scale-[1.02] active:scale-95 shadow-sm"
                   >
                     <Phone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-indigo-500" />
                     Contacto Directo
@@ -380,14 +464,14 @@ export default function App() {
               return (
                 <div 
                   key={idx} 
-                  className="bg-white/70 backdrop-blur-sm border border-slate-200/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 flex items-center gap-4 group hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(15,23,42,0.04)] hover:bg-white hover:border-slate-300/80 cursor-default"
+                  className="bg-white/70 dark:bg-slate-900/70 backdrop-blur-sm border border-slate-200/50 dark:border-slate-800/50 rounded-2xl p-4 sm:p-5 transition-all duration-300 flex items-center gap-4 group hover:-translate-y-1 hover:shadow-[0_12px_30px_rgba(15,23,42,0.04)] dark:hover:shadow-[0_12px_30px_rgba(0,0,0,0.3)] hover:bg-white dark:bg-slate-900 dark:hover:bg-slate-800 hover:border-slate-300/80 dark:hover:border-slate-700 cursor-default"
                 >
-                  <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 group-hover:bg-white group-hover:border-slate-200 transition-all duration-300 shrink-0">
-                    <IconComponent className={`w-5 h-5 sm:w-6 sm:h-6 text-slate-650 transition-colors ${badge.glow} shrink-0`} />
+                  <div className="p-2.5 rounded-xl bg-slate-50 dark:bg-slate-800/80 border border-slate-100 dark:border-slate-700 group-hover:bg-white dark:group-hover:bg-slate-700 group-hover:border-slate-200 dark:border-slate-700 dark:group-hover:border-slate-600 transition-all duration-300 shrink-0">
+                    <IconComponent className={`w-5 h-5 sm:w-6 sm:h-6 text-slate-650 dark:text-slate-300 transition-colors ${badge.glow} shrink-0`} />
                   </div>
                   <div>
-                    <h4 className="font-bold text-xs sm:text-sm text-slate-900 font-display tracking-tight group-hover:text-slate-950 transition-colors">{badge.title}</h4>
-                    <p className="text-[10px] sm:text-xs text-slate-500 font-sans font-medium mt-0.5 leading-snug">{badge.desc}</p>
+                    <h4 className="font-bold text-xs sm:text-sm text-slate-900 dark:text-white dark:text-slate-100 font-display tracking-tight group-hover:text-slate-950 dark:group-hover:text-white transition-colors">{badge.title}</h4>
+                    <p className="text-[10px] sm:text-xs text-slate-500 dark:text-slate-400 font-sans font-medium mt-0.5 leading-snug">{badge.desc}</p>
                   </div>
                 </div>
               );
@@ -403,16 +487,16 @@ export default function App() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-120px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="py-12 md:py-16 px-4 max-w-7xl mx-auto w-full border-t border-slate-200/60 mt-3 relative"
+          className="py-12 md:py-16 px-4 max-w-7xl mx-auto w-full border-t border-slate-200 dark:border-slate-700/60 mt-3 relative"
         >
           
           {/* Section Header */}
           <div className="mb-8 md:mb-10 max-w-3xl">
-            <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-3 font-mono">PORTFOLIO DE SERVICIOS</span>
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 font-display">
+            <span className="text-xs font-bold text-indigo-600 dark:text-indigo-400 uppercase tracking-widest block mb-3 font-mono">PORTFOLIO DE SERVICIOS</span>
+            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold tracking-tight text-slate-900 dark:text-white font-display">
               Soluciones Integrales de Máxima Calidad
             </h2>
-            <p className="text-slate-500 mt-4 font-sans text-sm sm:text-base leading-relaxed font-medium">
+            <p className="text-slate-500 dark:text-slate-400 mt-4 font-sans text-sm sm:text-base leading-relaxed font-medium">
               Cubrimos todas tus necesidades en telefonía móvil, soporte informático y paquetería express. Equipamiento de laboratorio de última generación, repuestos Grado AAA y un equipo técnico altamente cualificado.
             </p>
           </div>
@@ -421,29 +505,29 @@ export default function App() {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             
             {/* Card 1: Tienda de Móviles & Accesorios (Large, col-span-2) */}
-            <div className="md:col-span-2 lg:col-span-2 bg-gradient-to-br from-indigo-50/20 via-white to-purple-50/10 border border-slate-200/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(99,102,241,0.05)] hover:border-indigo-200">
+            <div className="md:col-span-2 lg:col-span-2 bg-gradient-to-br from-indigo-50/20 dark:from-indigo-900/20 via-white dark:via-slate-900 to-purple-50/10 dark:to-purple-900/10 border border-slate-200 dark:border-slate-700/70 dark:border-slate-800 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(99,102,241,0.05)] dark:hover:shadow-[0_15px_35px_rgba(99,102,241,0.15)] hover:border-indigo-200 dark:hover:border-indigo-500/50">
               <div className="space-y-6">
                 <div className="flex items-center justify-between flex-wrap gap-2">
-                  <div className="p-3 bg-indigo-50 border border-indigo-100/50 rounded-2xl text-indigo-600 group-hover:bg-indigo-600 group-hover:text-white transition-all duration-300 shrink-0">
+                  <div className="p-3 bg-indigo-50 dark:bg-indigo-900/50 border border-indigo-100/50 dark:border-indigo-800/50 rounded-2xl text-indigo-600 dark:text-indigo-400 group-hover:bg-indigo-600 dark:group-hover:bg-indigo-500 group-hover:text-white transition-all duration-300 shrink-0">
                     <Smartphone className="w-6 h-6" />
                   </div>
-                  <span className="text-[10px] text-indigo-700 font-mono tracking-wider uppercase border border-indigo-200/50 bg-indigo-50/60 px-3 py-1 rounded-full font-bold">
+                  <span className="text-[10px] text-indigo-700 dark:text-indigo-300 font-mono tracking-wider uppercase border border-indigo-200/50 dark:border-indigo-800/50 bg-indigo-50/60 dark:bg-indigo-900/60 px-3 py-1 rounded-full font-bold">
                     Venta & Reparación Exprés
                   </span>
                 </div>
                 
                 <div className="grid grid-cols-1 sm:grid-cols-12 gap-6 items-start">
                   <div className="sm:col-span-7 space-y-3">
-                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900 font-display tracking-tight">
+                    <h3 className="text-xl sm:text-2xl font-bold text-slate-900 dark:text-white font-display tracking-tight">
                       Tienda de Móviles & Accesorios
                     </h3>
-                    <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium">
+                    <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed font-sans font-medium">
                       Disponemos de smartphones premium nuevos y reacondicionados totalmente verificados bajo estrictos estándares. Ofrecemos el surtido más completo de fundas de alta resistencia, protectores templados con instalación gratuita y cargadores certificados de carga ultra rápida.
                     </p>
                   </div>
                   
                   {/* Visual Checklist for depth */}
-                  <div className="sm:col-span-5 bg-white/60 border border-slate-200/40 p-4 rounded-2xl space-y-2.5 font-mono text-[11px] text-slate-650 shadow-inner">
+                  <div className="sm:col-span-5 bg-white/60 dark:bg-slate-800/60 border border-slate-200/40 dark:border-slate-700/40 p-4 rounded-2xl space-y-2.5 font-mono text-[11px] text-slate-650 dark:text-slate-300 shadow-inner">
                     <div className="flex items-center gap-2">
                       <Check className="w-3.5 h-3.5 text-indigo-600 stroke-[3]" />
                       <span>Pantallas Grado AAA Certificadas</span>
@@ -464,7 +548,7 @@ export default function App() {
                 </div>
               </div>
 
-              <div className="border-t border-slate-100 pt-5 mt-6 flex items-center justify-between">
+              <div className="border-t border-slate-100 dark:border-slate-800 pt-5 mt-6 flex items-center justify-between">
                 <span className="text-[11px] font-mono text-slate-400">Soporte Apple, Samsung, Xiaomi y más</span>
                 <a 
                   href="#contacto"
@@ -477,7 +561,7 @@ export default function App() {
             </div>
 
             {/* Card 2: Punto Pack Oficial Mondial Relay (Col-span 1) */}
-            <div className="md:col-span-1 bg-gradient-to-br from-emerald-50/20 via-white to-emerald-50/5 border border-slate-200/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(16,185,129,0.05)] hover:border-emerald-200">
+            <div className="md:col-span-1 bg-gradient-to-br from-emerald-50/20 via-white to-emerald-50/5 border border-slate-200 dark:border-slate-700/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(16,185,129,0.05)] hover:border-emerald-200">
               <div className="space-y-5">
                 <div className="flex items-center justify-between flex-wrap gap-2">
                   <div className="p-3 bg-emerald-50 border border-emerald-100/50 rounded-2xl text-emerald-600 group-hover:bg-emerald-600 group-hover:text-white transition-all duration-300 shrink-0">
@@ -489,49 +573,49 @@ export default function App() {
                 </div>
 
                 <div className="space-y-2">
-                  <h3 className="text-xl font-bold text-slate-900 font-display tracking-tight">
+                  <h3 className="text-xl font-bold text-slate-900 dark:text-white font-display tracking-tight">
                     Punto Pack Oficial
                   </h3>
-                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium">
+                  <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed font-sans font-medium">
                     Socio logístico oficial de Mondial Relay en Zumarraga. Realiza tus envíos nacionales e internacionales de forma ágil y recoge tus compras online de manera 100% segura en nuestro amplio horario comercial.
                   </p>
                 </div>
 
                 {/* Simulated Shipment Path Visual */}
-                <div className="bg-slate-50/80 border border-slate-200/40 p-3 rounded-xl flex items-center justify-between relative overflow-hidden">
+                <div className="bg-slate-50 dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700/40 p-3 rounded-xl flex items-center justify-between relative overflow-hidden">
                   <div className="absolute top-1/2 left-8 right-8 h-[1px] bg-dashed border-t border-dashed border-emerald-300 -translate-y-1/2 z-0" />
-                  <div className="z-10 bg-white border border-slate-200 p-1.5 rounded-lg text-xs font-mono font-bold text-slate-500">Origen</div>
+                  <div className="z-10 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 p-1.5 rounded-lg text-xs font-mono font-bold text-slate-500 dark:text-slate-400">Origen</div>
                   <Truck className="w-4 h-4 text-emerald-600 z-10 bg-emerald-100/80 rounded-full p-0.5 animate-[bounce_1.5s_infinite]" />
                   <div className="z-10 bg-emerald-600 text-white p-1.5 rounded-lg text-[10px] font-mono font-bold">Ayat Móviles</div>
                 </div>
               </div>
 
-              <div className="border-t border-slate-100 pt-5 mt-6 text-xs text-slate-400 font-mono">
+              <div className="border-t border-slate-100 dark:border-slate-800 pt-5 mt-6 text-xs text-slate-400 font-mono">
                 Horario: L-S (10:00 - 14:00, 16:30 - 20:30)
               </div>
             </div>
 
             {/* Card 3: Compra Presencial (Col-span 1) */}
-            <div className="bg-white border border-slate-200/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(15,23,42,0.03)] hover:border-slate-350">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(15,23,42,0.03)] dark:shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:border-slate-350">
               <div className="space-y-4">
-                <div className="p-3 bg-slate-50 border border-slate-150 rounded-2xl text-slate-700 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300 w-fit">
+                <div className="p-3 bg-slate-50 dark:bg-slate-800 border border-slate-150 rounded-2xl text-slate-700 dark:text-slate-200 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300 w-fit">
                   <ShoppingBag className="w-6 h-6" />
                 </div>
                 
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-bold text-slate-900 font-display tracking-tight">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white font-display tracking-tight">
                       Compra Presencial
                     </h3>
-                    <span className="text-[9px] text-slate-500 font-mono uppercase bg-slate-100 px-2 py-0.5 rounded-full">En Tienda</span>
+                    <span className="text-[9px] text-slate-500 dark:text-slate-400 font-mono uppercase bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">En Tienda</span>
                   </div>
-                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium">
+                  <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed font-sans font-medium">
                     Ven y experimenta los terminales insitu antes de decidir. Nuestro asesoramiento experto está diseñado para adaptarse honestamente a tus necesidades y presupuesto reales, sin sorpresas.
                   </p>
                 </div>
               </div>
 
-              <div className="border-t border-slate-100 pt-5 mt-6">
+              <div className="border-t border-slate-100 dark:border-slate-800 pt-5 mt-6">
                 <a 
                   href="#contacto"
                   onClick={() => setActiveTab("contacto")}
@@ -543,26 +627,26 @@ export default function App() {
             </div>
 
             {/* Card 4: Soporte a Domicilio (Col-span 1) */}
-            <div className="bg-white border border-slate-200/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(15,23,42,0.03)] hover:border-slate-350">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(15,23,42,0.03)] dark:shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:border-slate-350">
               <div className="space-y-4">
-                <div className="p-3 bg-slate-50 border border-slate-150 rounded-2xl text-slate-700 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300 w-fit">
+                <div className="p-3 bg-slate-50 dark:bg-slate-800 border border-slate-150 rounded-2xl text-slate-700 dark:text-slate-200 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300 w-fit">
                   <Home className="w-6 h-6" />
                 </div>
                 
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-bold text-slate-900 font-display tracking-tight">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white font-display tracking-tight">
                       Soporte a Domicilio
                     </h3>
-                    <span className="text-[9px] text-slate-500 font-mono uppercase bg-slate-100 px-2 py-0.5 rounded-full">Zona Local</span>
+                    <span className="text-[9px] text-slate-500 dark:text-slate-400 font-mono uppercase bg-slate-100 dark:bg-slate-800 px-2 py-0.5 rounded-full">Zona Local</span>
                   </div>
-                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium">
+                  <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed font-sans font-medium">
                     Ofrecemos asistencia técnica especial y entrega/recogida de terminales directamente a domicilio en el entorno para personas con movilidad reducida o con necesidades específicas de agenda.
                   </p>
                 </div>
               </div>
 
-              <div className="border-t border-slate-100 pt-5 mt-6 flex items-center justify-between text-xs">
+              <div className="border-t border-slate-100 dark:border-slate-800 pt-5 mt-6 flex items-center justify-between text-xs">
                 <span className="text-slate-400 font-mono">Zumarraga y Urretxu</span>
                 <a 
                   href="#contacto"
@@ -575,26 +659,26 @@ export default function App() {
             </div>
 
             {/* Card 5: Privacidad & Datos Seguros (Col-span 1) */}
-            <div className="bg-white border border-slate-200/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(15,23,42,0.03)] hover:border-slate-350">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/70 rounded-[28px] p-6 sm:p-8 flex flex-col justify-between group transition-all duration-300 hover:shadow-[0_15px_35px_rgba(15,23,42,0.03)] dark:shadow-[0_15px_35px_rgba(0,0,0,0.3)] hover:border-slate-350">
               <div className="space-y-4">
-                <div className="p-3 bg-slate-50 border border-slate-150 rounded-2xl text-slate-700 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300 w-fit">
+                <div className="p-3 bg-slate-50 dark:bg-slate-800 border border-slate-150 rounded-2xl text-slate-700 dark:text-slate-200 group-hover:bg-slate-900 group-hover:text-white transition-all duration-300 w-fit">
                   <Shield className="w-6 h-6" />
                 </div>
                 
                 <div className="space-y-2">
                   <div className="flex items-center gap-2">
-                    <h3 className="text-lg font-bold text-slate-900 font-display tracking-tight">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white font-display tracking-tight">
                       Privacidad Asegurada
                     </h3>
                     <span className="text-[9px] text-emerald-700 font-mono uppercase bg-emerald-50 px-2 py-0.5 rounded-full font-bold">Certificado LOPD</span>
                   </div>
-                  <p className="text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium">
+                  <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm leading-relaxed font-sans font-medium">
                     Tu intimidad y seguridad son innegociables. Aplicamos estrictos protocolos de confidencialidad de datos personales durante todo el proceso de diagnóstico y reparación de tu dispositivo.
                   </p>
                 </div>
               </div>
 
-              <div className="border-t border-slate-100 pt-5 mt-6 flex items-center justify-between text-xs">
+              <div className="border-t border-slate-100 dark:border-slate-800 pt-5 mt-6 flex items-center justify-between text-xs">
                 <span className="text-emerald-600 font-bold font-mono">Datos 100% Protegidos</span>
                 <a 
                   href="#faq"
@@ -615,15 +699,15 @@ export default function App() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="py-12 px-6 sm:px-10 bg-gradient-to-b from-slate-50 to-white border border-slate-200/60 rounded-[32px] max-w-7xl mx-auto w-full relative shadow-[0_20px_50px_rgba(15,23,42,0.02)]"
+          className="py-12 px-6 sm:px-10 bg-gradient-to-b from-slate-50 dark:from-slate-900 to-white dark:to-slate-950 border border-slate-200 dark:border-slate-700/60 rounded-[32px] max-w-7xl mx-auto w-full relative shadow-[0_20px_50px_rgba(15,23,42,0.02)]"
         >
           
           <div className="max-w-3xl mb-8 relative z-10">
-            <span className="text-[10px] font-mono font-bold text-indigo-700 uppercase tracking-wider bg-indigo-50 border border-indigo-100/60 px-3 py-1.5 rounded-full shadow-sm">
+            <span className="text-[10px] font-mono font-bold text-indigo-700 uppercase tracking-wider bg-indigo-50 dark:bg-indigo-900/50 border border-indigo-100/60 dark:border-indigo-800/50 px-3 py-1.5 dark:text-indigo-400 rounded-full shadow-sm">
               CALCULADORA DE PRESUPUESTOS
             </span>
-            <h3 className="text-3xl sm:text-4xl font-extrabold font-display text-slate-900 mt-5 tracking-tight">Simulador de Reparación en Vivo</h3>
-            <p className="text-sm sm:text-base text-slate-500 mt-2.5 leading-relaxed font-medium">
+            <h3 className="text-3xl sm:text-4xl font-extrabold font-display text-slate-900 dark:text-white mt-5 tracking-tight">Simulador de Reparación en Vivo</h3>
+            <p className="text-sm sm:text-base text-slate-500 dark:text-slate-400 mt-2.5 leading-relaxed font-medium">
               Selecciona tu marca, elige tu modelo e indica el tipo de daño para obtener una estimación de presupuesto transparente al instante con mano de obra y piezas AAA incluidas.
             </p>
           </div>
@@ -635,7 +719,7 @@ export default function App() {
               
               {/* 1. Brand selection */}
               <div className="space-y-3">
-                <label className="block text-xs font-mono font-bold text-slate-550 uppercase tracking-widest">1. Selecciona la Marca</label>
+                <label className="block text-xs font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">1. Selecciona la Marca</label>
                 <div className="grid grid-cols-2 sm:grid-cols-4 gap-3">
                   {[
                     { id: "apple", label: "Apple iPhone" },
@@ -656,7 +740,7 @@ export default function App() {
                       className={`py-3.5 px-4 rounded-2xl border text-center font-display text-xs font-bold uppercase tracking-wider transition-all duration-300 flex flex-col items-center justify-center gap-2 cursor-pointer ${
                         calcBrand === brand.id
                           ? "bg-slate-950 text-white border-slate-950 shadow-md scale-[1.02]"
-                          : "bg-white text-slate-650 border-slate-200/80 hover:bg-slate-50 hover:border-slate-300"
+                          : "bg-white dark:bg-slate-800 text-slate-650 dark:text-slate-300 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
                       }`}
                     >
                       <span className="tracking-wide">{brand.label}</span>
@@ -667,12 +751,12 @@ export default function App() {
 
               {/* 2. Model selection */}
               <div className="space-y-3">
-                <label className="block text-xs font-mono font-bold text-slate-550 uppercase tracking-widest">2. Elige el Modelo</label>
+                <label className="block text-xs font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">2. Elige el Modelo</label>
                 <div className="relative">
                   <select
                     value={calcModel}
                     onChange={(e) => setCalcModel(e.target.value)}
-                    className="w-full bg-white border border-slate-200/85 rounded-2xl p-4 text-sm font-semibold text-slate-800 outline-none focus:border-indigo-550 focus:ring-1 focus:ring-indigo-200/40 appearance-none cursor-pointer shadow-sm transition-all"
+                    className="w-full bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl p-4 text-sm font-semibold text-slate-800 dark:text-slate-100 outline-none focus:border-indigo-550 focus:ring-1 focus:ring-indigo-500/40 appearance-none cursor-pointer shadow-sm transition-all"
                   >
                     {calcBrand === "apple" && (
                       <>
@@ -706,7 +790,7 @@ export default function App() {
                       </>
                     )}
                   </select>
-                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500">
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-slate-500 dark:text-slate-400">
                     <svg className="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/></svg>
                   </div>
                 </div>
@@ -714,7 +798,7 @@ export default function App() {
 
               {/* 3. Issue selection */}
               <div className="space-y-3">
-                <label className="block text-xs font-mono font-bold text-slate-550 uppercase tracking-widest">3. Tipo de Daño / Incidencia</label>
+                <label className="block text-xs font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">3. Tipo de Daño / Incidencia</label>
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                   {[
                     { id: "pantalla", label: "Pantalla Rota / Sin Imagen", icon: Smartphone, desc: "Panel táctil completo, brillo calibrado" },
@@ -731,7 +815,7 @@ export default function App() {
                         className={`p-4 rounded-2xl border text-left transition-all duration-300 flex items-start gap-4 cursor-pointer group ${
                           calcIssue === issue.id
                             ? "bg-slate-950 text-white border-slate-950 shadow-md scale-[1.01]"
-                            : "bg-white text-slate-700 border-slate-200/80 hover:bg-slate-50 hover:border-slate-300"
+                            : "bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-200 border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700 hover:border-slate-300 dark:hover:border-slate-600"
                         }`}
                       >
                         <div className={`p-2.5 rounded-xl shrink-0 transition-colors ${
@@ -756,8 +840,8 @@ export default function App() {
               {/* 4. Service Urgency Slider */}
               <div className="pt-3 space-y-3">
                 <div className="flex justify-between items-center">
-                  <label className="block text-xs font-mono font-bold text-slate-550 uppercase tracking-widest">4. Urgencia del servicio</label>
-                  <span className="text-xs font-bold text-indigo-700 font-mono bg-indigo-50 border border-indigo-100 px-3 py-1 rounded-full shadow-sm">
+                  <label className="block text-xs font-mono font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">4. Urgencia del servicio</label>
+                  <span className="text-xs font-bold text-indigo-700 font-mono bg-indigo-50 dark:bg-indigo-900/50 border border-indigo-100 dark:border-indigo-800/50 px-3 py-1 dark:text-indigo-400 rounded-full shadow-sm">
                     {calcUrgency === 1 ? "Estándar (Sin Recargo)" : calcUrgency === 2 ? "Exprés (+10€)" : "Súper Urgente (+20€)"}
                   </span>
                 </div>
@@ -783,7 +867,7 @@ export default function App() {
 
             {/* Right Panel: Receipt Display (5 cols) */}
             <div className="lg:col-span-5 flex flex-col">
-              <div className="bg-white border border-slate-200/90 p-6 sm:p-8 rounded-[24px] flex-1 flex flex-col justify-between relative overflow-hidden shadow-[0_15px_40px_rgba(15,23,42,0.03)] group/receipt">
+              <div className="bg-white dark:bg-slate-800/80 border border-slate-200 dark:border-slate-700 p-6 sm:p-8 rounded-[24px] flex-1 flex flex-col justify-between relative overflow-hidden shadow-[0_15px_40px_rgba(15,23,42,0.03)] group/receipt">
                 
                 {/* Visual stamp on background */}
                 <div className="absolute top-24 right-4 rotate-12 opacity-[0.03] select-none pointer-events-none transition-transform duration-700 group-hover/receipt:rotate-6">
@@ -796,7 +880,7 @@ export default function App() {
                   <div className="flex justify-between items-start mb-6">
                     <div>
                       <span className="text-[10px] font-mono font-bold text-indigo-600 uppercase tracking-widest block mb-1">PRESUPUESTO ESTIMADO</span>
-                      <h4 className="font-extrabold text-lg sm:text-xl font-display text-slate-900 tracking-tight">
+                      <h4 className="font-extrabold text-lg sm:text-xl font-display text-slate-900 dark:text-white tracking-tight">
                         {calcBrand === "apple" ? "Apple iPhone" : calcBrand === "samsung" ? "Samsung Galaxy" : calcBrand === "xiaomi" ? "Xiaomi / Redmi" : "Dispositivo"}
                       </h4>
                       <p className="text-[10px] text-slate-450 mt-1.5 font-mono uppercase tracking-wider font-bold">
@@ -817,16 +901,16 @@ export default function App() {
                         {calcBrand === "otros" && "Modelo General"}
                       </p>
                     </div>
-                    <div className="bg-slate-50 border border-slate-200 text-slate-600 px-3 py-1 rounded-full text-[10px] font-mono tracking-wider font-bold uppercase">
+                    <div className="bg-slate-50 dark:bg-slate-900 border border-slate-200 dark:border-slate-700 text-slate-600 dark:text-slate-300 px-3 py-1 rounded-full text-[10px] font-mono tracking-wider font-bold uppercase">
                       Estimación
                     </div>
                   </div>
 
                   {/* Pricing Display */}
-                  <div className="py-6 border-y border-dashed border-slate-200 my-6 flex flex-col justify-center items-center">
+                  <div className="py-6 border-y border-dashed border-slate-200 dark:border-slate-700 my-6 flex flex-col justify-center items-center">
                     <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest mb-1.5 font-bold">Total Estimado</span>
                     <div className="flex items-baseline">
-                      <span className="text-5xl sm:text-6xl font-black text-slate-900 tracking-tighter">
+                      <span className="text-5xl sm:text-6xl font-black text-slate-900 dark:text-white tracking-tighter">
                         {(() => {
                           const basePrices: Record<string, Record<string, number>> = {
                             pantalla: { apple: 89, samsung: 79, xiaomi: 59, otros: 49 },
@@ -843,7 +927,7 @@ export default function App() {
                           return total;
                         })()}
                       </span>
-                      <span className="text-2xl font-bold ml-1 text-slate-800">€</span>
+                      <span className="text-2xl font-bold ml-1 text-slate-800 dark:text-slate-100">€</span>
                     </div>
                     <p className="text-[10px] text-slate-400 mt-3 text-center leading-normal font-sans font-medium">Mano de obra, repuesto Grado AAA y tasas locales incluidas.</p>
                   </div>
@@ -851,7 +935,7 @@ export default function App() {
                   <div className="space-y-4 font-sans text-xs">
                     <div className="flex justify-between items-center">
                       <span className="text-slate-400">Tiempo estimado:</span>
-                      <span className="font-bold text-slate-700">
+                      <span className="font-bold text-slate-700 dark:text-slate-200">
                         {calcUrgency === 3 && "30 - 45 minutos (Súper Urgente)"}
                         {calcUrgency === 2 && "1 - 2 horas (Exprés)"}
                         {calcUrgency === 1 && (
@@ -865,7 +949,7 @@ export default function App() {
                     </div>
                     <div className="flex justify-between items-center">
                       <span className="text-slate-400">Garantía real:</span>
-                      <span className="font-bold text-slate-700">
+                      <span className="font-bold text-slate-700 dark:text-slate-200">
                         {calcIssue === "humedad" ? "Garantía de limpieza" : "6 meses de Garantía"}
                       </span>
                     </div>
@@ -917,7 +1001,7 @@ export default function App() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="py-10 px-6 bg-slate-50 border border-slate-200 rounded-3xl max-w-7xl mx-auto w-full relative overflow-hidden my-6"
+          className="py-10 px-6 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-3xl max-w-7xl mx-auto w-full relative overflow-hidden my-6"
         >
           <div className="absolute top-0 right-0 w-80 h-80 bg-emerald-500/5 rounded-full blur-3xl pointer-events-none" />
           <div className="absolute -bottom-20 -left-20 w-80 h-80 bg-indigo-500/5 rounded-full blur-3xl pointer-events-none" />
@@ -931,7 +1015,7 @@ export default function App() {
                 Soporte de WhatsApp Online
               </div>
               
-              <h2 className="text-3xl md:text-4xl font-black text-slate-900 tracking-tight font-display leading-tight">
+              <h2 className="text-3xl md:text-4xl font-black text-slate-900 dark:text-white tracking-tight font-display leading-tight">
                 Habla con Nosotros por WhatsApp al Instante
               </h2>
               
@@ -989,13 +1073,13 @@ export default function App() {
                       className={`p-4 rounded-2xl border text-left transition-all duration-300 hover:scale-[1.01] active:scale-95 cursor-pointer flex flex-col justify-between h-24 ${
                         whatsAppActivePreset === preset.id
                           ? "bg-emerald-50 border-emerald-400 shadow-md text-emerald-950"
-                          : "bg-white border-slate-200 hover:border-slate-300 hover:bg-slate-50/55 text-slate-700"
+                          : "bg-white dark:bg-slate-900 border-slate-200 dark:border-slate-700 hover:border-slate-300 hover:bg-slate-50 dark:bg-slate-800/55 text-slate-700 dark:text-slate-200"
                       }`}
                     >
                       <span className="font-bold text-xs font-display flex items-center gap-1.5">
                         {preset.title}
                       </span>
-                      <span className="text-[11px] text-slate-500 font-mono mt-2 block overflow-hidden text-ellipsis whitespace-nowrap w-full">
+                      <span className="text-[11px] text-slate-500 dark:text-slate-400 font-mono mt-2 block overflow-hidden text-ellipsis whitespace-nowrap w-full">
                         {preset.text}
                       </span>
                     </button>
@@ -1004,16 +1088,16 @@ export default function App() {
               </div>
 
               {/* Operating details */}
-              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-4 border-t border-slate-200">
-                <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
+              <div className="flex flex-wrap items-center gap-x-6 gap-y-3 pt-4 border-t border-slate-200 dark:border-slate-700">
+                <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 font-mono">
                   <Clock className="w-4 h-4 text-emerald-600" />
-                  <span>Respuesta: <strong className="text-slate-900 font-bold">&lt; 15 min</strong></span>
+                  <span>Respuesta: <strong className="text-slate-900 dark:text-white font-bold">&lt; 15 min</strong></span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
+                <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 font-mono">
                   <Phone className="w-4 h-4 text-emerald-600" />
-                  <span>Número Directo: <strong className="text-slate-900 font-bold">+34 632 447 979</strong></span>
+                  <span>Número Directo: <strong className="text-slate-900 dark:text-white font-bold">+34 632 447 979</strong></span>
                 </div>
-                <div className="flex items-center gap-2 text-xs text-slate-500 font-mono">
+                <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400 font-mono">
                   <CheckCircle2 className="w-4 h-4 text-emerald-600" />
                   <span>Servicio de Confianza</span>
                 </div>
@@ -1022,10 +1106,10 @@ export default function App() {
 
             {/* Right Column: Simulated Chat Device Mockup (Solid Matte, Minimalist) */}
             <div className="lg:col-span-5 flex justify-center">
-              <div className="w-full max-w-[340px] bg-white p-3 rounded-[40px] shadow-sm border border-slate-200 relative group overflow-hidden">
+              <div className="w-full max-w-[340px] bg-white dark:bg-slate-800 p-3 rounded-[40px] shadow-sm border border-slate-200 dark:border-slate-700 relative group overflow-hidden">
                 
                 {/* Chat Screen Container */}
-                <div className="w-full bg-slate-50 rounded-[32px] overflow-hidden border border-slate-200/85 flex flex-col h-[410px] sm:h-[500px] relative font-sans">
+                <div className="w-full bg-slate-50 dark:bg-slate-950 rounded-[32px] overflow-hidden border border-slate-200 dark:border-slate-700 flex flex-col h-[410px] sm:h-[500px] relative font-sans">
                   
                   {/* Chat Header (Clean Slate-950) */}
                   <div className="bg-slate-950 text-white pt-6 pb-4 px-4 flex items-center justify-between z-10 shrink-0">
@@ -1034,7 +1118,9 @@ export default function App() {
                         <img 
                           src="https://lh3.googleusercontent.com/d/1omHKXUnbNUSjE7DQWfmYQYIu5Xdqk9Qo" 
                           alt="Ayat Móviles" 
-                          className="w-full h-full object-contain"
+                          className="w-full h-full object-contain p-0.5"
+                          loading="lazy" 
+                          decoding="async"
                           referrerPolicy="no-referrer"
                         />
                         <span className="absolute bottom-0 right-0 w-2 h-2 rounded-full bg-emerald-500" />
@@ -1051,15 +1137,15 @@ export default function App() {
                   </div>
 
                   {/* Chat Wall (Solid White, No Textures) */}
-                  <div className="flex-1 overflow-y-auto p-4 space-y-3 flex flex-col bg-slate-50">
+                  <div className="flex-1 overflow-y-auto p-4 space-y-3 flex flex-col bg-slate-50 dark:bg-slate-950">
                     
                     {/* Timestamp bubble */}
-                    <div className="mx-auto bg-slate-200/60 px-2.5 py-0.5 rounded text-[9px] font-mono text-slate-500 uppercase tracking-wider">
+                    <div className="mx-auto bg-slate-200/60 dark:bg-slate-800 px-2.5 py-0.5 rounded text-[9px] font-mono text-slate-500 dark:text-slate-400 uppercase tracking-wider">
                       Hoy
                     </div>
 
                     {/* Support message 1 */}
-                    <div className="bg-white border border-slate-200/50 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-[12px] text-slate-800 shadow-sm relative self-start">
+                    <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-[12px] text-slate-800 dark:text-slate-100 shadow-sm relative self-start">
                       <p className="leading-normal">
                         ¡Hola! Bienvenido a <strong>AYAT MÓVILES</strong> en Zumarraga. ¿En qué podemos ayudarte hoy?
                       </p>
@@ -1067,7 +1153,7 @@ export default function App() {
                     </div>
 
                     {/* Support message 2 */}
-                    <div className="bg-white border border-slate-200/50 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-[12px] text-slate-800 shadow-sm relative self-start">
+                    <div className="bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-2xl rounded-tl-none p-3 max-w-[85%] text-[12px] text-slate-800 dark:text-slate-100 shadow-sm relative self-start">
                       <p className="leading-normal">
                         Si lo deseas, puedes editar la plantilla rápida a continuación para enviarnos tu consulta directa.
                       </p>
@@ -1088,7 +1174,7 @@ export default function App() {
                   </div>
 
                   {/* Interactive Text Area & Action Button */}
-                  <div className="p-3 bg-white border-t border-slate-200 flex flex-col gap-2 shrink-0">
+                  <div className="p-3 bg-white dark:bg-slate-900/80 border-t border-slate-200 dark:border-slate-800 flex flex-col gap-2 shrink-0">
                     <div className="relative">
                       <textarea
                         value={whatsAppText}
@@ -1098,7 +1184,7 @@ export default function App() {
                         }}
                         placeholder="Escribe tu mensaje aquí..."
                         rows={2}
-                        className="w-full bg-slate-50 border border-slate-200 focus:border-slate-400 focus:outline-none rounded-xl px-3 py-1.5 text-xs text-slate-800 placeholder-slate-450 resize-none font-sans"
+                        className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 focus:border-slate-400 dark:focus:border-slate-500 focus:outline-none rounded-xl px-3 py-1.5 text-xs text-slate-800 dark:text-slate-100 placeholder-slate-450 dark:placeholder-slate-500 resize-none font-sans"
                       />
                     </div>
                     
@@ -1127,15 +1213,15 @@ export default function App() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: "-100px" }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-          className="py-8 md:py-12 bg-white border border-slate-200/60 rounded-3xl max-w-7xl mx-auto w-full relative"
+          className="py-8 md:py-12 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl max-w-7xl mx-auto w-full relative"
         >
           <div className="px-5 sm:px-8 md:px-12 w-full">
             <div className="flex flex-col md:flex-row md:items-end justify-between mb-6 sm:mb-8">
               <div>
                 <span className="text-xs font-bold text-slate-400 uppercase tracking-widest block mb-2 font-mono">OPINIONES VERIFICADAS</span>
-                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 font-display">Lo que dicen nuestros clientes</h2>
+                <h2 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white font-display">Lo que dicen nuestros clientes</h2>
               </div>
-              <div className="flex items-center gap-2 mt-2 md:mt-0 text-xs font-mono text-slate-500">
+              <div className="flex items-center gap-2 mt-2 md:mt-0 text-xs font-mono text-slate-500 dark:text-slate-400">
                 <span>Google Reviews:</span>
                 <div className="flex text-amber-500">
                   <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
@@ -1144,7 +1230,7 @@ export default function App() {
                   <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
                   <Star className="w-3 h-3 fill-amber-500 text-amber-500" />
                 </div>
-                <span className="font-bold text-slate-900">5.0 / 5</span>
+                <span className="font-bold text-slate-900 dark:text-white">5.0 / 5</span>
               </div>
             </div>
 
@@ -1153,7 +1239,7 @@ export default function App() {
               {reviews.map((rev, index) => (
                 <div 
                   key={index} 
-                  className="bg-slate-50/50 border border-slate-200/60 p-6 flex flex-col justify-between rounded-2xl transition-all duration-300"
+                  className="bg-slate-50 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/60 p-6 flex flex-col justify-between rounded-2xl transition-all duration-300"
                 >
                   <div>
                     <div className="flex items-center gap-1 text-amber-500 mb-3.5">
@@ -1167,12 +1253,12 @@ export default function App() {
                     </p>
                   </div>
 
-                  <div className="flex items-center gap-3 border-t border-slate-200/40 pt-4 mt-auto">
+                  <div className="flex items-center gap-3 border-t border-slate-200 dark:border-slate-700/40 pt-4 mt-auto">
                     <div className="w-8 h-8 bg-slate-900 text-white flex items-center justify-center font-bold text-xs rounded-full">
                       {rev.avatar}
                     </div>
                     <div>
-                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900">{rev.author}</h4>
+                      <h4 className="text-xs sm:text-sm font-semibold text-slate-900 dark:text-white">{rev.author}</h4>
                       <span className="text-[9px] text-slate-400 font-mono block">{rev.date}</span>
                     </div>
                   </div>
@@ -1194,7 +1280,7 @@ export default function App() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="py-4 max-w-7xl mx-auto w-full"
         >
-          <div className="bg-white border border-slate-200 flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-[0_30px_60px_rgba(15,23,42,0.06)]">
+          <div className="bg-white dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700 flex flex-col lg:flex-row rounded-3xl overflow-hidden shadow-[0_30px_60px_rgba(15,23,42,0.06)]">
             
             {/* Interactive Map Column */}
             <div className="lg:w-1/2 min-h-[420px] lg:min-h-[500px] relative overflow-hidden flex flex-col">
@@ -1204,7 +1290,7 @@ export default function App() {
             {/* Details & Horarios Column */}
             <div className="lg:w-1/2 p-8 md:p-12 lg:p-16 flex flex-col justify-center">
               <span className="text-xs font-bold text-indigo-600 uppercase tracking-widest block mb-2 font-mono">DÓNDE ENCONTRARNOS</span>
-              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 font-display mb-8">
+              <h2 className="text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white font-display mb-8">
                 Visita Nuestra Tienda
               </h2>
 
@@ -1217,7 +1303,7 @@ export default function App() {
                   </div>
                   <div>
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest font-mono">Dirección</h4>
-                    <p className="text-slate-800 text-sm font-semibold mt-1">Elizkale Kalea, 9, BAJO<br/>20700 Zumarraga, Gipuzkoa</p>
+                    <p className="text-slate-800 dark:text-slate-100 text-sm font-semibold mt-1">Elizkale Kalea, 9, BAJO<br/>20700 Zumarraga, Gipuzkoa</p>
                   </div>
                 </div>
 
@@ -1240,13 +1326,13 @@ export default function App() {
                   <div className="w-full">
                     <h4 className="text-xs font-bold text-slate-400 uppercase tracking-widest font-mono mb-2">Horario de Apertura</h4>
                     <div className="space-y-2 text-xs font-mono text-slate-600">
-                      <div className="flex justify-between border-b border-slate-100 pb-1.5">
+                      <div className="flex justify-between border-b border-slate-100 dark:border-slate-800 pb-1.5">
                         <span>Lunes - Viernes</span>
-                        <span className="font-semibold text-slate-900 bg-white/60 border border-white/50 shadow-sm px-2 py-0.5 rounded-md">10:00 – 14:00, 16:30 – 20:30</span>
+                        <span className="font-semibold text-slate-900 dark:text-white bg-white/60 border border-white/50 shadow-sm px-2 py-0.5 rounded-md">10:00 – 14:00, 16:30 – 20:30</span>
                       </div>
-                      <div className="flex justify-between border-b border-slate-100 pb-1.5">
+                      <div className="flex justify-between border-b border-slate-100 dark:border-slate-800 pb-1.5">
                         <span>Sábado</span>
-                        <span className="font-semibold text-slate-900 bg-white/60 border border-white/50 shadow-sm px-2 py-0.5 rounded-md">10:00 – 14:00, 16:30 – 20:30</span>
+                        <span className="font-semibold text-slate-900 dark:text-white bg-white/60 border border-white/50 shadow-sm px-2 py-0.5 rounded-md">10:00 – 14:00, 16:30 – 20:30</span>
                       </div>
                       <div className="flex justify-between">
                         <span>Domingo</span>
@@ -1285,6 +1371,8 @@ export default function App() {
                     src="https://lh3.googleusercontent.com/d/1omHKXUnbNUSjE7DQWfmYQYIu5Xdqk9Qo" 
                     alt="AYAT MÓVILES" 
                     className="w-12 h-12 object-contain transition-transform duration-500 group-hover:scale-105 cursor-pointer" 
+                    loading="lazy"
+                    decoding="async"
                     referrerPolicy="no-referrer"
                     onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
                   />
@@ -1442,14 +1530,14 @@ export default function App() {
 
           <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between md:justify-around gap-6 max-w-5xl mx-auto">
             <div className="flex flex-col gap-2.5 text-center md:text-left">
-              <div className="text-xs text-slate-500 font-mono">
+              <div className="text-xs text-slate-500 dark:text-slate-400 font-mono">
                 © 2026 AYAT MÓVILES. Todos los derechos reservados. | Zumarraga, Gipuzkoa.
               </div>
               <div className="flex flex-wrap items-center justify-center md:justify-start gap-x-3.5 gap-y-1.5 text-[11px] text-slate-400 font-sans">
                 <button onClick={() => setLegalModal("aviso")} className="hover:text-indigo-400 transition-colors cursor-pointer bg-transparent border-none p-0">Aviso Legal</button>
-                <span className="text-slate-800 font-mono">•</span>
+                <span className="text-slate-800 dark:text-slate-100 font-mono">•</span>
                 <button onClick={() => setLegalModal("privacidad")} className="hover:text-indigo-400 transition-colors cursor-pointer bg-transparent border-none p-0">Política de Privacidad</button>
-                <span className="text-slate-800 font-mono">•</span>
+                <span className="text-slate-800 dark:text-slate-100 font-mono">•</span>
                 <button onClick={() => setLegalModal("cookies")} className="hover:text-indigo-400 transition-colors cursor-pointer bg-transparent border-none p-0">Política de Cookies</button>
               </div>
             </div>

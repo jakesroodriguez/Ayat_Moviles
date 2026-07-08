@@ -39,7 +39,7 @@ export default function FAQSection() {
 
   return (
     <section id="faq" className="py-10 max-w-7xl mx-auto w-full px-4 scroll-mt-24">
-      <div className="bg-gradient-to-b from-slate-50 to-white border border-slate-200/60 rounded-[32px] p-5 sm:p-8 md:p-10 shadow-[0_20px_50px_rgba(15,23,42,0.02)] relative overflow-hidden">
+      <div className="bg-gradient-to-b from-slate-50 dark:from-slate-900 to-white dark:to-slate-950 border border-slate-200 dark:border-slate-800 rounded-[32px] p-5 sm:p-8 md:p-10 shadow-[0_20px_50px_rgba(15,23,42,0.02)] relative overflow-hidden">
         {/* Ambient Glows */}
         <div className="absolute top-0 right-0 w-80 h-80 bg-indigo-500/5 rounded-full filter blur-3xl pointer-events-none" />
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-purple-500/5 rounded-full filter blur-3xl pointer-events-none" />
@@ -51,21 +51,21 @@ export default function FAQSection() {
               <span className="text-[10px] font-mono font-bold text-indigo-700 uppercase tracking-widest bg-indigo-50 border border-indigo-100/60 px-3 py-1.5 rounded-full shadow-sm w-fit inline-block">
                 PREGUNTAS FRECUENTES
               </span>
-              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 font-display leading-tight">
+              <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-slate-900 dark:text-white font-display leading-tight">
                 Resolvemos tus dudas al instante
               </h2>
             </div>
             
-            <p className="text-slate-500 text-sm leading-relaxed font-medium">
+            <p className="text-slate-500 dark:text-slate-400 dark:text-slate-500 text-sm leading-relaxed font-medium">
               ¿Tienes alguna duda sobre nuestros servicios de reparación, venta de smartphones o recogida de paquetes? Aquí tienes las respuestas a las preguntas más habituales de nuestros clientes.
             </p>
 
-            <div className="pt-6 border-t border-slate-100 space-y-3.5">
-              <h4 className="font-bold text-slate-900 text-sm flex items-center gap-2 font-display tracking-tight">
+            <div className="pt-6 border-t border-slate-100 dark:border-slate-800 space-y-3.5">
+              <h4 className="font-bold text-slate-900 dark:text-white text-sm flex items-center gap-2 font-display tracking-tight">
                 <MessageSquare className="w-4 h-4 text-indigo-600" />
                 ¿No encuentras lo que buscas?
               </h4>
-              <p className="text-xs text-slate-500 leading-relaxed font-sans font-medium">
+              <p className="text-xs text-slate-500 dark:text-slate-400 dark:text-slate-500 leading-relaxed font-sans font-medium">
                 Nuestro chat inteligente está disponible 24/7 en la esquina inferior derecha o puedes escribirnos directamente por WhatsApp.
               </p>
               <a
@@ -89,8 +89,8 @@ export default function FAQSection() {
                   key={index}
                   className={`rounded-2xl border transition-all duration-300 ${
                     isOpen 
-                      ? "bg-white border-slate-300/80 shadow-[0_10px_30px_rgba(15,23,42,0.02)]" 
-                      : "bg-white/40 border-slate-200/60 hover:bg-white/80 hover:border-slate-300/60"
+                      ? "bg-white dark:bg-slate-900 border-slate-300 dark:border-slate-600 shadow-[0_10px_30px_rgba(15,23,42,0.02)]" 
+                      : "bg-white/40 dark:bg-slate-900/40 border-slate-200 dark:border-slate-800 hover:bg-white/80 dark:hover:bg-slate-800 hover:border-slate-300 dark:hover:border-slate-700"
                   }`}
                 >
                   <button
@@ -99,11 +99,11 @@ export default function FAQSection() {
                     aria-expanded={isOpen}
                     id={`faq-btn-${index}`}
                   >
-                    <span className="font-bold text-slate-800 text-sm md:text-base leading-snug group-hover:text-indigo-600 transition-colors font-display tracking-tight">
+                    <span className="font-bold text-slate-800 dark:text-slate-100 text-sm md:text-base leading-snug group-hover:text-indigo-600 transition-colors font-display tracking-tight">
                       {faq.question}
                     </span>
-                    <div className={`w-8 h-8 rounded-full border border-slate-200 flex items-center justify-center transition-all duration-300 ${
-                      isOpen ? "bg-slate-950 border-slate-950 text-white rotate-180" : "bg-white text-slate-400 group-hover:border-slate-300 group-hover:text-slate-600"
+                    <div className={`w-8 h-8 rounded-full border border-slate-200 dark:border-slate-700 flex items-center justify-center transition-all duration-300 ${
+                      isOpen ? "bg-slate-950 dark:bg-white border-slate-950 dark:border-white text-white dark:text-slate-900 rotate-180" : "bg-white dark:bg-slate-900 text-slate-400 dark:text-slate-500 group-hover:border-slate-300 dark:group-hover:border-slate-600 group-hover:text-slate-600 dark:group-hover:text-slate-300"
                     }`}>
                       <ChevronDown className="w-4 h-4" />
                     </div>
@@ -118,7 +118,7 @@ export default function FAQSection() {
                         transition={{ duration: 0.25, ease: "easeInOut" }}
                         className="overflow-hidden"
                       >
-                        <div className="px-5 pb-5 pt-1 text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium border-t border-slate-100 mt-1">
+                        <div className="px-5 pb-5 pt-1 text-slate-500 dark:text-slate-400 dark:text-slate-500 text-xs sm:text-sm leading-relaxed font-sans font-medium border-t border-slate-100 dark:border-slate-800 mt-1">
                           {faq.answer}
                         </div>
                       </motion.div>
