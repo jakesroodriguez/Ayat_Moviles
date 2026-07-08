@@ -29,7 +29,6 @@ import ChatBot from "./components/ChatBot";
 import FAQSection from "./components/FAQSection";
 import LegalManager from "./components/LegalManager";
 import InteractiveMap from "./components/InteractiveMap";
-import VisitorCounter from "./components/VisitorCounter";
 import CinemaSplashLoader from "./components/CinemaSplashLoader";
 
 export default function App() {
@@ -110,7 +109,7 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-[#fcfbfe] via-[#faf9ff] to-[#f5f3ff] text-slate-900 font-sans flex flex-col relative overflow-x-hidden">
+    <div className="min-h-screen bg-gradient-to-b from-[#f5f5f7] via-[#f0f0f3] to-[#e8e8eb] text-slate-900 font-sans flex flex-col relative overflow-x-hidden">
       {/* Premium Dynamic Background Shader */}
       <BackgroundShader />
 
@@ -294,11 +293,11 @@ export default function App() {
         </motion.div>
       </div>
 
-      {/* Decorative Elegant Soft Ambient Blobs (Apple Style) - Replaced harsh purple grids */}
+      {/* Decorative Elegant Soft Ambient Blobs (Apple Style) - Replaced harsh purple grids with neutral silver-grays */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
-        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-indigo-300/55 blur-[130px] animate-pulse" style={{ animationDuration: "14s" }} />
-        <div className="absolute bottom-[10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-purple-300/50 blur-[160px] animate-pulse" style={{ animationDuration: "18s" }} />
-        <div className="absolute top-[35%] left-[25%] w-[45vw] h-[45vw] rounded-full bg-blue-200/50 blur-[140px] animate-pulse" style={{ animationDuration: "22s" }} />
+        <div className="absolute top-[-10%] left-[-10%] w-[50vw] h-[50vw] rounded-full bg-slate-300/40 blur-[130px] animate-pulse" style={{ animationDuration: "14s" }} />
+        <div className="absolute bottom-[10%] right-[-10%] w-[60vw] h-[60vw] rounded-full bg-slate-400/30 blur-[160px] animate-pulse" style={{ animationDuration: "18s" }} />
+        <div className="absolute top-[35%] left-[25%] w-[45vw] h-[45vw] rounded-full bg-zinc-300/40 blur-[140px] animate-pulse" style={{ animationDuration: "22s" }} />
       </div>
 
       {/* Main Grid Wrapper */}
@@ -1299,9 +1298,6 @@ export default function App() {
                 Especialistas líderes en venta, reparación exprés y soporte informático en Zumarraga. Máxima garantía, velocidad inigualable y confianza certificada para todos tus dispositivos.
               </p>
               
-              {/* Telemetry Visitor Counter */}
-              <VisitorCounter />
-
               <div>
                 <button 
                   onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -1444,7 +1440,7 @@ export default function App() {
 
           </div>
 
-          <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="pt-8 border-t border-slate-900 flex flex-col md:flex-row items-center justify-between md:justify-around gap-6 max-w-5xl mx-auto">
             <div className="flex flex-col gap-2.5 text-center md:text-left">
               <div className="text-xs text-slate-500 font-mono">
                 © 2026 AYAT MÓVILES. Todos los derechos reservados. | Zumarraga, Gipuzkoa.
@@ -1490,26 +1486,6 @@ export default function App() {
 
       {/* Floating Multi-turn AI Assistant Chat Box */}
       <ChatBot />
-
-      {/* Floating Direct Contact Button */}
-      <motion.a
-        href="#contacto"
-        onClick={() => {
-          setActiveTab("contacto");
-        }}
-        className="fixed bottom-6 left-6 z-40 bg-slate-900/95 hover:bg-indigo-600 text-white px-5 py-3.5 rounded-full shadow-[0_20px_50px_rgba(15,23,42,0.3),inset_0_1px_1px_rgba(255,255,255,0.2)] border border-slate-800 hover:border-indigo-400 transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer backdrop-blur-md"
-        whileHover={{ y: -4 }}
-        initial={{ opacity: 0, scale: 0.9 }}
-        animate={{ opacity: 1, scale: 1 }}
-      >
-        <MapPin className="w-4 h-4 text-indigo-400 group-hover:scale-110 group-hover:rotate-6 transition-transform duration-300" />
-        <span className="hidden sm:inline text-xs font-bold uppercase tracking-wider font-mono">
-          Ubicación y Contacto
-        </span>
-        <span className="inline sm:hidden text-xs font-bold uppercase tracking-wider font-mono">
-          Contacto
-        </span>
-      </motion.a>
 
       {/* Dynamic Cookies consent banner & modal views (Apartados A, B, C, D) */}
       <LegalManager 

@@ -131,17 +131,15 @@ export default function ChatBot() {
       {/* Floating Action Button */}
       <motion.button
         id="chat-toggle-btn"
-        className="fixed bottom-6 right-6 z-50 bg-white/80 backdrop-blur-2xl text-indigo-600 hover:bg-indigo-600 hover:text-white p-4 rounded-full shadow-[0_20px_50px_rgba(99,102,241,0.2),inset_0_1px_1px_rgba(255,255,255,0.8)] border border-indigo-100 hover:border-indigo-600 transition-all duration-300 flex items-center justify-center gap-2 group cursor-pointer"
+        className="fixed bottom-6 right-6 z-50 bg-white/85 backdrop-blur-2xl text-indigo-600 hover:bg-indigo-600 hover:text-white p-2.5 sm:p-3 rounded-full shadow-[0_12px_30px_rgba(99,102,241,0.25),inset_0_1px_1px_rgba(255,255,255,0.8)] border border-indigo-100 hover:border-indigo-600 transition-all duration-300 flex items-center justify-center group cursor-pointer"
         onClick={() => setIsOpen(!isOpen)}
-        whileHover={{ y: -4 }}
+        whileHover={{ scale: 1.1, y: -2 }}
+        whileTap={{ scale: 0.95 }}
       >
         <div className="relative">
-          <MessageSquare className="w-6 h-6 group-hover:rotate-12 transition-transform duration-300" />
-          <span className="absolute -top-1 -right-1 w-2.5 h-2.5 bg-green-400 rounded-full border border-white animate-pulse" />
+          <MessageSquare className="w-5 h-5 group-hover:rotate-12 transition-transform duration-300" />
+          <span className="absolute -top-0.5 -right-0.5 w-2 h-2 bg-green-500 rounded-full border border-white animate-pulse" />
         </div>
-        <span className="max-w-0 overflow-hidden group-hover:max-w-xs transition-all duration-300 ease-out text-sm font-bold whitespace-nowrap">
-          ¿Ayuda técnica?
-        </span>
       </motion.button>
 
       {/* Chat Drawer Widget */}

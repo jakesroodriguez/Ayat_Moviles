@@ -29,9 +29,9 @@ export default function BackgroundShader() {
         vec2 uv = v_texCoord;
         float noise = sin(uv.x * 3.0 + u_time * 0.5) * 0.5 + 0.5;
         noise += sin(uv.y * 4.0 - u_time * 0.3) * 0.5 + 0.5;
-        vec3 color1 = vec3(0.388, 0.278, 0.82); 
-        vec3 color2 = vec3(0.973, 0.976, 1.0);  
-        vec3 color3 = vec3(0.85, 0.8, 1.0);     
+        vec3 color1 = vec3(0.85, 0.85, 0.88); // Elegant soft silver-gray
+        vec3 color2 = vec3(0.96, 0.96, 0.98); // Clean off-white/gray
+        vec3 color3 = vec3(0.91, 0.91, 0.94); // Premium light gray
         vec3 finalColor = mix(color1, color2, noise * 0.3);
         finalColor = mix(finalColor, color3, sin(u_time * 0.2) * 0.2 + 0.2);
         float dist = distance(uv, vec2(0.5));
@@ -128,7 +128,7 @@ export default function BackgroundShader() {
     <canvas
       ref={canvasRef}
       id="bg-canvas"
-      className="fixed inset-0 w-screen h-screen z-[-1] opacity-20 pointer-events-none"
+      className="fixed inset-0 w-screen h-screen z-[-1] opacity-30 pointer-events-none"
     />
   );
 }

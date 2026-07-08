@@ -49,12 +49,12 @@ export default function CinemaSplashLoader({ onComplete }: CinemaSplashLoaderPro
         {/* Cinematic phone frame animation */}
         <motion.div
           initial={{ 
-            scale: 0.35, 
-            rotateY: -180, 
-            rotateX: 45, 
-            rotateZ: -720,
+            scale: 0.75, 
+            rotateY: -25, 
+            rotateX: 12, 
+            rotateZ: -12,
             opacity: 0,
-            z: -500
+            z: -150
           }}
           animate={
             stage === "spinning" 
@@ -89,9 +89,9 @@ export default function CinemaSplashLoader({ onComplete }: CinemaSplashLoaderPro
           transition={
             stage === "spinning"
               ? { 
-                  // Brusco giro que frena poco a poco (cubic-bezier high deceleration)
+                  // Elegante entrada suave que frena poco a poco (cubic-bezier de alta precisión)
                   duration: 1.8, 
-                  ease: [0.1, 0.9, 0.2, 1] 
+                  ease: [0.16, 1, 0.3, 1] 
                 }
               : stage === "zooming"
               ? {
