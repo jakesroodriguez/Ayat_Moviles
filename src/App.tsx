@@ -1543,9 +1543,7 @@ export default function App() {
             </div>
             <div className="flex items-center gap-6">
               <div dangerouslySetInnerHTML={{ __html: `<!-- Componente: Botón de Autor (Premium Glassmorphism) -->
-<a href="https://www.instagram.com/jakesroodriguez" 
-   target="_blank" 
-   rel="noopener noreferrer" 
+<a href="https://www.jrgagency.eus/desarrollo-web" target="_blank" rel="noopener" title="Diseño y desarrollo web profesional en Gipuzkoa por JRG Agency" 
    class="inline-flex items-center gap-3 px-5 py-2.5 bg-white/5 border border-white/10 rounded-full text-zinc-400 hover:text-white hover:bg-white/10 transition-all duration-500 group hover:shadow-[0_0_20px_rgba(255,255,255,0.1)] active:scale-95 backdrop-blur-md">
   
   <!-- Burbuja del Icono -->
@@ -1559,10 +1557,10 @@ export default function App() {
   <!-- Contenedor de Textos -->
   <div class="flex flex-col items-start text-left font-sans">
     <span class="text-[9px] uppercase tracking-[0.2em] opacity-60 font-medium mb-0.5">
-      Designed & Built by
+      Diseño y desarrollo web por
     </span>
     <span class="text-sm font-bold tracking-wider">
-      @jakesroodriguez
+      JRG Agency
     </span>
   </div>
 </a>` }} />
